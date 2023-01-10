@@ -1,8 +1,10 @@
 <script setup>
+import Header from './../components/Header.vue';
+import Panel from 'primevue/panel';
 </script>
 
 <template>
-  <header>test header</header>
+  <Header />
   <h1>Hello App</h1>
   <Panel>
     <template #header>
