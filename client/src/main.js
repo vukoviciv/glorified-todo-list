@@ -8,5 +8,6 @@ import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 
 const app = createApp(App);
-app.use(PrimeVue);
-app.mount('#app')
+app
+  .use(PrimeVue)
+  .mount('#app');
