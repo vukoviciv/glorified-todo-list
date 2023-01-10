@@ -2,6 +2,7 @@
 </script>
 
 <template>
+  <header>test header</header>
   <h1>Hello App</h1>
   <Panel>
     <template #header>
