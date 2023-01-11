@@ -25,12 +25,12 @@
     <template #footer>
       <Button
         @click="close()"
-        label="No"
+        label="Cancel"
         icon="pi pi-times"
         class="p-button-text" />
       <Button
         @click="close()"
-        label="Yes"
+        label="Create task"
         icon="pi pi-check"
         autofocus />
     </template>

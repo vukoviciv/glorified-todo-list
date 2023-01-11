@@ -5,15 +5,17 @@
       :key="tab.title"
       :header="tab.title"
       headerClass="tab-header flex-grow-1 justify-space-around">
+      <component :is="tab.componentName" foo="test" />
       <p>{{ tab.content }}</p>
     </TabPanel>
   </TabView>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { shallowRef } from 'vue';
 import TabPanel from 'primevue/TabPanel';
 import TabView from 'primevue/TabView';
+import TasksList from './TasksList.vue';
 
 const defaultText = `At vero eos et accusamus et iusto odio dignissimos ducimus qui
     blanditiis praesentium voluptatum deleniti atque corrupti quos
@@ -23,19 +25,25 @@ const defaultText = `At vero eos et accusamus et iusto odio dignissimos ducimus 
     est et expedita distinctio. Nam libero tempore, cum soluta nobis est
     eligendi optio cumque nihil impedit quo minus.`;
 
-const tabs = ref([{
+const tabs = shallowRef([{
   title: 'Today',
+  componentName: TasksList,
   content: defaultText
-}, {
+},
+{
   title: 'Week',
+  componentName: TasksList,
   content: defaultText
 }, {
   title: 'Month',
+  componentName: TasksList,
   content: defaultText
 }, {
   title: 'All',
+  componentName: TasksList,
   content: defaultText
-}]);
+}
+]);
 
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <MainHeader />
-  <main class="p-5 main-container">
+  <main class="main-container p-5 m-auto">
     <CreateTaskDialog />
     <TasksContainer />
   </main>
@@ -15,6 +15,5 @@ import TasksContainer from '../components/TasksContainer.vue';
 <style lang="scss" scoped>
 .main-container {
   max-width: 82rem;
-  margin: auto;
 }
 </style>
