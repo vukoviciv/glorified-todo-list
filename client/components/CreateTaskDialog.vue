@@ -1,8 +1,10 @@
 <template>
-  <Button
-    @click="open"
-    label="Create new task"
-    icon="pi pi-plus" />
+  <div class="create-wrapper flex justify-content-end">
+    <Button
+      @click="open"
+      label="Create new task"
+      icon="pi pi-plus" />
+  </div>
   <Dialog
     @update:visible="close()"
     :visible="displayPosition"

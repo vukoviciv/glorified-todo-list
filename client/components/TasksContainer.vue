@@ -1,5 +1,5 @@
 <template>
-  <TabView>
+  <TabView class="mt-5">
     <TabPanel
       v-for="tab in tabs"
       :key="tab.title"
