@@ -7,13 +7,19 @@
       headerClass="flex-grow-1 justify-space-around">
       <p>{{ tab.content }}</p>
     </TabPanel>
+    <TabPanel
+      header="header"
+      headerClass="flex-grow-1 justify-space-around"
+      :header-props="{ 'aria-live': 'test' }">
+      <p>{{ defaultText }}</p>
+    </TabPanel>
   </TabView>
 </template>
 
 <script setup>
-import TabView from 'primevue/TabView';
-import TabPanel from 'primevue/TabPanel';
 import { ref } from 'vue';
+import TabPanel from 'primevue/TabPanel';
+import TabView from 'primevue/TabView';
 
 const defaultText = `At vero eos et accusamus et iusto odio dignissimos ducimus qui
     blanditiis praesentium voluptatum deleniti atque corrupti quos
@@ -38,9 +44,3 @@ const tabs = ref([{
 }]);
 
 </script>
-
-<style lang="scss" scoped>
-.tab-panel-header-test {
-  width: 25% !important;
-}
-</style>

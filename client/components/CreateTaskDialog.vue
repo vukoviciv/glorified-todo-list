@@ -1,15 +1,16 @@
 <template>
   <Button
+    @click="open"
     label="Create new task"
-    icon="pi pi-plus"
-    @click="open" />
+    icon="pi pi-plus" />
   <Dialog
-    header="Header"
-    v-model:visible="displayPosition"
+    @update:visible="close()"
+    :visible="displayPosition"
     :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
     :style="{ width: '50vw' }"
-    position="top"
-    :modal="true">
+    :modal="true"
+    header="Header"
+    position="top">
     <p class="m-0">
       Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
       tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
@@ -21,11 +22,15 @@
     </p>
     <template #footer>
       <Button
+        @click="close()"
         label="No"
         icon="pi pi-times"
-        @click="close"
         class="p-button-text" />
-      <Button label="Yes" icon="pi pi-check" @click="close" autofocus />
+      <Button
+        @click="close()"
+        label="Yes"
+        icon="pi pi-check"
+        autofocus />
     </template>
   </Dialog>
 </template>
@@ -36,7 +41,6 @@ import Dialog from 'primevue/Dialog';
 import { ref } from 'vue';
 
 const displayPosition = ref(false);
-const position = ref('center');
 
 const open = () => { displayPosition.value = true; };
 const close = () => { displayPosition.value = false; };

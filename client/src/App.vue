@@ -1,15 +1,15 @@
 <template>
-  <Header />
+  <MainHeader />
   <main class="p-5 main-container">
     <CreateTaskDialog />
-    <Tasks />
+    <TasksContainer />
   </main>
 </template>
 
 <script setup>
-import Tasks from './../components/Tasks.vue';
-import Header from './../components/Header.vue';
 import CreateTaskDialog from '../components/CreateTaskDialog.vue';
+import MainHeader from './../components/MainHeader.vue';
+import TasksContainer from '../components/TasksContainer.vue';
 </script>
 
 <style lang="scss" scoped>

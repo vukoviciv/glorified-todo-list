@@ -16,7 +16,6 @@ const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric
 const today = new Date().toLocaleDateString(undefined, options);
 </script>
 
-
 <style lang="scss" scoped>
 .main-header {
   padding: var(--content-padding);
