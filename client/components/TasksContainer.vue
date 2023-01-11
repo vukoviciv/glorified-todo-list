@@ -4,14 +4,8 @@
       v-for="tab in tabs"
       :key="tab.title"
       :header="tab.title"
-      headerClass="flex-grow-1 justify-space-around">
+      headerClass="tab-header flex-grow-1 justify-space-around">
       <p>{{ tab.content }}</p>
-    </TabPanel>
-    <TabPanel
-      header="header"
-      headerClass="flex-grow-1 justify-space-around"
-      :header-props="{ 'aria-live': 'test' }">
-      <p>{{ defaultText }}</p>
     </TabPanel>
   </TabView>
 </template>
@@ -44,3 +38,10 @@ const tabs = ref([{
 }]);
 
 </script>
+
+<style lang="scss" scoped>
+:deep(.p-tabview-nav-link) {
+  display: block;
+  text-align: center;
+}
+</style>
