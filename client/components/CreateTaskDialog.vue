@@ -24,8 +24,7 @@
         label="No"
         icon="pi pi-times"
         @click="close"
-        class="p-button-text"
-      />
+        class="p-button-text" />
       <Button label="Yes" icon="pi pi-check" @click="close" autofocus />
     </template>
   </Dialog>
