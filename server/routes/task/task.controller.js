@@ -1,12 +1,12 @@
 import { faker } from '@faker-js/faker';
 
-function getTasks(req, res) {
+function list(_, res) {
   const tasks = generateItems();
   return res.json(tasks);
 }
 
 export default {
-  getTasks
+  list
 };
 
 function generateItems() {
