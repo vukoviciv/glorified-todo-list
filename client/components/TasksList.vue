@@ -20,7 +20,6 @@
 </template>
 
 <script setup>
-// import Checkbox from 'primevue/checkbox';
 import Divider from 'primevue/Divider';
 import { ref } from 'vue';
 import TaskItem from './TaskItem.vue';
