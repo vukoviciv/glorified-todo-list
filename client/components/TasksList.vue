@@ -4,15 +4,7 @@
       v-for="item in pendingItems"
       :key="item.id"
       class="mt-4 list-item">
-      <div class="field-checkbox">
-        <Checkbox
-          v-model="item.done"
-          @input="toggleTask($event, item)"
-          :input-id="item.id"
-          :binary="true" />
-        <label :for="item.id">{{ item.name }}</label>
-      </div>
-      <p>{{ item.description }}</p>
+      <TaskItem @update:task="toggleTask" :item="item" />
     </li>
   </ul>
   <Divider align="center">
@@ -22,23 +14,16 @@
     <li
       v-for="item in doneItems"
       :key="item.id">
-      <div class="field-checkbox">
-        <Checkbox
-          v-model="item.done"
-          @input="toggleTask($event, item)"
-          :input-id="item.id"
-          :binary="true" />
-        <label :for="item.id">{{ item.name }}</label>
-      </div>
-      <p>{{ item.description }}</p>
+      <TaskItem @update:task="toggleTask" :item="item" />
     </li>
   </ul>
 </template>
 
 <script setup>
-import Checkbox from 'primevue/checkbox';
+// import Checkbox from 'primevue/checkbox';
 import Divider from 'primevue/Divider';
 import { ref } from 'vue';
+import TaskItem from './TaskItem.vue';
 
 const props = defineProps({
   items: { type: Array, required: true }
