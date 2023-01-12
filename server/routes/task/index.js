@@ -6,5 +6,6 @@ const router = Router();
 router.get('/', ctrl.getTasks);
 
 export default {
+  path: '/task',
   router
 };
