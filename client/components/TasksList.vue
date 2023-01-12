@@ -15,7 +15,10 @@
       <p>{{ item.description }}</p>
     </li>
   </ul>
-  <ul aria-label="Done task">
+  <Divider align="center">
+    <span id="done-badge" class="p-tag">Done</span>
+  </Divider>
+  <ul aria-labelledby="done-badge">
     <li
       v-for="item in doneItems"
       :key="item.id">
@@ -33,7 +36,8 @@
 </template>
 
 <script setup>
-import Checkbox from 'primevue/Checkbox';
+import Checkbox from 'primevue/checkbox';
+import Divider from 'primevue/Divider';
 import { ref } from 'vue';
 
 const props = defineProps({
