@@ -1,11 +1,30 @@
 <template>
-  <ul>
+  <ul aria-label="Pending tasks">
     <li
-      v-for="item in items"
+      v-for="item in pendingItems"
       :key="item.id"
       class="mt-4 list-item">
       <div class="field-checkbox">
-        <Checkbox v-model="item.done" :input-id="item.id" :binary="true" />
+        <Checkbox
+          v-model="item.done"
+          @input="toggleTask($event, item)"
+          :input-id="item.id"
+          :binary="true" />
+        <label :for="item.id">{{ item.name }}</label>
+      </div>
+      <p>{{ item.description }}</p>
+    </li>
+  </ul>
+  <ul aria-label="Done task">
+    <li
+      v-for="item in doneItems"
+      :key="item.id">
+      <div class="field-checkbox">
+        <Checkbox
+          v-model="item.done"
+          @input="toggleTask($event, item)"
+          :input-id="item.id"
+          :binary="true" />
         <label :for="item.id">{{ item.name }}</label>
       </div>
       <p>{{ item.description }}</p>
@@ -15,10 +34,34 @@
 
 <script setup>
 import Checkbox from 'primevue/Checkbox';
+import { ref } from 'vue';
 
-defineProps({
+const props = defineProps({
   items: { type: Array, required: true }
 });
+
+const pendingItems = ref(props.items.filter(it => !it.done));
+const doneItems = ref(props.items.filter(it => it.done));
+
+const moveToDone = task => {
+  removeItemFromList(task, pendingItems);
+  doneItems.value.push(task);
+};
+
+const moveToPending = task => {
+  removeItemFromList(task, doneItems);
+  pendingItems.value.push(task);
+};
+
+const toggleTask = ($event, task) => {
+  task.done = $event;
+  if ($event) moveToDone(task);
+  else moveToPending(task);
+};
+
+function removeItemFromList(item, list) {
+  list.value = list.value.filter(it => it.id !== item.id);
+}
 </script>
 
 <style lang="scss" scoped>

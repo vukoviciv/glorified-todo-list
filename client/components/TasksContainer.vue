@@ -19,7 +19,7 @@ import TabPanel from 'primevue/TabPanel';
 import TabView from 'primevue/TabView';
 import TasksList from './TasksList.vue';
 
-function itemsFactory() {
+function generateItems() {
   const items = [];
   for (let i = 0; i < 20; i++) {
     const item = {
@@ -40,20 +40,19 @@ function itemsFactory() {
 const tabs = shallowRef([{
   title: 'Today',
   componentName: TasksList,
-  items: itemsFactory()
-},
-{
+  items: generateItems()
+}, {
   title: 'Week',
   componentName: TasksList,
-  items: itemsFactory()
+  items: generateItems()
 }, {
   title: 'Month',
   componentName: TasksList,
-  items: itemsFactory()
+  items: generateItems()
 }, {
   title: 'All',
   componentName: TasksList,
-  items: itemsFactory()
+  items: generateItems()
 }
 ]);
 </script>
