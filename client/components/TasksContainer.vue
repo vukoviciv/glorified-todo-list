@@ -16,13 +16,13 @@
 import { ref, shallowRef } from 'vue';
 import TabPanel from 'primevue/TabPanel';
 import TabView from 'primevue/TabView';
-import tasksAPI from '@/api/tasks';
+import tasksApi from '@/api/tasks';
 import TasksList from './TasksList.vue';
 
 export default {
   async setup() {
     const items = ref([]);
-    await tasksAPI.fetch().then(tasks => (items.value = tasks));
+    await tasksApi.fetch().then(tasks => (items.value = tasks));
 
     const tabs = shallowRef([{
       title: 'Today',
