@@ -1,4 +1,5 @@
 import { defineConfig, loadEnv } from 'vite';
+import path from 'path';
 import vue from '@vitejs/plugin-vue';
 
 function readConfig(config = process.env) {
@@ -14,13 +15,19 @@ export default defineConfig(({ mode }) => {
   const { apiPath, baseUrl } = config;
   return {
     plugins: [vue()],
+    resolve: {
+      alias: [{
+        find: '@/api/',
+        replacement: `${path.resolve(__dirname, './src/api/')}/`
+      }]
+    },
     server: {
       proxy: {
         [apiPath]: {
           target: `${baseUrl}${apiPath}`,
           changeOrigin: true,
           secure: false,
-          rewrite: path => path.replace(apiPath, '')
+          rewrite: path => path.replace(apiPath, '') // Not sure if this is okay
         }
       }
     }
