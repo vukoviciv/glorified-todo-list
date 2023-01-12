@@ -12,49 +12,28 @@
   </TabView>
 </template>
 
-<script setup>
-import { faker } from '@faker-js/faker';
-import { shallowRef } from 'vue';
+<script>
+import { ref, shallowRef } from 'vue';
 import TabPanel from 'primevue/TabPanel';
 import TabView from 'primevue/TabView';
+import tasksAPI from '../src/api/tasks';
 import TasksList from './TasksList.vue';
 
-function generateItems() {
-  const items = [];
-  for (let i = 0; i < 20; i++) {
-    const item = {
-      id: faker.datatype.uuid(),
-      name: faker.music.songName(),
-      description: faker.commerce.productDescription(),
-      done: faker.datatype.boolean(),
-      deadline: faker.date.future(),
-      priority: 'high', // enums
-      repeat: null, // TODO
-      createdAt: faker.date.recent()
-    };
-    items.push(item);
-  }
-  return items;
-}
+export default {
+  async setup() {
+    const items = ref([]);
+    await tasksAPI.fetch().then(tasks => (items.value = tasks));
 
-const tabs = shallowRef([{
-  title: 'Today',
-  componentName: TasksList,
-  items: generateItems()
-}, {
-  title: 'Week',
-  componentName: TasksList,
-  items: generateItems()
-}, {
-  title: 'Month',
-  componentName: TasksList,
-  items: generateItems()
-}, {
-  title: 'All',
-  componentName: TasksList,
-  items: generateItems()
-}
-]);
+    const tabs = shallowRef([{
+      title: 'Today',
+      componentName: TasksList,
+      items: items.value
+    }]);
+
+    return { tabs };
+  },
+  components: { TabPanel, TabView }
+};
 </script>
 
 <style lang="scss" scoped>

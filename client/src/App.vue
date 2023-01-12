@@ -2,7 +2,14 @@
   <MainHeader />
   <main class="main-container p-5 m-auto">
     <CreateTaskDialog />
-    <TasksContainer />
+    <Suspense>
+      <template #default>
+        <TasksContainer />
+      </template>
+      <template #fallback>
+        <div>loading...</div>
+      </template>
+    </Suspense>
   </main>
 </template>
 
