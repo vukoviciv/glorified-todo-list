@@ -1,8 +1,6 @@
 export default {
-  apiPath: '/api',
-  ip: '127.0.0.1',
-  port: 3000,
-  protocol: 'http'
+  apiPath: process.env.API_PATH,
+  ip: process.env.IP,
+  port: process.env.PORT,
+  protocol: process.env.PROTOCOL
 };
-
-// TODO: add .env,
