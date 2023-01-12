@@ -7,10 +7,8 @@ const address = `${protocol}://${ip}:${port}`;
 
 const app = express();
 
-app.use(apiPath, routes);
-app.get('/', (req, res) => {
-  res.send('A mislia si da ne radi');
-});
-app.listen(port, () => {
-  console.log(`Listening on ${address}`);
-});
+app
+  .use(apiPath, routes)
+  .listen(port, () => {
+    console.log(`Listening on ${address}`);
+  });
