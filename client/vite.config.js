@@ -1,22 +1,28 @@
-import config from '../server/config';
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 
-const { protocol, ip, port, apiPath } = config;
+function readConfig(config = process.env) {
+  return {
+    baseUrl: config.VITE_SERVER_URL,
+    apiPath: config.VITE_API_PATH
+  };
+}
 
-const address = `${protocol}://${ip}:${port}${apiPath}`;
-console.log({ address });
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [vue()],
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://127.0.0.1:3000/api',
-        changeOrigin: true,
-        secure: false,
-        rewrite: path => path.replace(/^\/api/, '')
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, __dirname, '');
+  const config = readConfig(env);
+  const { apiPath, baseUrl } = config;
+  return {
+    plugins: [vue()],
+    server: {
+      proxy: {
+        [apiPath]: {
+          target: `${baseUrl}${apiPath}`,
+          changeOrigin: true,
+          secure: false,
+          rewrite: path => path.replace(apiPath, '')
+        }
       }
     }
-  }
+  };
 });
