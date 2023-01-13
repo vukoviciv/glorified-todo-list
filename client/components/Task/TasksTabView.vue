@@ -17,7 +17,7 @@ import { ref, shallowRef } from 'vue';
 import TabPanel from 'primevue/TabPanel';
 import TabView from 'primevue/TabView';
 import tasksApi from '@/api/tasks';
-import TasksList from './TasksList.vue';
+import TodayList from './TodayList.vue';
 
 export default {
   async setup() {
@@ -26,7 +26,7 @@ export default {
 
     const tabs = shallowRef([{
       title: 'Today',
-      componentName: TasksList,
+      componentName: TodayList,
       items: items.value
     }]);
 
