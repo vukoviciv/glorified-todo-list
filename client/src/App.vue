@@ -16,7 +16,7 @@
 <script setup>
 import CreateTaskDialog from '../components/CreateTaskDialog.vue';
 import MainHeader from './../components/MainHeader.vue';
-import TasksContainer from '../components/TasksContainer.vue';
+import TasksContainer from '../components/Task/TasksContainer.vue';
 </script>
 
 <style lang="scss" scoped>

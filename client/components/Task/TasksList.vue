@@ -19,7 +19,8 @@
   <ul aria-labelledby="done-badge" class="done-tasks">
     <li
       v-for="task in tasks"
-      :key="task.id">
+      :key="task.id"
+      class="mt-4">
       <Transition duration="500" name="nested">
         <TaskItem
           v-if="task.done"
@@ -62,10 +63,6 @@ const toggleTask = ($event, task) => {
     transform: translateY($y);
     opacity: 0;
   }
-}
-
-.list-item {
-  background-color: #f2f2f2;
 }
 
 .pending-tasks {
