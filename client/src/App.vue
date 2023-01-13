@@ -4,7 +4,7 @@
     <CreateTaskDialog />
     <Suspense>
       <template #default>
-        <TasksContainer />
+        <TasksTabView />
       </template>
       <template #fallback>
         <div>loading...</div>
@@ -16,7 +16,7 @@
 <script setup>
 import CreateTaskDialog from '../components/CreateTaskDialog.vue';
 import MainHeader from './../components/MainHeader.vue';
-import TasksContainer from '../components/Task/TasksContainer.vue';
+import TasksTabView from '../components/Task/TasksTabView.vue';
 </script>
 
 <style lang="scss" scoped>
