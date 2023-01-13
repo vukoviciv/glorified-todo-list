@@ -1,35 +1,37 @@
 <template>
-  <ul aria-label="Pending tasks" class="pending-tasks">
-    <li
-      v-for="task in tasks"
-      :key="task.id"
-      class="mt-4 list-item">
-      <Transition duration="500" name="nested">
-        <TaskItem
-          v-if="!task.done"
-          @update:task="toggleTask"
-          :item="task"
-          :done="task.done" />
-      </Transition>
-    </li>
-  </ul>
-  <Divider align="center">
-    <span id="done-badge" class="p-tag">Done</span>
-  </Divider>
-  <ul aria-labelledby="done-badge" class="done-tasks">
-    <li
-      v-for="task in tasks"
-      :key="task.id"
-      class="mt-4">
-      <Transition duration="500" name="nested">
-        <TaskItem
-          v-if="task.done"
-          @update:task="toggleTask"
-          :item="task"
-          :done="task.done" />
-      </Transition>
-    </li>
-  </ul>
+  <div>
+    <ul aria-label="Pending tasks" class="pending-tasks">
+      <li
+        v-for="task in tasks"
+        :key="task.id"
+        class="mt-4 list-item">
+        <Transition duration="500" name="nested">
+          <TaskItem
+            v-if="!task.done"
+            @update:task="toggleTask"
+            :item="task"
+            :done="task.done" />
+        </Transition>
+      </li>
+    </ul>
+    <Divider align="center">
+      <span id="done-badge" class="p-tag">Done</span>
+    </Divider>
+    <ul aria-labelledby="done-badge" class="done-tasks">
+      <li
+        v-for="task in tasks"
+        :key="task.id"
+        class="mt-4">
+        <Transition duration="500" name="nested">
+          <TaskItem
+            v-if="task.done"
+            @update:task="toggleTask"
+            :item="task"
+            :done="task.done" />
+        </Transition>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script setup>

@@ -1,6 +1,6 @@
 <template>
   <div class="flex align-items-center">
-    <i :class="`${config.icon} ${config.className} mr-2`"></i>
+    <i :class="`${config.icon} ${config.className} mr-3`"></i>
     <div
       class="flex flex-grow-1 p-3"
       :class="!item.done ? config.className : 'grey'">
@@ -61,7 +61,7 @@ const config = priorityConfig[props.item.priority];
 @mixin iconStyle($color) {
   background: transparent;
   color: var($color);
-  font-size: 1.5rem;
+  font-size: 1.3rem;
 }
 .red {
   background: var(--red-100);
