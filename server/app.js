@@ -1,6 +1,6 @@
-import config from './config.js';
+import config from './config/envs.js';
 import express from 'express';
-import routes from './routes/router.js';
+import routes from './src/routes/router.js';
 
 const { protocol, ip, port, apiPath } = config;
 
