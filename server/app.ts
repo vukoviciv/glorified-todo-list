@@ -9,14 +9,6 @@ const address = `${protocol}://${ip}:${port}`;
 
 const app: Express = express();
 
-// app.get('/', (req: Request, res: Response) => {
-//   res.send('hello');
-// });
-
-// app.listen(port, () => {
-//   console.log('listening on ', address);
-// });
-
 database.init()
   .then(() => {
     app.use(apiPath, router);
