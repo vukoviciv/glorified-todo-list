@@ -1,6 +1,6 @@
-import { Cascade, Collection, Entity, ManyToOne, OneToMany, Property } from '@mikro-orm/core';
+import { Cascade, Collection, Entity, OneToMany, Property } from '@mikro-orm/core';
 import { BaseEntity } from './BaseEntity';
-import { Book } from '.';
+import { Book } from './Book';
 
 @Entity()
 export class Author extends BaseEntity {
@@ -12,9 +12,6 @@ export class Author extends BaseEntity {
 
   @Property({ nullable: true })
     age?: number;
-
-  @Property()
-    termsAccepted = false;
 
   @Property({ nullable: true })
     born?: Date;

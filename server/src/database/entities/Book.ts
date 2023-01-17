@@ -4,10 +4,10 @@ import { BaseEntity } from './BaseEntity';
 
 @Entity()
 export class Book extends BaseEntity {
-  @Property()
+  @Property({ type: 'string' })
     title: string;
 
-  @ManyToOne()
+  @ManyToOne({ type: 'Author' })
     author: Author;
 
   @Property({ nullable: true })
