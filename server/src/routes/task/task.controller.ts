@@ -38,5 +38,6 @@ function generateItems() {
     };
     items.push(item);
   }
+
   return items;
 }
