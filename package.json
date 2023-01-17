@@ -5,11 +5,13 @@
   "scripts": {
     "client": "vite serve client",
     "server": "nodemon -r dotenv/config server/app.ts",
+    "db:migration:create": "npx mikro-orm migration:create --blank",
     "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
     "@mikro-orm/core": "^5.6.7",
+    "@mikro-orm/migrations": "^5.6.7",
     "@mikro-orm/postgresql": "^5.6.7",
     "axios": "^1.2.2",
     "dotenv": "^16.0.3",
@@ -17,6 +19,8 @@
     "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",
     "primevue": "^3.21.0",
+    "readline-sync": "^1.4.10",
+    "sql-formatter": "^12.0.5",
     "vue": "^3.2.45"
   },
   "devDependencies": {
@@ -26,6 +30,7 @@
     "@faker-js/faker": "^7.6.0",
     "@mikro-orm/cli": "^5.6.7",
     "@types/express": "^4.17.15",
+    "@types/readline-sync": "^1.4.4",
     "@typescript-eslint/eslint-plugin": "^5.48.1",
     "@typescript-eslint/parser": "^5.48.1",
     "@vitejs/plugin-vue": "^4.0.0",
@@ -49,9 +54,10 @@
     "postgres": ">=13.9"
   },
   "mikro-orm": {
+    "useTsNode": true,
     "configPaths": [
-      "./server/config/mikro-orm.config.ts",
-      "./dist/mikro-orm.config.js"
+      "server/config/mikro-orm.config.ts",
+      "server/dist/mikro-orm.config.js"
     ]
   }
 }

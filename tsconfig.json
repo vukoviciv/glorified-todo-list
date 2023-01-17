@@ -8,6 +8,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "moduleResolution": "Node",
-    "rootDir": "./"
-  }
+    "outDir": "server/dist"
+  },
+  "include": ["server/**/*"]
 }
