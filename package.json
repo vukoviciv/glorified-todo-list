@@ -2,10 +2,9 @@
   "name": "glorified-todo-list",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "client": "vite serve client",
-    "server": "nodemon -r dotenv/config server/app.js",
+    "server": "nodemon -r dotenv/config server/app.ts",
     "build": "vite build",
     "preview": "vite preview"
   },
@@ -19,6 +18,7 @@
     "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",
     "primevue": "^3.21.0",
+    "reflect-metadata": "^0.1.13",
     "vue": "^3.2.45"
   },
   "devDependencies": {
@@ -27,6 +27,7 @@
     "@extensionengine/eslint-config": "^3.0.1",
     "@faker-js/faker": "^7.6.0",
     "@mikro-orm/cli": "^5.6.7",
+    "@tsconfig/node16": "^1.0.3",
     "@typescript-eslint/eslint-plugin": "^5.48.1",
     "@typescript-eslint/parser": "^5.48.1",
     "@vitejs/plugin-vue": "^4.0.0",
@@ -40,6 +41,7 @@
     "eslint-plugin-vue": "^9.8.0",
     "nodemon": "^2.0.20",
     "sass": "^1.57.1",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^4.9.4",
     "vite": "^4.0.0"
   },
@@ -47,5 +49,11 @@
     "node": ">=19.0.0",
     "npm": ">=9.3.0",
     "postgres": ">=13.9"
+  },
+  "mikro-orm": {
+    "configPaths": [
+      "./server/config/mikro-orm.config.ts",
+      "./dist/mikro-orm.config.js"
+    ]
   }
 }
