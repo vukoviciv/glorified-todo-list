@@ -1,11 +1,11 @@
-import { Author, Book } from './../src/database/entities';
+import { Account, Task, User } from './../src/database/entities';
 import { CustomMigrationGenerator } from './../src/database/utils/migrationGenerator';
 import { envs } from './envs';
 import { getMigrationFileName } from '../src/database/utils/migrationFileName';
 import { Options } from '@mikro-orm/core';
 
 const options: Options = {
-  entities: [Author, Book],
+  entities: [Account, Task, User], // cleanup
   type: 'postgresql',
   dbName: 'my-todo-list',
   debug: true,
