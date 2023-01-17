@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { Author, Book } from './entities';
 import { EntityManager, EntityRepository, MikroORM } from '@mikro-orm/core';
 
