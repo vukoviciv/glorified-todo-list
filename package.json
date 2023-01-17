@@ -5,6 +5,9 @@
   "scripts": {
     "client": "vite serve client",
     "server": "nodemon -r dotenv/config server/app.ts",
+    "db:migrate": "mikro-orm migration:up",
+    "db:migrate:undo": "mikro-orm migration:down",
+    "db:migrate:undo:all": "mikro-orm migration:down --to 0",
     "db:migration:create": "npx mikro-orm migration:create --blank",
     "build": "vite build",
     "preview": "vite preview"
