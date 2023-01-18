@@ -9,8 +9,7 @@
         @input="$emit('update:task', { isDone: $event, task: item })"
         :input-id="item.id"
         :input-props="inputProps"
-        :binary="true"
-        class="checkbox-wrapper" />
+        :binary="true" />
       <div class="ml-3">
         <label :for="item.id">{{ item.name }}</label>
         <p

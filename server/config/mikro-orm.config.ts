@@ -5,7 +5,7 @@ import { getMigrationFileName } from '../src/database/utils/migrationFileName';
 import { Options } from '@mikro-orm/core';
 
 const options: Options = {
-  entities: [Account, Task, User], // cleanup
+  entities: [Account, Task, User], // TODO: cleanup
   type: 'postgresql',
   dbName: 'my-todo-list',
   debug: true,

@@ -1,13 +1,12 @@
+/* eslint-disable no-unused-vars */
 import { Migration } from '@mikro-orm/migrations';
-
-const TABLE_NAME = 'task';
 
 enum TaskPriority {
   HIGH = 'HIGH',
   MEDIUM = 'MEDIUM',
   LOW = 'LOW'
 }
-
+const TABLE_NAME = 'task';
 const priorities = Object.values(TaskPriority);
 
 export class Migration20230118073336 extends Migration {
