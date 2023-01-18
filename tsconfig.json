@@ -10,6 +10,5 @@
     "moduleResolution": "Node",
     "outDir": "server/dist",
     "allowJs": true
-  },
-  "include": ["server/**/*"]
+  }
 }

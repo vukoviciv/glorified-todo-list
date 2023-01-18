@@ -1,6 +1,6 @@
 <template>
-  <div class="flex align-items-center">
-    <i :class="`${config.icon} ${config.className} mr-3`"></i>
+  <div class="task-item flex align-items-center">
+    <TdIcon :icon="config.icon" :class="`mr-3 ${config.className}`" />
     <div
       class="flex flex-grow-1 p-3"
       :class="!item.done ? config.className : 'grey'">
@@ -28,6 +28,7 @@ import Checkbox from 'primevue/checkbox';
 import { PrimeIcons } from 'primevue/api';
 import { priority } from '../../../config/task';
 import { ref } from 'vue';
+import TdIcon from './../common/TdIcon.vue';
 
 const { HIGH, MEDIUM, LOW } = priority;
 
@@ -57,33 +58,35 @@ const inputProps = { 'aria-describedby': 'task-description' };
 const config = priorityConfig[props.item.priority];
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @mixin iconStyle($color) {
   background: transparent;
   color: var($color);
   font-size: 1.3rem;
 }
-.red {
-  background: var(--red-100);
-  &.pi {
-    @include iconStyle(--red-500);
-  }
-}
-.yellow {
-  background: var(--yellow-100);
 
-  &.pi {
-    @include iconStyle(--yellow-500);
+.task-item {
+  .red {
+    background: var(--red-100);
+    &.pi {
+      @include iconStyle(--red-500);
+    }
   }
-}
-.green {
-  background: var(--green-100);
-  &.pi {
-    @include iconStyle(--green-500);
-  }
-}
+  .yellow {
+    background: var(--yellow-100);
 
-.grey {
-  background: var(--gray-100);
+    &.pi {
+      @include iconStyle(--yellow-500);
+    }
+  }
+  .green {
+    background: var(--green-100);
+    &.pi {
+      @include iconStyle(--green-500);
+    }
+  }
+  .grey {
+    background: var(--gray-100);
+  }
 }
 </style>
