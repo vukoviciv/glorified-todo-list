@@ -6,7 +6,7 @@
       :class="!item.done ? config.className : 'grey'">
       <Checkbox
         v-model="isDone"
-        @input="$emit('update:task', $event, item)"
+        @input="$emit('update:task', { isDone: $event, task: item })"
         :input-id="item.id"
         :input-props="inputProps"
         :binary="true" />

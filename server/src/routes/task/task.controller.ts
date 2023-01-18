@@ -1,18 +1,28 @@
+import { Request, Response } from 'express';
 import { faker } from '@faker-js/faker';
-import { priority } from '../../../config/task.js';
 
-function list(_, res) {
+interface Priority {
+  HIGH: string,
+  MEDIUM: string,
+  LOW: string
+}
+
+const priority: Priority = {
+  HIGH: 'high',
+  MEDIUM: 'medium',
+  LOW: 'low'
+};
+
+function list(_: Request, res: Response) {
   const tasks = generateItems();
   return res.json(tasks);
 }
 
-export default {
-  list
-};
+export { list };
 
 function generateItems() {
   const items = [];
-  const priorities = priority.list;
+  const priorities = Object.values(priority);
 
   for (let i = 0; i < 20; i++) {
     const priorityIndex = i % 3;
@@ -28,5 +38,6 @@ function generateItems() {
     };
     items.push(item);
   }
+
   return items;
 }

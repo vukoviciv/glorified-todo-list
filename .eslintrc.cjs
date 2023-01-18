@@ -1,6 +1,7 @@
 module.exports = {
   root: true,
-  extends: '@extensionengine',
+  plugins: ['@typescript-eslint'],
+  extends: ['@extensionengine', 'plugin:@typescript-eslint/recommended'],
   rules: {
     'vue/component-definition-name-casing': [2, 'kebab-case'],
     'no-control-regex': 0,
@@ -12,6 +13,7 @@ module.exports = {
       { ignore: ['headerClass'] }
     ]
   },
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     requireConfigFile: false,
     ecmaVersion: 'latest',
