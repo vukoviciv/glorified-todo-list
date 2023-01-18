@@ -27,7 +27,7 @@ export class Task extends BaseEntity {
     deadline: DateType;
 
   @Enum(() => TaskPriority)
-    priority!: TaskPriority.MEDIUM; // is this default value for enums?
+    priority!: TaskPriority.MEDIUM;
 
   constructor(name: string, description: string, account: Account, done: boolean,
     deadline: DateType) {

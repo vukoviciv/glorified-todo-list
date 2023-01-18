@@ -4,7 +4,7 @@ import { EntityManager, EntityRepository, MikroORM } from '@mikro-orm/core';
 export const DI = {} as {
   orm: MikroORM,
   em: EntityManager,
-  accountRepository: EntityRepository<Account>, // cleanup (automatize)
+  accountRepository: EntityRepository<Account>, // TODO: cleanup (automatize)
   taskRepository: EntityRepository<Task>,
   userRepository: EntityRepository<User>
 };
