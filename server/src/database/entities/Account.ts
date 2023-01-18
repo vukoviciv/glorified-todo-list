@@ -8,11 +8,10 @@ export class Account extends BaseEntity {
     name: string;
 
   @ManyToOne({ type: 'User', primary: true })
-    user: User;
+    user?: User;
 
-  constructor(name: string, user: User) {
+  constructor(name: string) {
     super();
     this.name = name;
-    this.user = user;
   }
 }

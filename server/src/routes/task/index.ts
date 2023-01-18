@@ -1,9 +1,11 @@
-import { list } from './task.controller';
+import { create, list } from './task.controller';
 import { Router } from 'express';
 
 const router = Router();
 
-router.get('/', list);
+router
+  .get('/', list)
+  .get('/test', create);
 
 export default {
   path: '/task',

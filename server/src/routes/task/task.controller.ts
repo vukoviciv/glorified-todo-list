@@ -1,4 +1,6 @@
+import { Account, Task, User } from '../../database/entities';
 import { Request, Response } from 'express';
+import { DI } from '../../database/index';
 import { faker } from '@faker-js/faker';
 
 interface Priority {
@@ -18,7 +20,18 @@ function list(_: Request, res: Response) {
   return res.json(tasks);
 }
 
-export { list };
+async function create(req: Request, res: Response) {
+  const user = await new User('Ivana', 'Simic');
+  console.log(user);
+  const account = await new Account('test account');
+  console.log(account);
+
+  DI.em.persistAndFlush(account);
+  DI.em.persistAndFlush(user);
+  res.json(user);
+}
+
+export { create, list };
 
 function generateItems() {
   const items = [];
