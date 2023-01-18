@@ -1,7 +1,6 @@
 module.exports = {
   root: true,
-  plugins: ['@typescript-eslint'],
-  extends: ['@extensionengine', 'plugin:@typescript-eslint/recommended'],
+  extends: ['@extensionengine'],
   rules: {
     'vue/component-definition-name-casing': [2, 'kebab-case'],
     'no-control-regex': 0,
@@ -13,10 +12,18 @@ module.exports = {
       { ignore: ['headerClass'] }
     ]
   },
-  parser: '@typescript-eslint/parser',
   parserOptions: {
     requireConfigFile: false,
     ecmaVersion: 'latest',
     sourceType: 'module'
-  }
+  },
+  overrides: [{
+    files: ['**/*.ts'],
+    plugins: ['@typescript-eslint'],
+    extends: ['plugin:@typescript-eslint/recommended'],
+    parser: '@typescript-eslint/parser',
+    parserOptions: {
+      project: ['./tsconfig.json']
+    }
+  }]
 };
