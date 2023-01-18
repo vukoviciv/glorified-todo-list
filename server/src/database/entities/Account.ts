@@ -7,7 +7,7 @@ export class Account extends BaseEntity {
   @Property()
     name: string;
 
-  @ManyToOne({ type: 'User' })
+  @ManyToOne({ type: 'User', primary: true })
     user: User;
 
   constructor(name: string, user: User) {
