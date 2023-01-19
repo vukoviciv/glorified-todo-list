@@ -3,22 +3,31 @@ import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core';
 import { Account } from '.';
 import { BaseEntity } from './BaseEntity';
 
-export enum TaskPriority {
+enum TaskPriority {
   HIGH = 'HIGH',
   MEDIUM = 'MEDIUM',
   LOW = 'LOW'
 }
 
+type ConstructorProps = {
+  name: string,
+  description: string,
+  account: Account,
+  done: boolean,
+  deadline: Date,
+  priority: TaskPriority
+}
+
 @Entity()
 export class Task extends BaseEntity {
   @Property()
-    name: string;
+    name!: string;
 
   @Property()
-    description: string;
+    description!: string;
 
   @ManyToOne()
-    account: Account;
+    account!: Account;
 
   @Property()
     done = false;
@@ -29,10 +38,8 @@ export class Task extends BaseEntity {
   @Enum(() => TaskPriority)
     priority = TaskPriority.MEDIUM;
 
-  constructor(name: string, description: string, account: Account) {
+  constructor(props: ConstructorProps) {
     super();
-    this.name = name;
-    this.description = description;
-    this.account = account;
+    Object.assign(this, props);
   }
 }
