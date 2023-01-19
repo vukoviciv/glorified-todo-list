@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core';
-import { Account } from './index';
+import { Account } from '.';
 import { BaseEntity } from './BaseEntity';
 
 export enum TaskPriority {

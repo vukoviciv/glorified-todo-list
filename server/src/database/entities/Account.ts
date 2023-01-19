@@ -1,5 +1,5 @@
 import { Collection, Entity, ManyToOne, OneToMany, Property } from '@mikro-orm/core';
-import { Task, User } from './index';
+import { Task, User } from '.';
 import { BaseEntity } from './BaseEntity';
 
 @Entity()
