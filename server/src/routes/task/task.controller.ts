@@ -1,4 +1,4 @@
-import { Account, Task, User } from '../../database/entities';
+import { Account, Task, TaskPriority, User } from '../../database/entities';
 import { Request, Response } from 'express';
 import { DI } from '../../database/index';
 import { faker } from '@faker-js/faker';
@@ -16,12 +16,11 @@ const priority: Priority = {
 };
 
 async function list(_req: Request, res: Response) {
-  const account = await DI.em.findOne(Account, 1);
+  const activeAccount = await DI.em.findOne(Account, 1); // TODO: implement localStorage
   let tasks = await DI.em.find(Task, {});
-  console.log(tasks);
-  if (!tasks.length && account) {
-    await createTasks(account);
-    DI.em.persist(account);
+  if (!tasks.length && activeAccount) {
+    await createTasks(activeAccount);
+    DI.em.persist(activeAccount);
 
     tasks = await DI.em.find(Task, {});
   }
@@ -30,18 +29,20 @@ async function list(_req: Request, res: Response) {
 
 async function create(_req: Request, res: Response) {
   const user = await new User('Ivana', 'Simic');
-  const account = await new Account('test account', user);
-  const taskTuple: [string, string, Account] = [
-    'Task name',
-    'Task description lorem ipsum',
-    account
-  ];
-  const task = await new Task(...taskTuple);
-
-  DI.em.persistAndFlush(account);
+  const activeAccount = await new Account('test account', user);
+  const item = {
+    name: faker.music.songName(),
+    description: faker.commerce.productDescription(),
+    done: faker.datatype.boolean(),
+    deadline: faker.date.future(),
+    priority: TaskPriority.MEDIUM,
+    account: activeAccount
+  };
+  const task = await new Task(item);
+  DI.em.persistAndFlush(activeAccount);
   DI.em.persistAndFlush(user);
   DI.em.persistAndFlush(task);
-  res.json({ user, account, task });
+  res.json({ user, activeAccount });
 }
 
 export { create, list };
@@ -56,14 +57,10 @@ async function createTasks(account: Account) {
       description: faker.commerce.productDescription(),
       done: faker.datatype.boolean(),
       deadline: faker.date.future(),
-      priority: priorities.at(priorityIndex)
-    };
-    const taskTuple: [string, string, Account] = [
-      item.name,
-      item.description,
+      priority: priorities.at(priorityIndex),
       account
-    ];
-    const task = await new Task(...taskTuple);
+    };
+    const task = await new Task(item);
     task.deadline = item.deadline;
     task.done = item.done;
 
