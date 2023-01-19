@@ -22,13 +22,18 @@ function list(_: Request, res: Response) {
 
 async function create(req: Request, res: Response) {
   const user = await new User('Ivana', 'Simic');
-  // console.log(user);
   const account = await new Account('test account', user);
-  // console.log(account);
+  const taskTuple: [string, string, Account] = [
+    'Task name',
+    'Task description lorem ipsum',
+    account
+  ];
+  const task = await new Task(...taskTuple);
 
   DI.em.persistAndFlush(account);
   DI.em.persistAndFlush(user);
-  res.json(user);
+  DI.em.persistAndFlush(task);
+  res.json({ user, account, task });
 }
 
 export { create, list };

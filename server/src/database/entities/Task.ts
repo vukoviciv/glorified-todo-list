@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { DateType, Entity, Enum, ManyToOne, Property } from '@mikro-orm/core';
+import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core';
 import { Account } from './index';
 import { BaseEntity } from './BaseEntity';
 
@@ -17,25 +17,22 @@ export class Task extends BaseEntity {
   @Property()
     description: string;
 
-  @ManyToOne({ type: 'Account' })
+  @ManyToOne()
     account: Account;
 
-  @Property({ default: false })
-    done?: boolean;
+  @Property()
+    done = false;
 
-  @Property({ type: DateType })
-    deadline: DateType;
+  @Property({ nullable: true })
+    deadline?: Date;
 
   @Enum(() => TaskPriority)
-    priority!: TaskPriority.MEDIUM;
+    priority = TaskPriority.MEDIUM;
 
-  constructor(name: string, description: string, account: Account, done: boolean,
-    deadline: DateType) {
+  constructor(name: string, description: string, account: Account) {
     super();
     this.name = name;
     this.description = description;
     this.account = account;
-    this.done = done;
-    this.deadline = deadline;
   }
 }

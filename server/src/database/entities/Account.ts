@@ -1,6 +1,6 @@
-import { Entity, ManyToOne, Property } from '@mikro-orm/core';
+import { Collection, Entity, ManyToOne, OneToMany, Property } from '@mikro-orm/core';
+import { Task, User } from './index';
 import { BaseEntity } from './BaseEntity';
-import { User } from './index';
 
 @Entity()
 export class Account extends BaseEntity {
@@ -9,6 +9,9 @@ export class Account extends BaseEntity {
 
   @ManyToOne(() => User)
     user: User;
+
+  @OneToMany(() => Task, t => t.account)
+    tasks = new Collection<Task>(this);
 
   constructor(name: string, user: User) {
     super();
