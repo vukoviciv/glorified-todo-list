@@ -10,17 +10,25 @@ interface Priority {
 }
 
 const priority: Priority = {
-  HIGH: 'high',
-  MEDIUM: 'medium',
-  LOW: 'low'
+  HIGH: 'HIGH',
+  MEDIUM: 'MEDIUM',
+  LOW: 'LOW'
 };
 
-function list(_: Request, res: Response) {
-  const tasks = generateItems();
-  return res.json(tasks);
+async function list(_req: Request, res: Response) {
+  const account = await DI.em.findOne(Account, 1);
+  let tasks = await DI.em.find(Task, {});
+  console.log(tasks);
+  if (!tasks.length && account) {
+    await createTasks(account);
+    DI.em.persist(account);
+
+    tasks = await DI.em.find(Task, {});
+  }
+  res.json(tasks);
 }
 
-async function create(req: Request, res: Response) {
+async function create(_req: Request, res: Response) {
   const user = await new User('Ivana', 'Simic');
   const account = await new Account('test account', user);
   const taskTuple: [string, string, Account] = [
@@ -38,24 +46,27 @@ async function create(req: Request, res: Response) {
 
 export { create, list };
 
-function generateItems() {
-  const items = [];
+async function createTasks(account: Account) {
   const priorities = Object.values(priority);
 
   for (let i = 0; i < 20; i++) {
     const priorityIndex = i % 3;
     const item = {
-      id: faker.datatype.uuid(),
       name: faker.music.songName(),
       description: faker.commerce.productDescription(),
       done: faker.datatype.boolean(),
       deadline: faker.date.future(),
-      priority: priorities.at(priorityIndex),
-      repeat: null, // TODO
-      createdAt: faker.date.recent()
+      priority: priorities.at(priorityIndex)
     };
-    items.push(item);
-  }
+    const taskTuple: [string, string, Account] = [
+      item.name,
+      item.description,
+      account
+    ];
+    const task = await new Task(...taskTuple);
+    task.deadline = item.deadline;
+    task.done = item.done;
 
-  return items;
+    DI.em.persistAndFlush(task);
+  }
 }

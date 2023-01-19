@@ -1,7 +1,7 @@
 export const priority = {
-  HIGH: 'high',
-  MEDIUM: 'medium',
-  LOW: 'low',
+  HIGH: 'HIGH',
+  MEDIUM: 'MEDIUM',
+  LOW: 'LOW',
   get list() {
     return [
       this.HIGH,

@@ -7,7 +7,7 @@
       <Checkbox
         v-model="isDone"
         @input="$emit('update:task', { isDone: $event, task: item })"
-        :input-id="item.id"
+        :input-id="item.id.toString()"
         :input-props="inputProps"
         :binary="true" />
       <div class="ml-3">
