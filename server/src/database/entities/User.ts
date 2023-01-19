@@ -1,4 +1,4 @@
-import { Cascade, Collection, Entity, OneToMany, Property } from '@mikro-orm/core';
+import { Collection, Entity, OneToMany, Property } from '@mikro-orm/core';
 import { Account } from './index';
 import { BaseEntity } from './BaseEntity';
 
@@ -10,7 +10,7 @@ export class User extends BaseEntity {
   @Property()
     lastName: string;
 
-  @OneToMany(() => Account, account => account.user, { cascade: [Cascade.ALL] })
+  @OneToMany(() => Account, a => a.user)
     accounts = new Collection<Account>(this);
 
   constructor(firstName: string, lastName: string) {

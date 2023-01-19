@@ -22,9 +22,9 @@ function list(_: Request, res: Response) {
 
 async function create(req: Request, res: Response) {
   const user = await new User('Ivana', 'Simic');
-  console.log(user);
-  const account = await new Account('test account');
-  console.log(account);
+  // console.log(user);
+  const account = await new Account('test account', user);
+  // console.log(account);
 
   DI.em.persistAndFlush(account);
   DI.em.persistAndFlush(user);
