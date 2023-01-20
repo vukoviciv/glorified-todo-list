@@ -2,20 +2,24 @@ import { Collection, Entity, ManyToOne, OneToMany, Property } from '@mikro-orm/c
 import { Task, User } from '.';
 import { BaseEntity } from './BaseEntity';
 
+type ConstructorProps = {
+  name: string,
+  user: User,
+}
+
 @Entity()
 export class Account extends BaseEntity {
   @Property()
-    name: string;
+    name!: string;
 
   @ManyToOne(() => User)
-    user: User;
+    user!: User;
 
   @OneToMany(() => Task, t => t.account)
     tasks = new Collection<Task>(this);
 
-  constructor(name: string, user: User) {
+  constructor(props: ConstructorProps) {
     super();
-    this.name = name;
-    this.user = user;
+    Object.assign(this, props);
   }
 }
