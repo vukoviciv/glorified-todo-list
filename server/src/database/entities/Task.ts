@@ -3,7 +3,7 @@ import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core';
 import { Account } from '.';
 import { BaseEntity } from './BaseEntity';
 
-enum TaskPriority {
+export enum TaskPriority {
   HIGH = 'HIGH',
   MEDIUM = 'MEDIUM',
   LOW = 'LOW'
@@ -11,11 +11,11 @@ enum TaskPriority {
 
 type ConstructorProps = {
   name: string,
-  description: string,
+  description?: string,
   account: Account,
-  done: boolean,
-  deadline: Date,
-  priority: TaskPriority
+  done?: boolean,
+  deadline?: Date,
+  priority?: string // TODO: fix this, should be enum
 }
 
 @Entity()
@@ -24,7 +24,7 @@ export class Task extends BaseEntity {
     name!: string;
 
   @Property()
-    description!: string;
+    description?: string;
 
   @ManyToOne()
     account!: Account;
