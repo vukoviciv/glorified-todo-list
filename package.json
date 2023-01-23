@@ -24,6 +24,7 @@
     "primeicons": "^6.0.1",
     "primevue": "^3.21.0",
     "readline-sync": "^1.4.10",
+    "utility-types": "^3.10.0",
     "vue": "^3.2.45"
   },
   "devDependencies": {

@@ -1,13 +1,9 @@
-/* eslint-disable no-unused-vars */
 import { Migration } from '@mikro-orm/migrations';
 
-enum TaskPriority {
-  HIGH = 'HIGH',
-  MEDIUM = 'MEDIUM',
-  LOW = 'LOW'
-}
 const TABLE_NAME = 'task';
-const priorities = Object.values(TaskPriority);
+const PRIORITIES = ['HIGH', 'MEDIUM', 'LOW'];
+const DEFAULT_PRIORITY = 'MEDIUM';
+const DEFAULT_DONE = false;
 
 export class Migration20230118073336 extends Migration {
   async up(): Promise<void> {
@@ -21,9 +17,9 @@ export class Migration20230118073336 extends Migration {
         table.foreign('account_id')
           .references('id')
           .inTable('account');
-        table.boolean('done').defaultTo(false);
+        table.boolean('done').defaultTo(DEFAULT_DONE);
         table.dateTime('deadline');
-        table.enum('priority', priorities).defaultTo(TaskPriority.MEDIUM);
+        table.enum('priority', PRIORITIES).defaultTo(DEFAULT_PRIORITY);
         table.timestamps();
       }).toQuery()
     );

@@ -1,12 +1,15 @@
 import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core';
 import { Account } from '.';
 import { BaseEntity } from './BaseEntity';
+import { ValuesType } from 'utility-types';
 
-export enum TaskPriority {
-  HIGH = 'HIGH',
-  MEDIUM = 'MEDIUM',
-  LOW = 'LOW'
-}
+export const taskPriority = {
+  HIGH: 'HIGH',
+  MEDIUM: 'MEDIUM',
+  LOW: 'LOW'
+} as const;
+
+type TaskPriority = ValuesType<typeof taskPriority>;
 
 type OptionalProps = {
   description?: string,
@@ -37,8 +40,8 @@ export class Task extends BaseEntity {
   @Property({ nullable: true })
     deadline?: Date;
 
-  @Enum(() => TaskPriority)
-    priority?: TaskPriority = TaskPriority.MEDIUM;
+  @Enum()
+    priority?: TaskPriority;
 
   constructor(props: Props, optionalProps: OptionalProps = {}) {
     super();

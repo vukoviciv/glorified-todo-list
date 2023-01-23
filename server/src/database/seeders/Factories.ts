@@ -1,4 +1,4 @@
-import { Account, Task, TaskPriority, User } from '../entities/index';
+import { Account, Task, taskPriority, User } from '../entities/index';
 import { Factory, Faker } from '@mikro-orm/seeder';
 
 export class TaskFactory extends Factory<Task> {
@@ -10,8 +10,14 @@ export class TaskFactory extends Factory<Task> {
       description: faker.commerce.productDescription(),
       done: faker.datatype.boolean(),
       deadline: faker.date.future(),
-      priority: TaskPriority.MEDIUM
+      priority: this.getRandomPriority()
     };
+  }
+
+  getRandomPriority() {
+    const priorities = Object.values(taskPriority);
+    const randomIndex = Math.floor(Math.random() * priorities.length);
+    return priorities[randomIndex];
   }
 }
 
