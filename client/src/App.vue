@@ -7,7 +7,7 @@
         <TasksTabView />
       </template>
       <template #fallback>
-        <div>loading...</div>
+        <TasksSkeleton />
       </template>
     </Suspense>
   </main>
@@ -15,7 +15,8 @@
 
 <script setup>
 import CreateTaskDialog from '../components/CreateTaskDialog.vue';
-import MainHeader from './../components/MainHeader.vue';
+import MainHeader from '../components/MainHeader.vue';
+import TasksSkeleton from '../components/TasksSkeleton.vue';
 import TasksTabView from '../components/Task/TasksTabView.vue';
 </script>
 
