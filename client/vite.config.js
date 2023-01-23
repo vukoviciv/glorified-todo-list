@@ -17,8 +17,8 @@ export default defineConfig(({ mode }) => {
     plugins: [vue()],
     resolve: {
       alias: [{
-        find: '@/api/',
-        replacement: `${path.resolve(__dirname, './src/api/')}/`
+        find: '@/',
+        replacement: `${path.resolve(__dirname, './')}/`
       }]
     },
     server: {
