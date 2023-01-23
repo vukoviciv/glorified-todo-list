@@ -26,7 +26,7 @@
 <script setup>
 import Checkbox from 'primevue/checkbox';
 import { PrimeIcons } from 'primevue/api';
-import { priority } from '../../../config/task';
+import { priority } from '../../config/task';
 import { ref } from 'vue';
 import TdIcon from './../common/TdIcon.vue';
 
