@@ -1,45 +1,55 @@
-/* eslint-disable no-unused-vars */
 import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core';
 import { Account } from '.';
 import { BaseEntity } from './BaseEntity';
+import { ValuesType } from 'utility-types';
 
-export enum TaskPriority {
-  HIGH = 'HIGH',
-  MEDIUM = 'MEDIUM',
-  LOW = 'LOW'
+export const taskPriority = {
+  HIGH: 'HIGH',
+  MEDIUM: 'MEDIUM',
+  LOW: 'LOW'
+} as const;
+
+type TaskPriority = ValuesType<typeof taskPriority>;
+
+type OptionalProps = {
+  description?: string,
+  deadline?: Date,
+  priority?: TaskPriority,
+  done?: boolean
 }
 
-type ConstructorProps = {
+type Props = {
   name: string,
-  description?: string,
-  account: Account,
-  done?: boolean,
-  deadline?: Date,
-  priority?: string // TODO: fix this, should be enum
+  account: Account
 }
 
 @Entity()
 export class Task extends BaseEntity {
   @Property()
-    name!: string;
+    name: string;
 
-  @Property()
+  @Property({ nullable: true })
     description?: string;
 
   @ManyToOne()
-    account!: Account;
+    account: Account;
 
   @Property()
-    done = false;
+    done?: boolean = false;
 
   @Property({ nullable: true })
     deadline?: Date;
 
-  @Enum(() => TaskPriority)
-    priority = TaskPriority.MEDIUM;
+  @Enum()
+    priority?: TaskPriority;
 
-  constructor(props: ConstructorProps) {
+  constructor(props: Props, optionalProps: OptionalProps = {}) {
     super();
-    Object.assign(this, props);
+    const { name, account } = props;
+
+    this.name = name;
+    this.account = account;
+
+    if (optionalProps) Object.assign(this, optionalProps);
   }
 }
