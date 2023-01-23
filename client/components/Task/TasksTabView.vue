@@ -16,7 +16,7 @@
 import { ref, shallowRef } from 'vue';
 import TabPanel from 'primevue/TabPanel';
 import TabView from 'primevue/TabView';
-import tasksApi from '@/api/tasks';
+import tasksApi from '@/src/api/tasks';
 import TodayList from './TodayList.vue';
 
 export default {
