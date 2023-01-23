@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { Entity, Enum, ManyToOne, Property } from '@mikro-orm/core';
 import { Account } from '.';
 import { BaseEntity } from './BaseEntity';
@@ -9,37 +8,52 @@ export enum TaskPriority {
   LOW = 'LOW'
 }
 
+type OptionalProps = {
+  description?: string,
+  deadline?: Date,
+  priority?: TaskPriority
+}
+
 type ConstructorProps = {
   name: string,
-  description?: string,
   account: Account,
-  done?: boolean,
-  deadline?: Date,
-  priority?: string // TODO: fix this, should be enum
+  done: boolean
 }
 
 @Entity()
 export class Task extends BaseEntity {
   @Property()
-    name!: string;
+    name: string;
 
   @Property()
     description?: string;
 
   @ManyToOne()
-    account!: Account;
+    account: Account;
+
+  @Property({ default: false })
+    done?: boolean;
 
   @Property()
-    done = false;
-
-  @Property({ nullable: true })
     deadline?: Date;
 
-  @Enum(() => TaskPriority)
-    priority = TaskPriority.MEDIUM;
+  @Enum({ items: () => TaskPriority, default: TaskPriority.MEDIUM })
+    priority?: TaskPriority;
 
-  constructor(props: ConstructorProps) {
+  constructor(props: ConstructorProps, optionalProps: OptionalProps = {}) {
     super();
-    Object.assign(this, props);
+    const { name, account, done } = props;
+
+    this.name = name;
+    this.account = account;
+    this.done = done;
+
+    if (optionalProps) {
+      const { description, deadline, priority } = optionalProps;
+
+      this.description = description;
+      this.deadline = deadline;
+      this.priority = priority;
+    }
   }
 }
