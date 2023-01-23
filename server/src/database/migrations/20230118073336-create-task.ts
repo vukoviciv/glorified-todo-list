@@ -21,9 +21,9 @@ export class Migration20230118073336 extends Migration {
         table.foreign('account_id')
           .references('id')
           .inTable('account');
-        table.boolean('done');
+        table.boolean('done').defaultTo(false);
         table.dateTime('deadline');
-        table.enum('priority', priorities);
+        table.enum('priority', priorities).defaultTo(TaskPriority.MEDIUM);
         table.timestamps();
       }).toQuery()
     );

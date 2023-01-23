@@ -4,11 +4,10 @@ import { DI } from '../../database/index';
 
 async function list(_req: Request, res: Response) {
   const activeAccount = await DI.em.findOne(Account, 1); // TODO: implement localStorage
-  let tasks = await DI.em.find(Task, {});
+  const tasks = await DI.em.find(Task, {});
   if (!tasks.length || !activeAccount) return res.send('No items');
 
-  tasks = await DI.em.find(Task, {});
-  res.json(tasks);
+  return res.json(tasks);
 }
 
 export { list };

@@ -1,4 +1,4 @@
-import { Account, Task, User } from '../entities/index';
+import { Account, Task, TaskPriority, User } from '../entities/index';
 import { Factory, Faker } from '@mikro-orm/seeder';
 
 export class TaskFactory extends Factory<Task> {
@@ -9,7 +9,8 @@ export class TaskFactory extends Factory<Task> {
       name: faker.music.songName(),
       description: faker.commerce.productDescription(),
       done: faker.datatype.boolean(),
-      deadline: faker.date.future()
+      deadline: faker.date.future(),
+      priority: TaskPriority.MEDIUM
     };
   }
 }

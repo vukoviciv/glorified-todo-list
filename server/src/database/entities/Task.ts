@@ -11,13 +11,13 @@ export enum TaskPriority {
 type OptionalProps = {
   description?: string,
   deadline?: Date,
-  priority?: TaskPriority
+  priority?: TaskPriority,
+  done?: boolean
 }
 
-type ConstructorProps = {
+type Props = {
   name: string,
-  account: Account,
-  done: boolean
+  account: Account
 }
 
 @Entity()
@@ -25,35 +25,28 @@ export class Task extends BaseEntity {
   @Property()
     name: string;
 
-  @Property()
+  @Property({ nullable: true })
     description?: string;
 
   @ManyToOne()
     account: Account;
 
-  @Property({ default: false })
-    done?: boolean;
-
   @Property()
+    done?: boolean = false;
+
+  @Property({ nullable: true })
     deadline?: Date;
 
-  @Enum({ items: () => TaskPriority, default: TaskPriority.MEDIUM })
-    priority?: TaskPriority;
+  @Enum(() => TaskPriority)
+    priority?: TaskPriority = TaskPriority.MEDIUM;
 
-  constructor(props: ConstructorProps, optionalProps: OptionalProps = {}) {
+  constructor(props: Props, optionalProps: OptionalProps = {}) {
     super();
-    const { name, account, done } = props;
+    const { name, account } = props;
 
     this.name = name;
     this.account = account;
-    this.done = done;
 
-    if (optionalProps) {
-      const { description, deadline, priority } = optionalProps;
-
-      this.description = description;
-      this.deadline = deadline;
-      this.priority = priority;
-    }
+    if (optionalProps) Object.assign(this, optionalProps);
   }
 }
