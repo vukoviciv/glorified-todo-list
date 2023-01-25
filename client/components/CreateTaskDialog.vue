@@ -20,8 +20,14 @@
           id="name"
           type="text"
           required="required"
+          :class="{ 'p-invalid': v$.name.$errors }"
           class="flex flex-grow-1" />
         <label for="name">Name</label>
+      </div>
+      <div v-for="error of v$.name.$errors" :key="error.$uid">
+        <div class="error-msg ml-1 mt-1" aria-live="polite">
+          Field {{ error.$property }} is required.
+        </div>
       </div>
       <div class="p-float-label mt-5 flex">
         <Textarea
@@ -29,7 +35,6 @@
           id="description"
           :auto-resize="true"
           rows="5"
-          required="required"
           class="flex flex-grow-1" />
         <label for="description">Description</label>
       </div>
@@ -67,8 +72,10 @@ import Dialog from 'primevue/Dialog';
 import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';
 import { ref } from 'vue';
+import { required } from '@vuelidate/validators';
 import taskApi from '@/src/api/tasks';
 import Textarea from 'primevue/textarea';
+import { useVuelidate } from '@vuelidate/core';
 
 const priorities = [
   { name: 'High', value: 'HIGH' },
@@ -83,10 +90,20 @@ const task = ref({
   description: '',
   priority: ''
 });
+const validationRules = {
+  name: { required }
+};
+const v$ = useVuelidate(validationRules, task);
 
 const open = () => { displayPosition.value = true; };
-const close = () => { displayPosition.value = false; };
-const create = () => {
+const close = () => {
+  displayPosition.value = false;
+  v$.value.$reset();
+};
+const create = async () => {
+  const isFormCorrect = await v$.value.$validate();
+  if (!isFormCorrect) return;
+
   createBtnIcon.value = 'pi pi-spin pi-spinner';
   taskApi.create(task.value).then(data => {
     createBtnIcon.value = DEFAULT_CREATE_BTN_ICON;
@@ -94,3 +111,9 @@ const create = () => {
   });
 };
 </script>
+
+<style lang="scss" scoped>
+.error-msg {
+  color: var(--red-500);
+}
+</style>
