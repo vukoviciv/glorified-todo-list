@@ -14,13 +14,7 @@
     header="Header"
     position="top">
     <p class="m-0">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-      cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
-      est laborum.
+      {{ task }}
     </p>
     <template #footer>
       <Button
@@ -29,7 +23,7 @@
         icon="pi pi-times"
         class="p-button-text" />
       <Button
-        @click="close()"
+        @click="create()"
         label="Create task"
         icon="pi pi-check"
         autofocus />
@@ -41,9 +35,21 @@
 import Button from 'primevue/Button';
 import Dialog from 'primevue/Dialog';
 import { ref } from 'vue';
+import taskApi from '@/src/api/tasks';
 
 const displayPosition = ref(false);
+const task = {
+  name: 'Test task from the modal',
+  description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut',
+  done: false,
+  priority: 'HIGH'
+};
 
 const open = () => { displayPosition.value = true; };
 const close = () => { displayPosition.value = false; };
+const create = () => {
+  taskApi.create(task).then(data => {
+    console.log({ data });
+  });
+};
 </script>

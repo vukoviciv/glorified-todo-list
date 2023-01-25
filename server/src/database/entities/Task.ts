@@ -11,16 +11,13 @@ export const taskPriority = {
 
 type TaskPriority = ValuesType<typeof taskPriority>;
 
-type OptionalProps = {
+type Props = {
+  name: string,
+  account: Account,
   description?: string,
   deadline?: Date,
   priority?: TaskPriority,
   done?: boolean
-}
-
-type Props = {
-  name: string,
-  account: Account
 }
 
 @Entity()
@@ -43,13 +40,12 @@ export class Task extends BaseEntity {
   @Enum()
     priority?: TaskPriority;
 
-  constructor(props: Props, optionalProps: OptionalProps = {}) {
+  constructor({ name, account, ...props }: Props) {
     super();
-    const { name, account } = props;
 
     this.name = name;
     this.account = account;
 
-    if (optionalProps) Object.assign(this, optionalProps);
+    if (props) Object.assign(this, props);
   }
 }

@@ -13,6 +13,7 @@ const app: Express = express();
 database.init()
   .then(() => {
     app
+      .use(express.json())
       .use(requestContextMiddleware)
       .use(apiPath, router);
     return app;

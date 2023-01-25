@@ -14,4 +14,16 @@ async function list({ query }: Request, res: Response) {
   return res.json(tasks);
 }
 
-export { list };
+async function create({ body }: Request, res: Response) {
+  const accounts = await DI.em.find(Account, {});
+  if (!accounts) return res.send('No accounts');
+
+  const activeAccount = accounts.pop();
+  const data = { account: activeAccount, ...body };
+  const task = new Task(data);
+  DI.em.persistAndFlush(task);
+
+  return res.json(task);
+}
+
+export { create, list };
