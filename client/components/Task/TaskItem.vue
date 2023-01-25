@@ -10,14 +10,17 @@
         :input-id="item.id.toString()"
         :input-props="inputProps"
         :binary="true" />
-      <div class="ml-3">
-        <label :for="item.id">{{ item.name }}</label>
-        <p
-          v-if="showDescription"
-          :id="`task-description-${item.id}`"
-          class="mt-2">
-          {{ item.description }}
-        </p>
+      <div class="ml-3 flex flex-grow-1">
+        <div>
+          <label :for="item.id">{{ item.name }}</label>
+          <p
+            v-if="showDescription"
+            :id="`task-description-${item.id}`"
+            class="mt-2">
+            {{ item.description }}
+          </p>
+        </div>
+        <p class="ml-auto flex">{{ processDeadline(item.deadline) }}</p>
       </div>
     </div>
   </div>
@@ -56,6 +59,11 @@ const props = defineProps({
 const isDone = ref(props.done);
 const inputProps = { 'aria-describedby': 'task-description' };
 const config = priorityConfig[props.item.priority];
+
+const processDeadline = deadline => {
+  const date = new Date(deadline);
+  return date.toLocaleDateString();
+};
 </script>
 
 <style lang="scss">

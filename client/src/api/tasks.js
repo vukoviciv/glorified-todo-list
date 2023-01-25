@@ -5,8 +5,8 @@ const url = {
   root: '/task'
 };
 
-function fetch() {
-  return request.get(url.root).then(extractData);
+function fetch(params = {}) {
+  return request.get(url.root, { params }).then(extractData);
 }
 
 export default {
