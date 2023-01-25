@@ -17,6 +17,8 @@
     "@mikro-orm/migrations": "^5.6.7",
     "@mikro-orm/postgresql": "^5.6.7",
     "@mikro-orm/seeder": "^5.6.7",
+    "@vuelidate/core": "^2.0.0",
+    "@vuelidate/validators": "^2.0.0",
     "axios": "^1.2.2",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
