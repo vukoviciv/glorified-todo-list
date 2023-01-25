@@ -1,12 +1,18 @@
 <template>
   <div>
-    <TaskFilters @filters:update="filtersUpdate" :filters="filters" />
+    <TaskFilters
+      @options:update="optionsUpdate"
+      :order-by-values="orderByValues"
+      :show-description="showDescription"
+      :show-created-at="showCreatedAt" />
     <TaskSkeleton v-if="isFetching" />
     <TaskList
       v-else
       @update:task="toggleTask"
       :is-fetching="isFetching"
       :items="items"
+      :show-description="showDescription"
+      :show-created-at="showCreatedAt"
       aria-label="Pending tasks for today" />
     <Divider align="center">
       <span id="done-badge" class="p-tag">Done</span>
@@ -14,6 +20,8 @@
     <TaskList
       @update:task="toggleTask"
       :items="items"
+      :show-description="showDescription"
+      :show-created-at="showCreatedAt"
       aria-labelledby="done-badge"
       done-tasks />
   </div>
@@ -31,30 +39,35 @@ export default {
   async setup() {
     const items = ref([]);
     const isFetching = ref(true);
-    const filters = ['deadline', 'name'];
+    const showDescription = ref(true);
+    const showCreatedAt = ref(false);
+    const orderByValues = [
+      { name: 'Deadline', value: 'deadline' },
+      { name: 'Priority', value: 'priority' },
+      { name: 'Name', value: 'name' },
+      { name: 'Created at', value: 'createdAt' }
+    ];
 
     await taskApi.fetch()
-    .then(tasks => {
-      items.value = tasks;
-      isFetching.value = false;
-    });
+      .then(tasks => {
+        items.value = tasks;
+        isFetching.value = false;
+      });
 
-    return { items, filters, isFetching };
+    return {
+      items,
+      isFetching,
+      orderByValues,
+      showCreatedAt,
+      showDescription
+    };
   },
   methods: {
     toggleTask({ task, isDone }) {
       task.done = isDone;
     },
-    filtersUpdate(payload) {
-      const orderByChecked = Object.values(payload);
-      const orderBy = this.filters.reduce((acc, filter) => {
-        const isChecked = orderByChecked.includes(filter);
-        acc[filter] = isChecked ? 'ASC' : 'DESC';
-        return acc;
-      }, {});
-      const params = { orderBy };
-
-      return this.fetchItems(params);
+    optionsUpdate(payload) {
+      Object.assign(this, payload);
     },
     async fetchItems(params) {
       this.isFetching = true;

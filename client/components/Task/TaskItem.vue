@@ -1,28 +1,30 @@
 <template>
-  <div class="task-item flex align-items-center">
-    <TdIcon :icon="config.icon" :class="`mr-3 ${config.className}`" />
-    <div
-      class="flex flex-grow-1 p-3"
-      :class="!item.done ? config.className : 'grey'">
-      <Checkbox
-        v-model="isDone"
-        @input="$emit('update:task', { isDone: $event, task: item })"
-        :input-id="item.id.toString()"
-        :input-props="inputProps"
-        :binary="true" />
-      <div class="ml-3 flex flex-grow-1">
-        <div>
-          <label :for="item.id">{{ item.name }}</label>
-          <p
-            v-if="showDescription"
-            :id="`task-description-${item.id}`"
-            class="mt-2">
-            {{ item.description }}
-          </p>
+  <div class="relative mb-2">
+    <div class="task-item flex align-items-center">
+      <TdIcon :icon="config.icon" :class="`mr-3 ${config.className}`" />
+      <div
+        class="flex flex-grow-1 p-3"
+        :class="!item.done ? config.className : 'grey'">
+        <Checkbox
+          v-model="isDone"
+          @input="$emit('update:task', { isDone: $event, task: item })"
+          :input-id="item.id.toString()"
+          :input-props="inputProps"
+          :binary="true" />
+        <div class="ml-3">
+          <div>
+            <label :for="item.id">{{ item.name }}</label>
+            <p v-if="showDescription" :id="`task-description-${item.id}`" class="mt-2">
+              {{ item.description }}
+            </p>
+          </div>
+          <p class="ml-auto mt-2 flex"><b>Deadline</b>: {{ processDate(item.deadline) }}</p>
         </div>
-        <p class="ml-auto flex">{{ processDeadline(item.deadline) }}</p>
       </div>
     </div>
+    <p v-if="showCreatedAt" class="absolute right-0 bottom-0">
+      <i>Created: {{ processDate(item.createdAt) }}</i>
+    </p>
   </div>
 </template>
 
@@ -53,14 +55,15 @@ const priorityConfig = {
 const props = defineProps({
   item: { type: Object, required: true },
   done: { type: Boolean, required: true },
-  showDescription: { type: Boolean, default: true }
+  showDescription: { type: Boolean, required: true },
+  showCreatedAt: { type: Boolean, require: true }
 });
 
 const isDone = ref(props.done);
 const inputProps = { 'aria-describedby': 'task-description' };
 const config = priorityConfig[props.item.priority];
 
-const processDeadline = deadline => {
+const processDate = deadline => {
   const date = new Date(deadline);
   return date.toLocaleDateString();
 };
