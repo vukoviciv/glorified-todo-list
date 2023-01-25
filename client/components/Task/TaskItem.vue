@@ -18,7 +18,9 @@
               {{ item.description }}
             </p>
           </div>
-          <p class="ml-auto mt-2 flex"><b>Deadline</b>: {{ processDate(item.deadline) }}</p>
+          <p v-if="item.deadline" class="ml-auto mt-2 flex">
+            <b>Deadline</b>: {{ processDate(item.deadline) }}
+          </p>
         </div>
       </div>
     </div>
