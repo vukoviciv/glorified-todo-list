@@ -1,7 +1,8 @@
 <template>
   <div>
     <TaskFilters
-      @options:update="optionsUpdate"
+      @update:options="updateOptions"
+      @update:order="updateOrder"
       :order-by-values="orderByValues"
       :show-description="showDescription"
       :show-created-at="showCreatedAt" />
@@ -66,8 +67,14 @@ export default {
     toggleTask({ task, isDone }) {
       task.done = isDone;
     },
-    optionsUpdate(payload) {
+    updateOptions(payload) {
       Object.assign(this, payload);
+    },
+    updateOrder(payload) {
+      const params = {
+        orderBy: { [payload.value]: 'ASC' }
+      };
+      this.fetchItems(params);
     },
     async fetchItems(params) {
       this.isFetching = true;

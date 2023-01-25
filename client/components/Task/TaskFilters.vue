@@ -2,6 +2,7 @@
   <div class="task-filters mt-2 mb-4 flex flex-wrap">
     <Dropdown
       v-model="selectedOrderBy"
+      @change="$emit('update:order', $event)"
       :options="orderByValues"
       input-id="test-input-id"
       option-label="name"
@@ -10,7 +11,7 @@
     <div class="field-checkbox ml-8">
       <Checkbox
         v-model="showDescription"
-        @input="$emit('options:update', { showDescription: $event})"
+        @input="$emit('update:options', { showDescription: $event})"
         input-id="show-description"
         :binary="true" />
       <label for="show-description">Show <b>description</b></label>
@@ -18,7 +19,7 @@
     <div class="field-checkbox ml-8">
       <Checkbox
         v-model="showCreatedAt"
-        @input="$emit('options:update', { showCreatedAt: $event })"
+        @input="$emit('update:options', { showCreatedAt: $event })"
         input-id="show-created-at"
         :binary="true" />
       <label for="show-created-at">Show <b>created at</b></label>
