@@ -5,13 +5,15 @@
       <h1>My Glorified TODO list</h1>
       <div class="flex">
         <span>Ivana Šimić</span>
-        <i class="pi pi-user ml-4"></i>
+        <i :class="`${PrimeIcons.USER} ml-4`"></i>
       </div>
     </div>
   </header>
 </template>
 
 <script setup>
+import { PrimeIcons } from 'primevue/api';
+
 const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 const today = new Date().toLocaleDateString(undefined, options);
 </script>

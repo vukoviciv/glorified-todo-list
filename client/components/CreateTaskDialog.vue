@@ -3,7 +3,7 @@
     <Button
       @click="open"
       label="Create new task"
-      icon="pi pi-plus" />
+      :icon="PrimeIcons.PLUS" />
   </div>
   <Dialog
     @update:visible="close()"
@@ -52,7 +52,7 @@
       <Button
         @click="close()"
         label="Cancel"
-        icon="pi pi-times"
+        :icon="PrimeIcons.TIMES"
         class="p-button-text" />
       <Button
         @click="create()"
@@ -70,6 +70,7 @@ import Button from 'primevue/Button';
 import Dialog from 'primevue/Dialog';
 import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';
+import { PrimeIcons } from 'primevue/api';
 import { ref } from 'vue';
 import { required } from '@vuelidate/validators';
 import taskApi from '@/src/api/tasks';
@@ -81,8 +82,8 @@ const priorities = [
   { name: 'Medium', value: 'MEDIUM' },
   { name: 'Low', value: 'LOW' }
 ];
-const CREATE_BTN_ICON = 'pi pi-check';
-const LOADING_BTN_ICON = 'pi pi-spin pi-spinner';
+const CREATE_BTN_ICON = PrimeIcons.CHECK;
+const LOADING_BTN_ICON = PrimeIcons.SPINNER;
 const createBtnIcon = ref(CREATE_BTN_ICON);
 const displayPosition = ref(false);
 const task = ref({

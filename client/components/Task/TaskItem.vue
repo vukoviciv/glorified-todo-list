@@ -27,6 +27,7 @@
     <p v-if="showCreatedAt" class="absolute right-0 bottom-0">
       <i>Created: {{ processDate(item.createdAt) }}</i>
     </p>
+    <TdIcon :icon="PrimeIcons.PENCIL" class="mr-3" />
   </div>
 </template>
 
