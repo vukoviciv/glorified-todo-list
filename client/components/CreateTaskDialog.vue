@@ -25,8 +25,7 @@ const showDialog = ref(false);
 const close = () => { showDialog.value = false; };
 const open = () => { showDialog.value = true; };
 const createTask = async task => {
-  taskApi.create(task).then(task => {
-    console.log(task);
+  taskApi.create(task).then(() => {
     close();
   });
 };

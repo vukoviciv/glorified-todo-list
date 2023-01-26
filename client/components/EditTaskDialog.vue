@@ -2,7 +2,8 @@
   <TaskDialog
     @close="close"
     @action:emit="updateTask"
-    action-type="edit"
+    action-type="update"
+    :task="task"
     :show-dialog="showDialog">
     <template #activator>
       <Button
@@ -22,13 +23,15 @@ import { ref } from 'vue';
 import taskApi from '@/src/api/tasks';
 import TaskDialog from './common/TaskDialog.vue';
 
+defineProps({
+  task: { type: Object, required: true }
+});
 const showDialog = ref(false);
 
 const close = () => { showDialog.value = false; };
 const open = () => { showDialog.value = true; };
 const updateTask = async task => {
-  taskApi.update(task).then(task => {
-    console.log(task);
+  taskApi.update(task).then(() => {
     close();
   });
 };
