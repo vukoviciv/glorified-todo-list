@@ -10,11 +10,15 @@ function fetch(params = {}) {
 }
 
 function create(data) {
-  console.log({ data });
   return request.post(url.root, data).then(extractData);
+}
+
+function update(data) {
+  return request.patch(url.root, data).then(extractData);
 }
 
 export default {
   create,
-  fetch
+  fetch,
+  update
 };

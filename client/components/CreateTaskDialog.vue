@@ -20,7 +20,6 @@
           id="name"
           type="text"
           required="required"
-          :class="{ 'p-invalid': v$.name.$errors }"
           class="flex flex-grow-1" />
         <label for="name">Name</label>
       </div>
@@ -82,8 +81,9 @@ const priorities = [
   { name: 'Medium', value: 'MEDIUM' },
   { name: 'Low', value: 'LOW' }
 ];
-const DEFAULT_CREATE_BTN_ICON = 'pi pi-check';
-const createBtnIcon = ref(DEFAULT_CREATE_BTN_ICON);
+const CREATE_BTN_ICON = 'pi pi-check';
+const LOADING_BTN_ICON = 'pi pi-spin pi-spinner';
+const createBtnIcon = ref(CREATE_BTN_ICON);
 const displayPosition = ref(false);
 const task = ref({
   name: '',
@@ -104,9 +104,9 @@ const create = async () => {
   const isFormCorrect = await v$.value.$validate();
   if (!isFormCorrect) return;
 
-  createBtnIcon.value = 'pi pi-spin pi-spinner';
+  createBtnIcon.value = LOADING_BTN_ICON;
   taskApi.create(task.value).then(data => {
-    createBtnIcon.value = DEFAULT_CREATE_BTN_ICON;
+    createBtnIcon.value = CREATE_BTN_ICON;
     close();
   });
 };
