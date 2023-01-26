@@ -6,7 +6,7 @@ const router = Router();
 router
   .get('/', list)
   .post('/', create)
-  .patch('/', update);
+  .patch('/', update); // send id in params?
 
 export default {
   path: '/task',

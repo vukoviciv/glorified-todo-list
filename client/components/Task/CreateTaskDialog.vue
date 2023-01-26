@@ -18,15 +18,13 @@ import Button from 'primevue/Button';
 import { PrimeIcons } from 'primevue/api';
 import { ref } from 'vue';
 import taskApi from '@/src/api/tasks';
-import TaskDialog from './common/TaskDialog.vue';
+import TaskDialog from '../common/TaskDialog.vue';
 
 const showDialog = ref(false);
 
 const close = () => { showDialog.value = false; };
 const open = () => { showDialog.value = true; };
 const createTask = async task => {
-  taskApi.create(task).then(() => {
-    close();
-  });
+  taskApi.create(task).then(() => { close(); });
 };
 </script>
