@@ -9,8 +9,9 @@
       :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
       :style="{ width: '50vw' }"
       :modal="true"
-      header="Create new task"
-      position="top">
+      :header="`${actionType} task`"
+      position="top"
+      class="capitalize">
       <div class="m-0 p-3">
         <div class="p-float-label flex">
           <InputText
