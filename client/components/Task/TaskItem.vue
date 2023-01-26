@@ -67,6 +67,7 @@ const config = priorityConfig[props.item.priority];
 
 const processDate = deadline => {
   const date = new Date(deadline);
+
   return date.toLocaleDateString();
 };
 </script>

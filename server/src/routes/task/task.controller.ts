@@ -26,4 +26,22 @@ async function create({ body }: Request, res: Response) {
   return res.json(task);
 }
 
-export { create, list };
+async function update({ body }: Request, res: Response) {
+  const accounts = await DI.em.find(Account, {});
+  if (!accounts) return res.send('No accounts');
+
+  const activeAccount = accounts.pop();
+  const { id } = body;
+  const data = { account: activeAccount, ...body };
+  try {
+    const task = await DI.em.findOneOrFail(Task, { id });
+    task.done = data.done;
+    DI.em.flush();
+
+    return res.json(task);
+  } catch (error) {
+    return res.send('Task not found'); // TODO: error handling
+  }
+}
+
+export { create, list, update };
