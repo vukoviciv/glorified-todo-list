@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { DI } from '../../database/index';
 
 async function list({ query }: Request, res: Response) {
-  const accounts = await DI.em.find(Account, {}); // TODO: implement localStorage
+  const accounts = await DI.em.find(Account, {}); // TODO: implement cookies
   if (!accounts) return res.send('No accounts');
 
   const options = { orderBy: {} };

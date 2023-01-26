@@ -42,15 +42,15 @@ import TdIcon from '@/src/components/common/TdIcon.vue';
 const { HIGH, MEDIUM, LOW } = priority;
 
 const priorityConfig = {
-  [HIGH]: {
+  [HIGH.value]: {
     className: 'red',
     icon: PrimeIcons.ANGLE_DOUBLE_UP
   },
-  [MEDIUM]: {
+  [MEDIUM.value]: {
     className: 'yellow',
     icon: PrimeIcons.ANGLE_DOUBLE_RIGHT
   },
-  [LOW]: {
+  [LOW.value]: {
     className: 'green',
     icon: PrimeIcons.ANGLE_DOUBLE_DOWN
   }
@@ -68,8 +68,8 @@ const config = computed(() => {
   return priorityConfig[props.item.priority];
 });
 
-const processDate = deadline => {
-  const date = new Date(deadline);
+const processDate = dateTime => {
+  const date = new Date(dateTime);
 
   return date.toLocaleDateString();
 };

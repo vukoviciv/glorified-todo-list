@@ -15,7 +15,7 @@
       <div class="m-0 p-3">
         <div class="p-float-label flex">
           <InputText
-            ref="name"
+            ref="nameEl"
             v-model="task.name"
             id="name"
             type="text"
@@ -92,11 +92,13 @@ import Dialog from 'primevue/Dialog';
 import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';
 import { PrimeIcons } from 'primevue/api';
+import { priority } from '@/config/task';
 import { ref } from 'vue';
 import { required } from '@vuelidate/validators';
 import Textarea from 'primevue/textarea';
 import { useVuelidate } from '@vuelidate/core';
 
+const { HIGH, MEDIUM, LOW } = priority;
 const DEFAULT_TASK = {
   name: '',
   description: '',
@@ -110,11 +112,11 @@ const props = defineProps({
   task: { type: Object, default: () => ({}) }
 });
 const emit = defineEmits(['close', 'action:emit']);
-const name = ref(null);
+const nameEl = ref(null);
 const priorities = [
-  { name: 'High', value: 'HIGH' },
-  { name: 'Medium', value: 'MEDIUM' },
-  { name: 'Low', value: 'LOW' }
+  { name: HIGH.label, value: HIGH.value },
+  { name: MEDIUM.label, value: MEDIUM.value },
+  { name: LOW.label, value: LOW.value }
 ];
 const task = ref(props.task) || ref(DEFAULT_TASK);
 const validationRules = {
@@ -129,7 +131,7 @@ const close = () => {
 };
 const action = async () => {
   const isFormCorrect = await v$.value.$validate();
-  name.value.$el.focus();
+  nameEl.value.$el.focus();
   if (!isFormCorrect) return;
 
   emit('action:emit', task.value);
