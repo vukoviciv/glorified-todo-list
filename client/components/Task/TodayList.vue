@@ -24,7 +24,7 @@
       :show-description="showDescription"
       :show-created-at="showCreatedAt"
       aria-labelledby="done-badge"
-      done-tasks />
+      done-list />
   </div>
 </template>
 
