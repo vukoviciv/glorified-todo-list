@@ -23,15 +23,20 @@
           </p>
         </div>
       </div>
+      <Button
+        :icon="PrimeIcons.PENCIL"
+        class="p-button-rounded p-button-outlined ml-3"
+        title="Edit task"
+        aria-label="Edit task" />
     </div>
-    <p v-if="showCreatedAt" class="absolute right-0 bottom-0">
+    <p v-if="showCreatedAt" class="ml-5 pl-1 pt-1">
       <i>Created: {{ processDate(item.createdAt) }}</i>
     </p>
-    <TdIcon :icon="PrimeIcons.PENCIL" class="mr-3" />
   </div>
 </template>
 
 <script setup>
+import Button from 'primevue/Button';
 import Checkbox from 'primevue/checkbox';
 import { PrimeIcons } from 'primevue/api';
 import { priority } from '@/config/task';
