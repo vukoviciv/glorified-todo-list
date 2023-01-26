@@ -7,9 +7,9 @@
 </template>
 
 <script setup>
-import CreateTaskDialog from '../components/Task/CreateTaskDialog.vue';
-import MainHeader from '../components/MainHeader.vue';
-import TasksTabView from '../components/Task/TasksTabView.vue';
+import CreateTaskDialog from './components/Task/CreateTaskDialog.vue';
+import MainHeader from './components/MainHeader.vue';
+import TasksTabView from './components/Task/TasksTabView.vue';
 </script>
 
 <style lang="scss" scoped>
