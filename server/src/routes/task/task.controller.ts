@@ -31,17 +31,11 @@ async function update({ body }: Request, res: Response) {
   if (!accounts) return res.send('No accounts');
 
   const activeAccount = accounts.pop();
-  const { id } = body;
   const data = { account: activeAccount, ...body };
-  try {
-    const task = await DI.em.findOneOrFail(Task, { id });
-    task.done = data.done;
-    DI.em.flush();
-
-    return res.json(task);
-  } catch (error) {
-    return res.send('Task not found'); // TODO: error handling
-  }
+  const task = await DI.em.upsert(Task, data);
+  return res.json(task);
 }
+
+// TODO: create toggleDone
 
 export { create, list, update };

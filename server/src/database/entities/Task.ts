@@ -38,7 +38,7 @@ export class Task extends BaseEntity {
     deadline?: Date;
 
   @Enum()
-    priority?: TaskPriority;
+    priority?: TaskPriority = taskPriority.MEDIUM;
 
   constructor({ name, account, ...props }: Props) {
     super();

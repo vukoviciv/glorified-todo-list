@@ -9,23 +9,29 @@
       :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
       :style="{ width: '50vw' }"
       :modal="true"
-      :header="`${actionType} task`"
-      position="top"
-      class="capitalize">
+      :header="`${capitalizeWord(actionType)} task`"
+      :draggable="false"
+      position="top">
       <div class="m-0 p-3">
         <div class="p-float-label flex">
           <InputText
+            ref="name"
             v-model="task.name"
             id="name"
             type="text"
             required="required"
-            class="flex flex-grow-1" />
+            class="flex flex-grow-1"
+            aria-describedby="required-field-description"
+            autofocus />
           <label for="name">Name</label>
         </div>
-        <div v-for="error of v$.name.$errors" :key="error.$uid">
-          <div class="error-msg ml-1 mt-1" aria-live="polite">
+        <small id="required-field-description" class="required-field">
+          This field is required
+        </small>
+        <div class="error-msg ml-1 mt-1" aria-live="polite">
+          <span v-for="error of v$.name.$errors" :key="error.$uid">
             Field {{ error.$property }} is required.
-          </div>
+          </span>
         </div>
         <div class="p-float-label mt-5 flex">
           <Textarea
@@ -36,15 +42,25 @@
             class="flex flex-grow-1" />
           <label for="description">Description</label>
         </div>
-        <div class="mt-5 flex">
-          <Dropdown
-            v-model="task.priority"
-            :options="priorities"
-            input-id="priority"
-            option-label="name"
-            option-value="value"
-            class="flex flex-grow-1"
-            placeholder="Priority" />
+        <div class="flex">
+          <div class="mt-4 col-6">
+            <label for="priority">Priority</label>
+            <Dropdown
+              v-model="task.priority"
+              :options="priorities"
+              input-id="priority"
+              option-label="name"
+              option-value="value"
+              class="flex flex-grow-1 mt-2" />
+          </div>
+          <div class="mt-4 col-6">
+            <label for="deadline" class="mr-3">Deadline</label>
+            <Calendar
+              v-model="task.deadline"
+              input-id="deadline"
+              :show-time="true"
+              class="flex flex-grow-1 mt-2" />
+          </div>
         </div>
       </div>
       <template #footer>
@@ -56,7 +72,7 @@
         <Button
           @click="action()"
           :label="`${actionType} task`"
-          :icon="actionBtnIcon"
+          :icon="PrimeIcons.CHECK"
           class="capitalize" />
       </template>
     </Dialog>
@@ -64,63 +80,67 @@
 </template>
 
 <script setup>
+// TODO: use form here!!!
+// TODO: Dialog does not have a heading?!
 // TODO: create app lvl notification aria-live="polite" container
-// TODO: check label
+// TODO: check label for priority
+// TODO: focus back on activator after the dialog is closed
 import Button from 'primevue/Button';
+import Calendar from 'primevue/calendar';
+import { capitalizeWord } from '@/src/utils/stringProcessors';
 import Dialog from 'primevue/Dialog';
 import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';
 import { PrimeIcons } from 'primevue/api';
 import { ref } from 'vue';
 import { required } from '@vuelidate/validators';
-import taskApi from '@/src/api/tasks';
 import Textarea from 'primevue/textarea';
 import { useVuelidate } from '@vuelidate/core';
 
+const DEFAULT_TASK = {
+  name: '',
+  description: '',
+  priority: '',
+  deadline: ''
+};
+
 const props = defineProps({
   showDialog: { type: Boolean, required: true },
-  actionType: { type: String, required: true }
+  actionType: { type: String, required: true },
+  task: { type: Object, default: () => ({}) }
 });
-const emit = defineEmits(['close', 'create']);
-
+const emit = defineEmits(['close', 'action:emit']);
+const name = ref(null);
 const priorities = [
   { name: 'High', value: 'HIGH' },
   { name: 'Medium', value: 'MEDIUM' },
   { name: 'Low', value: 'LOW' }
 ];
-const CREATE_BTN_ICON = PrimeIcons.CHECK;
-const LOADING_BTN_ICON = PrimeIcons.SPINNER;
-const actionBtnIcon = ref(CREATE_BTN_ICON);
-const task = ref({
-  name: '',
-  description: '',
-  priority: ''
-});
+const task = ref(props.task) || ref(DEFAULT_TASK);
 const validationRules = {
   name: { required }
 };
 const v$ = useVuelidate(validationRules, task);
 
 const close = () => {
+// TODO: focus back on activator after close/save/edit
   v$.value.$reset();
   emit('close');
 };
 const action = async () => {
   const isFormCorrect = await v$.value.$validate();
+  name.value.$el.focus();
   if (!isFormCorrect) return;
 
-  actionBtnIcon.value = LOADING_BTN_ICON;
-  taskApi[props.actionType](task.value).then(() => {
-    actionBtnIcon.value = CREATE_BTN_ICON;
-    close();
-  });
-
-  emit('create', task);
+  emit('action:emit', task.value);
 };
 </script>
 
 <style lang="scss" scoped>
 .error-msg {
   color: var(--red-500);
+}
+.required-field::before {
+  content: '*';
 }
 </style>
