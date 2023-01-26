@@ -4,7 +4,6 @@
       v-model="selectedOrderBy"
       @change="$emit('update:order', $event)"
       :options="orderByValues"
-      input-id="test-input-id"
       option-label="name"
       option-value="value"
       placeholder="Order by" />

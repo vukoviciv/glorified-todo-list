@@ -1,10 +1,12 @@
-import { list } from './task.controller';
+import { create, list, update } from './task.controller';
 import { Router } from 'express';
 
 const router = Router();
 
 router
-  .get('/', list);
+  .get('/', list)
+  .post('/', create)
+  .patch('/', update); // send id in params?
 
 export default {
   path: '/task',

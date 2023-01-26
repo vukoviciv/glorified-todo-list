@@ -24,7 +24,7 @@
       :show-description="showDescription"
       :show-created-at="showCreatedAt"
       aria-labelledby="done-badge"
-      done-tasks />
+      done-list />
   </div>
 </template>
 
@@ -66,6 +66,7 @@ export default {
   methods: {
     toggleTask({ task, isDone }) {
       task.done = isDone;
+      this.updateTask(task);
     },
     updateOptions(payload) {
       Object.assign(this, payload);
@@ -83,6 +84,13 @@ export default {
           this.items = tasks;
           this.isFetching = false;
         });
+    },
+    async updateTask(data) {
+      this.isFetching = true;
+      taskApi.update(data).then(task => {
+        this.task = task;
+        this.isFetching = false;
+      });
     }
   },
   components: {

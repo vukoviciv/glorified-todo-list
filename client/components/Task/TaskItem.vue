@@ -18,21 +18,25 @@
               {{ item.description }}
             </p>
           </div>
-          <p class="ml-auto mt-2 flex"><b>Deadline</b>: {{ processDate(item.deadline) }}</p>
+          <p v-if="item.deadline" class="ml-auto mt-2 flex">
+            <b>Deadline</b>: {{ processDate(item.deadline) }}
+          </p>
         </div>
       </div>
+      <EditTaskDialog :task="item" />
     </div>
-    <p v-if="showCreatedAt" class="absolute right-0 bottom-0">
+    <p v-if="showCreatedAt" class="ml-5 pl-1 pt-1">
       <i>Created: {{ processDate(item.createdAt) }}</i>
     </p>
   </div>
 </template>
 
 <script setup>
+import { computed, ref } from 'vue';
 import Checkbox from 'primevue/checkbox';
+import EditTaskDialog from './EditTaskDialog.vue';
 import { PrimeIcons } from 'primevue/api';
 import { priority } from '@/config/task';
-import { ref } from 'vue';
 import TdIcon from '@/components/common/TdIcon.vue';
 
 const { HIGH, MEDIUM, LOW } = priority;
@@ -54,17 +58,19 @@ const priorityConfig = {
 
 const props = defineProps({
   item: { type: Object, required: true },
-  done: { type: Boolean, required: true },
   showDescription: { type: Boolean, required: true },
   showCreatedAt: { type: Boolean, require: true }
 });
 
-const isDone = ref(props.done);
+const isDone = ref(props.item.done);
 const inputProps = { 'aria-describedby': 'task-description' };
-const config = priorityConfig[props.item.priority];
+const config = computed(() => {
+  return priorityConfig[props.item.priority];
+});
 
 const processDate = deadline => {
   const date = new Date(deadline);
+
   return date.toLocaleDateString();
 };
 </script>

@@ -9,6 +9,16 @@ function fetch(params = {}) {
   return request.get(url.root, { params }).then(extractData);
 }
 
+function create(data) {
+  return request.post(url.root, data).then(extractData);
+}
+
+function update(data) {
+  return request.patch(url.root, data).then(extractData);
+}
+
 export default {
-  fetch
+  create,
+  fetch,
+  update
 };

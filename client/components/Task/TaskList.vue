@@ -6,10 +6,9 @@
       class="mt-4 list-item">
       <Transition duration="500" name="nested">
         <TaskItem
-          v-if="doneTasks ? item.done : !item.done"
+          v-if="doneList ? item.done : !item.done"
           @update:task="$emit('update:task', $event)"
           :item="item"
-          :done="item.done"
           :show-description="showDescription"
           :show-created-at="showCreatedAt" />
       </Transition>
@@ -18,16 +17,17 @@
 </template>
 
 <script setup>
+// TODO: handle toggle done task in a different way
 import TaskItem from './TaskItem.vue';
 
 const props = defineProps({
   items: { type: Array, required: true },
-  doneTasks: { type: Boolean, default: false },
+  doneList: { type: Boolean, default: false },
   showDescription: { type: Boolean, required: true },
   showCreatedAt: { type: Boolean, require: true }
 });
 
-const className = props.doneTasks ? 'done-tasks' : 'pending-tasks';
+const className = props.doneList ? 'done-tasks' : 'pending-tasks';
 </script>
 
 <style lang="scss" scoped>
