@@ -23,11 +23,7 @@
           </p>
         </div>
       </div>
-      <Button
-        :icon="PrimeIcons.PENCIL"
-        class="p-button-rounded p-button-outlined ml-3"
-        title="Edit task"
-        aria-label="Edit task" />
+      <EditTaskDialog />
     </div>
     <p v-if="showCreatedAt" class="ml-5 pl-1 pt-1">
       <i>Created: {{ processDate(item.createdAt) }}</i>
@@ -36,8 +32,8 @@
 </template>
 
 <script setup>
-import Button from 'primevue/Button';
 import Checkbox from 'primevue/checkbox';
+import EditTaskDialog from '../EditTaskDialog.vue';
 import { PrimeIcons } from 'primevue/api';
 import { priority } from '@/config/task';
 import { ref } from 'vue';

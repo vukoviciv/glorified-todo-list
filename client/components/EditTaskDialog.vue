@@ -1,14 +1,16 @@
 <template>
   <TaskDialog
     @close="close"
-    @action:emit="createTask"
-    action-type="create"
+    @action:emit="updateTask"
+    action-type="edit"
     :show-dialog="showDialog">
     <template #activator>
       <Button
         @click="open"
-        label="Create new task"
-        :icon="PrimeIcons.PLUS" />
+        :icon="PrimeIcons.PENCIL"
+        class="p-button-rounded p-button-outlined ml-3"
+        title="Edit task"
+        aria-label="Edit task" />
     </template>
   </TaskDialog>
 </template>
@@ -24,8 +26,8 @@ const showDialog = ref(false);
 
 const close = () => { showDialog.value = false; };
 const open = () => { showDialog.value = true; };
-const createTask = async task => {
-  taskApi.create(task).then(task => {
+const updateTask = async task => {
+  taskApi.update(task).then(task => {
     console.log(task);
     close();
   });
