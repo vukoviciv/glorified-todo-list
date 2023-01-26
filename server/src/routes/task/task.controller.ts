@@ -1,38 +1,25 @@
-import { Account, Task } from '../../database/entities';
 import { Request, Response } from 'express';
 import { DI } from '../../database/index';
+import { Task } from '../../database/entities';
 
-async function list({ query }: Request, res: Response) {
-  const accounts = await DI.em.find(Account, {}); // TODO: implement cookies
-  if (!accounts) return res.send('No accounts');
-
+async function list({ query, body }: Request, res: Response) {
+  const { account } = body;
   const options = { orderBy: {} };
   if (query.orderBy) options.orderBy = query.orderBy;
-  const activeAccount = accounts.pop();
-  const tasks = await DI.em.find(Task, { account: activeAccount }, options);
+  const tasks = await DI.em.find(Task, { account }, options);
 
   return res.json(tasks);
 }
 
 async function create({ body }: Request, res: Response) {
-  const accounts = await DI.em.find(Account, {});
-  if (!accounts) return res.send('No accounts');
-
-  const activeAccount = accounts.pop();
-  const data = { account: activeAccount, ...body };
-  const task = new Task(data);
+  const task = new Task(body);
   DI.em.persistAndFlush(task);
 
   return res.json(task);
 }
 
 async function update({ body }: Request, res: Response) {
-  const accounts = await DI.em.find(Account, {});
-  if (!accounts) return res.send('No accounts');
-
-  const activeAccount = accounts.pop();
-  const data = { account: activeAccount, ...body };
-  const task = await DI.em.upsert(Task, data);
+  const task = await DI.em.upsert(Task, body);
   return res.json(task);
 }
 
