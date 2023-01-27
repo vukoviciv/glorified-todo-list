@@ -1,15 +1,18 @@
 import { Account, Task, User } from './../src/database/entities';
 import { CustomMigrationGenerator } from './../src/database/utils/migrationGenerator';
-import { envs } from './envs';
+import { defineConfig } from '@mikro-orm/core';
+import { envs } from './index';
 import { getMigrationFileName } from '../src/database/utils/migrationFileName';
-import { Options } from '@mikro-orm/core';
+import { PostgreSqlDriver } from '@mikro-orm/postgresql';
 
-const options: Options = {
+const { name, debug, uri } = envs.database;
+
+export default defineConfig({
   entities: [Account, Task, User], // TODO: cleanup
-  type: 'postgresql',
-  dbName: 'my-todo-list',
-  debug: true,
-  clientUrl: envs.clientUrl,
+  dbName: name,
+  clientUrl: uri,
+  driver: PostgreSqlDriver,
+  debug,
   migrations: {
     tableName: 'mikro_orm_migrations', // name of database table with log of executed transactions
     path: './dist/migrations', // path to the folder with migrations
@@ -33,6 +36,4 @@ const options: Options = {
     emit: 'ts', // seeder generation mode
     fileName: (className: string) => className // seeder file naming convention
   }
-};
-
-export default options;
+});

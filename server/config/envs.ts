@@ -1,17 +1,46 @@
+import { PathParams } from 'express-serve-static-core';
+
 type Envs = {
-  apiPath: string,
-  ip: string,
-  port: string,
-  protocol: string,
-  clientUrl: string
+  server: {
+    hostname?: string,
+    apiPath: PathParams,
+    ip?: string,
+    port?: string,
+    protocol?: string,
+  },
+  database: {
+    name?: string,
+    debug?: boolean,
+    type?: string,
+    uri?: string
+  }
 }
 
+const databaseUri = resolveDatabaseUri();
+
 export const envs: Envs = {
-  apiPath: process.env.API_PATH || '/api',
-  ip: process.env.IP || '127.0.0.1',
-  port: process.env.PORT || '3000',
-  protocol: process.env.PROTOCOL || 'http',
-  clientUrl: 'postgres://:@localhost:5432/my-todo-list'
+  server: {
+    hostname: process.env.HOSTNAME,
+    apiPath: process.env.API_PATH as PathParams,
+    ip: process.env.IP,
+    port: process.env.PORT,
+    protocol: process.env.PROTOCOL
+  },
+  database: {
+    debug: process.env.DATABASE_DEBUG as unknown as boolean,
+    name: process.env.DATABASE_NAME,
+    uri: databaseUri || process.env.DATABASE_URI
+  }
 };
 
-// TODO: rename this file; consider changing the structure and placement of config folder
+function resolveDatabaseUri() {
+  const {
+    DATABASE_TYPE,
+    DATABASE_USER,
+    DATABASE_PASSWORD,
+    DATABASE_HOST,
+    DATABASE_PORT,
+    DATABASE_NAME
+  } = process.env;
+  return `${DATABASE_TYPE}://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_NAME}`;
+}
