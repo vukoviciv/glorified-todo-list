@@ -8,9 +8,9 @@ router
   .use(getAccount)
   .get('/', list)
   .post('/', create)
-  .patch('/', update); // send id in params?
+  .patch('/:id', update);
 
 export default {
-  path: '/task',
+  path: '/tasks',
   router
 };

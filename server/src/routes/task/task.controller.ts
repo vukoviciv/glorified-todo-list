@@ -18,8 +18,9 @@ async function create({ body }: Request, res: Response) {
   return res.json(task);
 }
 
-async function update({ body }: Request, res: Response) {
-  const task = await DI.em.upsert(Task, body);
+async function update({ body, params: { id } }: Request, res: Response) {
+  const task = await DI.em.upsert(Task, { id, ...body });
+
   return res.json(task);
 }
 

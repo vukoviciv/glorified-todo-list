@@ -7,7 +7,6 @@ import router from './src/routes/router';
 const { protocol, ip, port, apiPath } = envs;
 
 const address = `${protocol}://${ip}:${port}`;
-
 const app: Express = express();
 
 database.init()
