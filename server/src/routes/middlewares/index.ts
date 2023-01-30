@@ -1,2 +1,2 @@
-export * from './RequestContext';
+export * from './requestContext';
 export * from './getAccount';

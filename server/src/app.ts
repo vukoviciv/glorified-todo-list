@@ -4,13 +4,18 @@ import { requestContextMiddleware } from './routes/middlewares/index';
 import router from './routes/router';
 
 const { apiPath, protocol, ip, port } = envs.server;
+
 const address = `${protocol}://${ip}:${port}`;
+const middlewares = [
+  express.json(),
+  requestContextMiddleware
+];
 
 const app: Express = express();
 
 export default function runServer() {
-  app.use(express.json())
-    .use(requestContextMiddleware)
+  app
+    .use(middlewares)
     .use(apiPath, router)
     .listen(port, () => console.log(`Listening on ${address}`));
 }
