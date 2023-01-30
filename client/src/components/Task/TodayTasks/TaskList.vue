@@ -18,7 +18,7 @@
 
 <script setup>
 // TODO: handle toggle done task in a different way
-import TaskItem from './TaskItem.vue';
+import TaskItem from '../TaskItem.vue';
 
 const props = defineProps({
   items: { type: Array, required: true },

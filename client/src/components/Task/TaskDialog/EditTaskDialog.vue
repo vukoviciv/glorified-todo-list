@@ -21,7 +21,7 @@ import Button from 'primevue/Button';
 import { PrimeIcons } from 'primevue/api';
 import { ref } from 'vue';
 import taskApi from '@/src/api/tasks';
-import TaskDialog from '../common/TaskDialog.vue';
+import TaskDialog from './common/TaskDialog.vue';
 
 defineProps({
   task: { type: Object, required: true }

@@ -34,7 +34,7 @@
 <script setup>
 import { computed, ref } from 'vue';
 import Checkbox from 'primevue/checkbox';
-import EditTaskDialog from './EditTaskDialog.vue';
+import EditTaskDialog from './TaskDialog/EditTaskDialog.vue';
 import { PrimeIcons } from 'primevue/api';
 import { priority } from '@/config/task';
 import TdIcon from '@/src/components/common/TdIcon.vue';

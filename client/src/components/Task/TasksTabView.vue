@@ -18,8 +18,8 @@
 <script setup>
 import TabPanel from 'primevue/TabPanel';
 import TabView from 'primevue/TabView';
-import TasksSkeleton from '../TasksSkeleton.vue';
-import TodayList from './TodayList.vue';
+import TasksSkeleton from './TasksSkeleton.vue';
+import TodayList from './TodayTasks/TodayList.vue';
 </script>
 
 <style lang="scss" scoped>

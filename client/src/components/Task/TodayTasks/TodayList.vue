@@ -6,9 +6,7 @@
       :order-by-values="orderByValues"
       :show-description="showDescription"
       :show-created-at="showCreatedAt" />
-    <TaskSkeleton v-if="isFetching" />
     <TaskList
-      v-else
       @update:task="toggleTask"
       :is-fetching="isFetching"
       :items="items"
@@ -32,9 +30,8 @@
 import Divider from 'primevue/Divider';
 import { ref } from 'vue';
 import taskApi from '@/src/api/tasks';
-import TaskFilters from './TaskFilters.vue';
+import TaskFilters from '../TaskFilters.vue';
 import TaskList from './TaskList.vue';
-import TaskSkeleton from '../TasksSkeleton.vue';
 
 export default {
   async setup() {
@@ -96,8 +93,7 @@ export default {
   components: {
     Divider,
     TaskFilters,
-    TaskList,
-    TaskSkeleton
+    TaskList
   }
 };
 </script>
