@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "client": "vite serve client",
-    "server": "nodemon -r dotenv/config server/app.ts",
+    "server": "nodemon -r dotenv/config server/index.ts",
     "db:migrate": "mikro-orm migration:up",
     "db:migrate:undo": "mikro-orm migration:down",
     "db:migrate:undo:all": "mikro-orm migration:down --to 0",
