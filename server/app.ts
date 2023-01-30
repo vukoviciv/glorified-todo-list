@@ -9,7 +9,8 @@ const { protocol, ip, port, apiPath } = envs.server;
 const address = `${protocol}://${ip}:${port}`;
 const app: Express = express();
 
-database.init()
+database
+  .init()
   .then(() => {
     app.use(express.json())
       .use(requestContextMiddleware)
