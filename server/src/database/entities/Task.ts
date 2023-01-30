@@ -28,7 +28,7 @@ export class Task extends BaseEntity {
   @Property({ nullable: true })
     description?: string;
 
-  @ManyToOne()
+  @ManyToOne(() => Account)
     account: Account;
 
   @Property()
