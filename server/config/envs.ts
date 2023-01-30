@@ -33,7 +33,7 @@ export const envs: Envs = {
   }
 };
 
-function resolveDatabaseUri() {
+function resolveDatabaseUri(): string {
   const {
     DATABASE_TYPE,
     DATABASE_USER,

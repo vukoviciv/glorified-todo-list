@@ -18,9 +18,8 @@ export class Account extends BaseEntity {
   @OneToMany(() => Task, t => t.account)
     tasks = new Collection<Task>(this);
 
-  constructor(props: Props) {
+  constructor({ name, user }: Props) {
     super();
-    const { name, user } = props;
 
     this.name = name;
     this.user = user;

@@ -1,6 +1,6 @@
-import { Account, Task, User } from './../src/database/entities';
 import { CustomMigrationGenerator } from './../src/database/utils/migrationGenerator';
 import { defineConfig } from '@mikro-orm/core';
+import { entities } from './../src/database/entities';
 import { envs } from './index';
 import { getMigrationFileName } from '../src/database/utils/migrationFileName';
 import { PostgreSqlDriver } from '@mikro-orm/postgresql';
@@ -8,7 +8,7 @@ import { PostgreSqlDriver } from '@mikro-orm/postgresql';
 const { name, debug, uri } = envs.database;
 
 export default defineConfig({
-  entities: [Account, Task, User], // TODO: cleanup
+  entities,
   dbName: name,
   clientUrl: uri,
   driver: PostgreSqlDriver,
