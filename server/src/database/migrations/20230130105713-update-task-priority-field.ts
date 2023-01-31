@@ -1,91 +1,91 @@
+import type { Knex } from '@mikro-orm/knex';
 import { Migration } from '@mikro-orm/migrations';
+import { Task } from '../entities/index';
 
-const taskPriority = {
+const TABLE_NAME = 'task';
+const COLUMN_NAME = 'priority';
+const TEMP_COLUMN_NAME = 'temp';
+
+type PriorityNew = {
+  HIGH: number,
+  MEDIUM: number,
+  LOW: number
+}
+type PriorityOld = {
+  '-1': string,
+  0: string,
+  1: string
+}
+const priorityNew: PriorityNew = {
   HIGH: 1,
   MEDIUM: 0,
   LOW: -1
-} as const;
-
-const reversePriority = {
+};
+const priorityOld: PriorityOld = {
   '-1': 'LOW',
   0: 'MEDIUM',
   1: 'HIGH'
-} as const;
-
-const PRIORITIES_OLD = ['HIGH', 'MEDIUM', 'LOW'];
-const DEFAULT_OLD = 'MEDIUM';
-const PRIORITIES_NEW = [-1, 0, 1];
-const DEFAULT_NEW = 0;
-const TABLE_NAME = 'task';
+};
+const PRIORITIES_OLD = Object.values(priorityOld);
+const DEFAULT_OLD = priorityOld[0];
+const PRIORITIES_NEW = Object.values(priorityNew);
+const DEFAULT_NEW = priorityNew.MEDIUM;
 
 export class Migration20230130105713 extends Migration {
   async up(): Promise<void> {
     const knex = this.getKnex();
-    // dodaj lvl temp kolonu
-    this.addSql(
-      knex.schema.alterTable(TABLE_NAME, table => {
-        table.enum('priority_lvl', PRIORITIES_NEW).defaultTo(DEFAULT_NEW);
-      }).toQuery()
-    );
-    // dohvati sve taskove
-    const tasks = await this.execute(knex.select('id', 'priority').from(TABLE_NAME));
-    console.log('before: ');
-    console.log({ tasks });
-    // update taskova: u novu ubaci stare podatke namapirano
-    tasks.forEach(task => {
-      this.addSql(
-        knex(TABLE_NAME)
-          .where('id', task.id)
-          .update({
-            priority_lvl: taskPriority[task.priority as keyof typeof taskPriority]
-          })
-      );
-    });
-    console.log('AFTER: ');
-    console.log({ tasks });
-    this.addSql(
-      knex.schema.alterTable(TABLE_NAME, table => {
-        table.dropColumn('priority');
-      }).toQuery()
-    );
-    this.addSql(
-      knex.schema.alterTable(TABLE_NAME, table => {
-        table.renameColumn('priority_lvl', 'priority');
-      }).toQuery()
-    );
+    this.addTempColumn(knex, PRIORITIES_NEW, DEFAULT_NEW);
+    const tasks = await this.getTasks(knex);
+    this.updatePriorityField(knex, tasks, priorityNew);
+    this.dropColumn(knex, COLUMN_NAME);
+    this.renameColumn(knex, TEMP_COLUMN_NAME, COLUMN_NAME);
   }
 
   async down(): Promise<void> {
     const knex = this.getKnex();
-    // ADD novu temp kolonu
+    this.addTempColumn(knex, PRIORITIES_OLD, DEFAULT_OLD);
+    const tasks = await this.getTasks(knex);
+    this.updatePriorityField(knex, tasks, priorityOld);
+    this.dropColumn(knex, COLUMN_NAME);
+    this.renameColumn(knex, TEMP_COLUMN_NAME, COLUMN_NAME);
+  }
+
+  getTasks(knex: Knex) {
+    return this.execute(knex.select('id', COLUMN_NAME).from(TABLE_NAME));
+  }
+
+  addTempColumn(knex: Knex, values: Array<string | number>, defaultValue: string | number) {
     this.addSql(
       knex.schema.alterTable(TABLE_NAME, table => {
-        table.enum('temp', PRIORITIES_OLD).defaultTo(DEFAULT_OLD);
+        table.enum(TEMP_COLUMN_NAME, values).defaultTo(defaultValue);
       }).toQuery()
     );
-    const tasks = await this.execute(knex.select('id', 'priority').from(TABLE_NAME));
-    console.log({ tasks });
+  }
 
-    // ubaci podatke u temp kolonu
+  updatePriorityField(knex: Knex, tasks: Partial<Task>[], priority: PriorityNew | PriorityOld) {
     tasks.forEach(task => {
+      const priorityValue = priority[task[COLUMN_NAME] as keyof typeof priority];
+      const update = { [TEMP_COLUMN_NAME]: priorityValue };
       this.addSql(
         knex(TABLE_NAME)
           .where('id', task.id)
-          .update({
-            temp: reversePriority[task.priority as keyof typeof reversePriority]
-          })
+          .update(update)
       );
     });
-    // izbrisi staru invalidnu kolonu
+  }
+
+  renameColumn(knex: Knex, oldName: string, newName: string) {
     this.addSql(
       knex.schema.alterTable(TABLE_NAME, table => {
-        table.dropColumn('priority');
+        table.renameColumn(oldName, newName);
       }).toQuery()
     );
-    // novu preimeunuj u staru
+  }
+
+  dropColumn(knex: Knex, columName: string) {
     this.addSql(
       knex.schema.alterTable(TABLE_NAME, table => {
-        table.renameColumn('temp', 'priority');
+        table.dropColumn(columName);
       }).toQuery()
     );
   }
