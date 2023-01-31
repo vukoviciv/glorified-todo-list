@@ -10,6 +10,7 @@
     "db:migrate:undo:all": "mikro-orm migration:down --to 0",
     "db:migration:create": "npx mikro-orm migration:create --blank",
     "db:seed:all": "npx mikro-orm seeder:run",
+    "db:seed:tasks": "npx mikro-orm seeder:run --class=TaskSeeder",
     "build": "vite build",
     "preview": "vite preview"
   },
