@@ -4,9 +4,9 @@ import { BaseEntity } from './BaseEntity';
 import { ValuesType } from 'utility-types';
 
 export const taskPriority = {
-  HIGH: 'HIGH',
-  MEDIUM: 'MEDIUM',
-  LOW: 'LOW'
+  HIGH: 1,
+  MEDIUM: 0,
+  LOW: -1
 } as const;
 
 type TaskPriority = ValuesType<typeof taskPriority>;
