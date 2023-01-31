@@ -28,6 +28,7 @@
 
 <script>
 import Divider from 'primevue/Divider';
+import { fields } from '@/config/task';
 import { ref } from 'vue';
 import taskApi from '@/src/api/tasks';
 import TaskFilters from '../TaskFilters.vue';
@@ -39,13 +40,7 @@ export default {
     const isFetching = ref(true);
     const showDescription = ref(true);
     const showCreatedAt = ref(false);
-    const orderByValues = [
-      { name: 'Deadline', value: 'deadline' },
-      { name: 'Priority', value: 'priority' },
-      { name: 'Name', value: 'name' },
-      { name: 'Created at', value: 'createdAt' }
-    ];
-
+    const orderByValues = fields.list.map(({ label, value }) => ({ name: label, value }));
     await taskApi.fetch()
       .then(tasks => {
         items.value = tasks;
@@ -68,9 +63,11 @@ export default {
     updateOptions(payload) {
       Object.assign(this, payload);
     },
-    updateOrder(payload) {
+    updateOrder({ value }) {
+      let order = 'ASC';
+      if (value === fields.values.PRIORITY.value) order = 'DESC';
       const params = {
-        orderBy: { [payload.value]: 'ASC' }
+        orderBy: { [value]: order }
       };
       this.fetchItems(params);
     },
