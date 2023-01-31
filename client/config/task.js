@@ -1,14 +1,14 @@
 export const priority = {
   HIGH: {
     label: 'High',
-    value: 'HIGH'
+    value: 1
   },
   MEDIUM: {
     label: 'Medium',
-    value: 'MEDIUM'
+    value: 0
   },
   LOW: {
     label: 'Low',
-    value: 'LOW'
+    value: '-1'
   }
 };
