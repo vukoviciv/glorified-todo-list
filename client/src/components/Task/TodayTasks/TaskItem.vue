@@ -1,7 +1,10 @@
 <template>
   <div class="relative mb-2">
     <div class="task-item flex align-items-center">
-      <TdIcon :icon="config.icon" :class="`mr-3 ${config.className}`" />
+      <TdIcon
+        :icon="config.icon"
+        :class="`mr-3 ${config.className}`"
+        :text="config.text" />
       <div
         class="flex flex-grow-1 p-3"
         :class="!item.done ? config.className : 'grey'">
@@ -44,15 +47,18 @@ const { HIGH, MEDIUM, LOW } = priority.values;
 const priorityConfig = {
   [HIGH.value]: {
     className: 'red',
-    icon: PrimeIcons.ANGLE_DOUBLE_UP
+    icon: PrimeIcons.ANGLE_DOUBLE_UP,
+    text: `${HIGH.label} priority`
   },
   [MEDIUM.value]: {
     className: 'yellow',
-    icon: PrimeIcons.ANGLE_DOUBLE_RIGHT
+    icon: PrimeIcons.ANGLE_DOUBLE_RIGHT,
+    text: `${MEDIUM.label} priority`
   },
   [LOW.value]: {
     className: 'green',
-    icon: PrimeIcons.ANGLE_DOUBLE_DOWN
+    icon: PrimeIcons.ANGLE_DOUBLE_DOWN,
+    text: `${LOW.label} priority`
   }
 };
 
