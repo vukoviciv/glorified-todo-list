@@ -1,15 +1,24 @@
 export const priority = {
-  HIGH: {
-    label: 'High',
-    value: 1
+  values: {
+    HIGH: {
+      label: 'High',
+      value: 1
+    },
+    MEDIUM: {
+      label: 'Medium',
+      value: 0
+    },
+    LOW: {
+      label: 'Low',
+      value: -1
+    }
   },
-  MEDIUM: {
-    label: 'Medium',
-    value: 0
-  },
-  LOW: {
-    label: 'Low',
-    value: '-1'
+  get list() {
+    return [
+      this.values.HIGH,
+      this.values.MEDIUM,
+      this.values.LOW
+    ];
   }
 };
 

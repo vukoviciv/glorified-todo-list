@@ -39,7 +39,7 @@ import { PrimeIcons } from 'primevue/api';
 import { priority } from '@/config/task';
 import TdIcon from '@/src/components/common/TdIcon.vue';
 
-const { HIGH, MEDIUM, LOW } = priority;
+const { HIGH, MEDIUM, LOW } = priority.values;
 
 const priorityConfig = {
   [HIGH.value]: {
