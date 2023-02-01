@@ -29,7 +29,8 @@
     "primevue": "^3.21.0",
     "readline-sync": "^1.4.10",
     "utility-types": "^3.10.0",
-    "vue": "^3.2.45"
+    "vue": "^3.2.45",
+    "vue-router": "^4.1.6"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.19.1",
