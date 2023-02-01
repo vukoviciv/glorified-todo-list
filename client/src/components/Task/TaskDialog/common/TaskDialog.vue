@@ -10,9 +10,14 @@
         :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
         :style="{ width: '50vw' }"
         :modal="true"
-        :header="`${capitalizeWord(actionType)} task`"
         :draggable="false"
+        aria-labelledby="dialog-header-title"
         position="top">
+        <template #header>
+          <h1 id="dialog-header-title" class="text-2xl">
+            {{ capitalizeWord(actionType) }} task
+          </h1>
+        </template>
         <div class="m-0 p-3">
           <div class="p-float-label flex">
             <InputText
