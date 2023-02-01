@@ -3,7 +3,8 @@ import request from '@/shared/api/request';
 
 const url = {
   root: '/tasks',
-  update: id => `${url.root}/${id}`
+  update: id => `${url.root}/${id}`,
+  toggle: id => `${url.update(id)}/toggle`
 };
 
 function fetch(params = {}) {
@@ -19,8 +20,13 @@ function update(data) {
   return request.patch(url.update(id), data).then(extractData);
 }
 
+function toggleDone(id) {
+  return request.patch(url.toggle(id)).then(extractData);
+}
+
 export default {
   create,
   fetch,
-  update
+  update,
+  toggleDone
 };

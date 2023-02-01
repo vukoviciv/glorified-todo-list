@@ -7,7 +7,7 @@
         :class="!item.done ? config.className : 'grey'">
         <Checkbox
           v-model="isDone"
-          @input="$emit('update:task', { isDone: $event, task: item })"
+          @input="$emit('toggle:task', { task: item })"
           :input-id="item.id.toString()"
           :input-props="inputProps"
           :binary="true" />
@@ -34,7 +34,7 @@
 <script setup>
 import { computed, ref } from 'vue';
 import Checkbox from 'primevue/checkbox';
-import EditTaskDialog from './TaskDialog/EditTaskDialog.vue';
+import EditTaskDialog from '../TaskDialog/EditTaskDialog.vue';
 import { PrimeIcons } from 'primevue/api';
 import { priority } from '@/config/task';
 import TdIcon from '@/src/components/common/TdIcon.vue';

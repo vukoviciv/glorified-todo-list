@@ -13,7 +13,7 @@ export const priority = {
   }
 };
 
-export const fields = {
+export const orderBy = {
   values: {
     DEADLINE: {
       label: 'Deadline',

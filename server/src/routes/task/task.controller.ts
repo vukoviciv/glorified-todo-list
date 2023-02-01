@@ -6,6 +6,7 @@ async function list({ query, body }: Request, res: Response) {
   const { account } = body;
   const options = { orderBy: {} };
   if (query.orderBy) options.orderBy = query.orderBy;
+
   const tasks = await DI.em.find(Task, { account }, options);
 
   return res.json(tasks);
@@ -24,6 +25,13 @@ async function update({ body, params: { id } }: Request, res: Response) {
   return res.json(task);
 }
 
-// TODO: create toggleDone
+async function toggleDone({ params: { id } }: Request, res: Response) {
+  const task = await DI.em.findOne(Task, { id: parseInt(id) });
+  if (!task) throw new Error('No task found!');
 
-export { create, list, update };
+  task.done = !task?.done;
+  DI.em.persistAndFlush(task);
+  return res.json(task);
+}
+
+export { create, list, update, toggleDone };

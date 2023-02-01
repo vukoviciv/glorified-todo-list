@@ -7,7 +7,7 @@
       :show-description="showDescription"
       :show-created-at="showCreatedAt" />
     <TaskList
-      @update:task="toggleTask"
+      @toggle:task="toggleDone"
       :is-fetching="isFetching"
       :items="items"
       :show-description="showDescription"
@@ -17,18 +17,18 @@
       <span id="done-badge" class="p-tag">Done</span>
     </Divider>
     <TaskList
-      @update:task="toggleTask"
+      @toggle:task="toggleDone"
       :items="items"
       :show-description="showDescription"
       :show-created-at="showCreatedAt"
       aria-labelledby="done-badge"
-      done-list />
+      are-done />
   </div>
 </template>
 
 <script>
 import Divider from 'primevue/Divider';
-import { fields } from '@/config/task';
+import { orderBy } from '@/config/task';
 import { ref } from 'vue';
 import taskApi from '@/src/api/tasks';
 import TaskFilters from '../TaskFilters.vue';
@@ -40,7 +40,7 @@ export default {
     const isFetching = ref(true);
     const showDescription = ref(true);
     const showCreatedAt = ref(false);
-    const orderByValues = fields.list.map(({ label, value }) => ({ name: label, value }));
+    const orderByValues = orderBy.list.map(({ label, value }) => ({ name: label, value }));
     await taskApi.fetch()
       .then(tasks => {
         items.value = tasks;
@@ -56,20 +56,27 @@ export default {
     };
   },
   methods: {
-    toggleTask({ task, isDone }) {
-      task.done = isDone;
-      this.updateTask(task);
+    async toggleDone(payload) {
+      const { id } = payload.task;
+      this.isFetching = true;
+      const updatedTask = await taskApi.toggleDone(id).then(task => task);
+      this.items = this.updateItemsList(updatedTask);
+      this.isFetching = false;
     },
     updateOptions(payload) {
       Object.assign(this, payload);
     },
     updateOrder({ value }) {
+      const { PRIORITY } = orderBy.values;
       let order = 'ASC';
-      if (value === fields.values.PRIORITY.value) order = 'DESC';
+      if (value === PRIORITY.value) order = 'DESC';
       const params = {
         orderBy: { [value]: order }
       };
       this.fetchItems(params);
+    },
+    updateItemsList(task) {
+      return this.items.map(item => item.id === task.id ? task : item);
     },
     async fetchItems(params) {
       this.isFetching = true;
@@ -78,13 +85,6 @@ export default {
           this.items = tasks;
           this.isFetching = false;
         });
-    },
-    async updateTask(data) {
-      this.isFetching = true;
-      taskApi.update(data).then(task => {
-        this.task = task;
-        this.isFetching = false;
-      });
     }
   },
   components: {
