@@ -19,6 +19,6 @@ export class TaskSeeder extends Seeder {
 
     account.tasks.set(new TaskFactory(em).make(this.#taskCount));
     console.log(`${this.#taskCount} tasks successfully created!`);
-    em.persistAndFlush(account);
+    await em.persistAndFlush(account);
   }
 }
