@@ -89,7 +89,6 @@
 
 <script setup>
 // TODO: use form here!!!
-// TODO: Dialog does not have a heading?!
 // TODO: check label for priority
 // TODO: focus back on activator after the dialog is closed
 import Button from 'primevue/Button';
