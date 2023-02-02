@@ -13,7 +13,7 @@ export class DatabaseSeeder extends Seeder {
       this.setAccountsWithTasks(user, em);
     }).make(this.#userCount);
 
-    em.persistAndFlush(users);
+    await em.persistAndFlush(users);
   }
 
   setAccountsWithTasks(user: User, em: EntityManager) {

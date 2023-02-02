@@ -15,7 +15,7 @@
         modal>
         <template #header>
           <h1 id="dialog-header-title" class="text-2xl">
-            {{ capitalizeWord(actionType) }} task
+            <span class="capitalize">{{ actionType }}</span> task
           </h1>
         </template>
         <div class="m-0 p-3">
@@ -94,7 +94,6 @@
 // TODO: focus back on activator after the dialog is closed
 import Button from 'primevue/Button';
 import Calendar from 'primevue/calendar';
-import { capitalizeWord } from '@/src/utils/stringProcessors';
 import Dialog from 'primevue/Dialog';
 import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';

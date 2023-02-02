@@ -14,7 +14,7 @@ async function list({ query, body }: Request, res: Response) {
 
 async function create({ body }: Request, res: Response) {
   const task = new Task(body);
-  DI.em.persistAndFlush(task);
+  await DI.em.persistAndFlush(task);
 
   return res.json(task);
 }
@@ -30,7 +30,8 @@ async function toggleDone({ params: { id } }: Request, res: Response) {
   if (!task) throw new Error('No task found!');
 
   task.done = !task.done;
-  DI.em.persistAndFlush(task);
+  await DI.em.persistAndFlush(task);
+
   return res.json(task);
 }
 
