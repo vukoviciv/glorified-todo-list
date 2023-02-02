@@ -3,7 +3,7 @@
     @close="close"
     @action:emit="updateTask"
     action-type="update"
-    :task="task"
+    :initial-task="task"
     :show-dialog="showDialog">
     <template #activator>
       <Button
@@ -18,19 +18,24 @@
 
 <script setup>
 import Button from 'primevue/Button';
+import isEqual from 'lodash/isEqual';
 import { PrimeIcons } from 'primevue/api';
 import { ref } from 'vue';
 import taskApi from '@/src/api/tasks';
 import TaskDialog from './common/TaskDialog.vue';
 
-defineProps({
+const props = defineProps({
   task: { type: Object, required: true }
 });
 const showDialog = ref(false);
 
 const close = () => { showDialog.value = false; };
 const open = () => { showDialog.value = true; };
-const updateTask = task => {
+const updateTask = async task => {
+  if (isEqual(task, props.task)) {
+    close();
+    return;
+  }
   return taskApi.update(task).then(() => { close(); });
 };
 </script>

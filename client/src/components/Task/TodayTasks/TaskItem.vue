@@ -7,7 +7,7 @@
         :text="config.text" />
       <div
         class="flex flex-grow-1 p-3"
-        :class="!item.done ? config.className : 'grey'">
+        :class="taskWrapperClass">
         <Checkbox
           v-model="isDone"
           @input="$emit('toggle:task', { task: item })"
@@ -72,6 +72,9 @@ const isDone = ref(props.item.done);
 const inputProps = { 'aria-describedby': 'task-description' };
 const config = computed(() => {
   return priorityConfig[props.item.priority];
+});
+const taskWrapperClass = computed(() => {
+  return !props.item.done ? config.value.className : 'grey';
 });
 
 const processDate = dateTime => {

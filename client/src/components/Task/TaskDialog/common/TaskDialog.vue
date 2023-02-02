@@ -89,7 +89,6 @@
 
 <script setup>
 // TODO: use form here!!!
-// TODO: Dialog does not have a heading?!
 // TODO: check label for priority
 // TODO: focus back on activator after the dialog is closed
 import Button from 'primevue/Button';
@@ -104,22 +103,16 @@ import { required } from '@vuelidate/validators';
 import Textarea from 'primevue/textarea';
 import { useVuelidate } from '@vuelidate/core';
 
-const DEFAULT_TASK = {
-  name: '',
-  description: '',
-  priority: '',
-  deadline: ''
-};
-
 const props = defineProps({
   showDialog: { type: Boolean, required: true },
   actionType: { type: String, required: true },
-  task: { type: Object, default: () => ({}) }
+  initialTask: { type: Object, default: () => ({}) }
 });
 const emit = defineEmits(['close', 'action:emit']);
 const nameEl = ref(null);
 const priorities = priority.list.map(({ label, value }) => ({ name: label, value }));
-const task = ref(props.task) || ref(DEFAULT_TASK);
+const task = ref(Object.assign({}, props.initialTask));
+
 const validationRules = {
   name: { required }
 };
@@ -131,11 +124,12 @@ const close = () => {
 };
 const action = async () => {
   const isFormCorrect = await v$.value.$validate();
-  nameEl.value.$el.focus();
+  focusFirstInteractiveField();
   if (!isFormCorrect) return;
 
   emit('action:emit', task.value);
 };
+const focusFirstInteractiveField = () => (nameEl.value.$el.focus());
 </script>
 
 <style lang="scss" scoped>
