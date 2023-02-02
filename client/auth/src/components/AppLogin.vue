@@ -37,12 +37,12 @@
               <Button
                 type="submit"
                 label="Login"
-                class="flex flex-grow-1" />
+                class="flex-grow-1" />
             </div>
             <div class="px-8 mt-3 flex">
               <Button
                 label="Register"
-                class="p-button register-button flex flex-grow-1" />
+                class="p-button register-button flex-grow-1" />
             </div>
           </div>
         </template>

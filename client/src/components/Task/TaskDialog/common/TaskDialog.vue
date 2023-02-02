@@ -26,7 +26,7 @@
               id="name"
               type="text"
               required="required"
-              class="flex flex-grow-1"
+              class="flex-grow-1"
               aria-describedby="required-field-description"
               autofocus />
             <label for="name">Name</label>
@@ -45,7 +45,7 @@
               id="description"
               :auto-resize="true"
               rows="5"
-              class="flex flex-grow-1" />
+              class="flex-grow-1" />
             <label for="description">Description</label>
           </div>
           <div class="flex">
