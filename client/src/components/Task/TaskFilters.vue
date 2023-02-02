@@ -9,18 +9,18 @@
       placeholder="Order by" />
     <div class="field-checkbox ml-8">
       <Checkbox
-        v-model="showDescription"
-        @input="$emit('update:options', { showDescription: $event})"
+        @input="$emit('update:options', { showDescription: $event })"
+        :model-value="showDescription"
         input-id="show-description"
-        :binary="true" />
+        binary />
       <label for="show-description">Show <b>description</b></label>
     </div>
     <div class="field-checkbox ml-8">
       <Checkbox
-        v-model="showCreatedAt"
         @input="$emit('update:options', { showCreatedAt: $event })"
+        :model-value="showCreatedAt"
         input-id="show-created-at"
-        :binary="true" />
+        binary />
       <label for="show-created-at">Show <b>created at</b></label>
     </div>
   </div>
@@ -31,13 +31,11 @@ import Checkbox from 'primevue/checkbox';
 import Dropdown from 'primevue/dropdown';
 import { ref } from 'vue';
 
-const props = defineProps({
+defineProps({
   orderByValues: { type: Array, required: true },
   showDescription: { type: Boolean, required: true },
   showCreatedAt: { type: Boolean, require: true }
 });
 
 const selectedOrderBy = ref();
-const showDescription = ref(props.showDescription);
-const showCreatedAt = ref(props.showCreatedAt);
 </script>

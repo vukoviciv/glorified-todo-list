@@ -13,7 +13,7 @@
           @input="$emit('toggle:task', { task: item })"
           :input-id="item.id.toString()"
           :input-props="inputProps"
-          :binary="true" />
+          binary />
         <div class="ml-3">
           <div>
             <label :for="item.id">{{ item.name }}</label>

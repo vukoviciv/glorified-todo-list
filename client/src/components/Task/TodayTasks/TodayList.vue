@@ -60,7 +60,7 @@ export default {
       const { id } = payload.task;
       this.isFetching = true;
       const updatedTask = await taskApi.toggleDone(id).then(task => task);
-      this.items = this.updateItemsList(updatedTask);
+      this.updateItemsList(updatedTask);
       this.isFetching = false;
     },
     updateOptions(payload) {
@@ -76,7 +76,8 @@ export default {
       this.fetchItems(params);
     },
     updateItemsList(task) {
-      return this.items.map(item => item.id === task.id ? task : item);
+      const item = this.items.find(item => item.id === task.id);
+      Object.assign(item, task);
     },
     async fetchItems(params) {
       this.isFetching = true;

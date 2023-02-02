@@ -54,7 +54,7 @@
 <script setup>
 import Button from 'primevue/Button';
 import Card from 'primevue/card';
-import Divider from 'primevue/divider';
+import Divider from 'primevue/Divider';
 import InputText from 'primevue/inputtext';
 import { PrimeIcons } from 'primevue/api';
 import { ref } from 'vue';

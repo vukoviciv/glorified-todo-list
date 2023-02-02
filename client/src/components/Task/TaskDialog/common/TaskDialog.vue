@@ -9,10 +9,10 @@
         :visible="showDialog"
         :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
         :style="{ width: '50vw' }"
-        :modal="true"
         :draggable="false"
         aria-labelledby="dialog-header-title"
-        position="top">
+        position="top"
+        modal>
         <template #header>
           <h1 id="dialog-header-title" class="text-2xl">
             {{ capitalizeWord(actionType) }} task
@@ -43,9 +43,9 @@
             <Textarea
               v-model="task.description"
               id="description"
-              :auto-resize="true"
               rows="5"
-              class="flex-grow-1" />
+              class="flex-grow-1"
+              auto-resize />
             <label for="description">Description</label>
           </div>
           <div class="flex">
@@ -65,8 +65,8 @@
               <Calendar
                 v-model="task.deadline"
                 input-id="deadline"
-                :show-time="true"
-                class="flex flex-grow-1 mt-2" />
+                class="flex flex-grow-1 mt-2"
+                show-time />
             </div>
           </div>
         </div>
