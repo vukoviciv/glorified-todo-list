@@ -29,7 +29,7 @@ async function toggleDone({ params: { id } }: Request, res: Response) {
   const task = await DI.em.findOne(Task, { id: parseInt(id) });
   if (!task) throw new Error('No task found!');
 
-  task.done = !task?.done;
+  task.done = !task.done;
   await DI.em.persistAndFlush(task);
   return res.json(task);
 }
