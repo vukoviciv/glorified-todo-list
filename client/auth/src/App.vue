@@ -1,5 +1,5 @@
 <template>
-  <MainHeader heading="Auth" />
+  <MainHeader />
   <main>
     <RouterView />
   </main>

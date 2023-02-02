@@ -1,5 +1,5 @@
 <template>
-  <MainHeader heading="My Glorified TODO list">
+  <MainHeader>
     <template #options>
       <span>Ivana Šimić</span>
       <i :class="`${PrimeIcons.USER} ml-4`"></i>

@@ -9,7 +9,6 @@ import PrimeVue from 'primevue/config';
 import router from './router';
 
 const app = createApp(App);
-console.log('aaaa');
 app
   .use(PrimeVue)
   .use(router)
