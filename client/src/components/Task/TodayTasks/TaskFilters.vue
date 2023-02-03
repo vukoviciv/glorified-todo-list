@@ -10,9 +10,9 @@
     <div class="field-checkbox ml-8">
       <Checkbox
         v-model="description"
-        @input="$emit('update:options', { showDescription: $event})"
+        @input="$emit('update:options', { showDescription: $event })"
         input-id="show-description"
-        :binary="true" />
+        binary />
       <label for="show-description">Show <b>description</b></label>
     </div>
     <div class="field-checkbox ml-8">
@@ -20,7 +20,7 @@
         v-model="createdAt"
         @input="$emit('update:options', { showCreatedAt: $event })"
         input-id="show-created-at"
-        :binary="true" />
+        binary />
       <label for="show-created-at">Show <b>created at</b></label>
     </div>
   </div>

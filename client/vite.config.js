@@ -1,5 +1,5 @@
 import { defineConfig, loadEnv } from 'vite';
-import path from 'path';
+import { resolve } from 'path';
 import vue from '@vitejs/plugin-vue';
 
 function readConfig(config = process.env) {
@@ -18,8 +18,16 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: [{
         find: '@/',
-        replacement: `${path.resolve(__dirname, './')}/`
+        replacement: `${resolve(__dirname, './')}/`
       }]
+    },
+    build: {
+      rollupOptions: {
+        input: {
+          main: resolve(__dirname, 'index.html'),
+          auth: resolve(__dirname, 'auth/index.html')
+        }
+      }
     },
     server: {
       proxy: {
