@@ -7,5 +7,5 @@ ul, li {
 }
 /* https://developer.mozilla.org/en-US/docs/Web/CSS/list-style#accessibility_concerns */
 ul li::before {
-  content: "";
+  content: "\200B";
 }
