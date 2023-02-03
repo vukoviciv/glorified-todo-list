@@ -22,8 +22,6 @@ import TaskItem from './TaskItem.vue';
 const props = defineProps({
   items: { type: Array, required: true },
   options: { type: Object, required: true }
-  // showDescription: { type: Boolean, required: true },
-  // showCreatedAt: { type: Boolean, require: true }
 });
 
 const className = props.doneList ? 'done-tasks' : 'pending-tasks';
