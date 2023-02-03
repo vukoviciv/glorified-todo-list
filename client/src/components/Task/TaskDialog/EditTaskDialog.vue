@@ -28,7 +28,7 @@ const props = defineProps({
   task: { type: Object, required: true }
 });
 const showDialog = ref(false);
-
+const emit = defineEmits(['task:edit']);
 const close = () => { showDialog.value = false; };
 const open = () => { showDialog.value = true; };
 const updateTask = async task => {
@@ -36,6 +36,9 @@ const updateTask = async task => {
     close();
     return;
   }
-  return taskApi.update(task).then(() => { close(); });
+  await taskApi.update(task).then(task => {
+    emit('task:edit', task);
+  });
+  close();
 };
 </script>

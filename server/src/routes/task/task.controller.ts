@@ -18,8 +18,7 @@ async function create({ body }: Request, res: Response) {
 }
 
 async function update({ body, params: { id } }: Request, res: Response) {
-  const fields = { fields: ['name', 'description', 'deadline', 'priority'] } as const;
-  const task = await DI.em.findOne(Task, { id: parseInt(id) }, fields);
+  const task = await DI.em.findOne(Task, { id: parseInt(id) });
   if (!task) throw new Error(`Task with ID: ${id} does not exist!`);
 
   task.name = body?.name;

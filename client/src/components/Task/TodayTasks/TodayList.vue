@@ -8,6 +8,7 @@
       :show-created-at="showCreatedAt" />
     <TaskList
       @toggle:task="toggleDone"
+      @task:edit="updateItemsList($event)"
       :items="inProgressTasks"
       :show-description="showDescription"
       :show-created-at="showCreatedAt"
@@ -17,6 +18,7 @@
     </Divider>
     <TaskList
       @toggle:task="toggleDone"
+      @task:edit="updateItemsList($event)"
       :items="doneTasks"
       :show-description="showDescription"
       :show-created-at="showCreatedAt"
@@ -65,7 +67,7 @@ export default {
     async toggleDone(payload) {
       const { id } = payload.task;
       const updatedTask = await taskApi.toggleDone(id).then(task => task);
-      this.items = this.updateItemsList(updatedTask);
+      this.updateItemsList(updatedTask);
     },
     updateOptions(payload) {
       Object.assign(this, payload);
@@ -80,7 +82,9 @@ export default {
       this.fetchItems(params);
     },
     updateItemsList(task) {
-      return this.items.map(item => item.id === task.id ? task : item);
+      this.items = this.items.map(item => {
+        return item.id === task.id ? task : item;
+      });
     },
     async fetchItems(params) {
       await taskApi.fetch(params)

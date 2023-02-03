@@ -7,6 +7,7 @@
       <Transition duration="500" name="nested">
         <TaskItem
           @toggle:task="$emit('toggle:task', $event)"
+          @task:edit="$emit('task:edit', $event)"
           :item="item"
           :show-description="showDescription"
           :show-created-at="showCreatedAt" />
@@ -16,6 +17,7 @@
 </template>
 
 <script setup>
+// TODO: test a11y for removal and addition of items in lists
 import TaskItem from './TaskItem.vue';
 
 const props = defineProps({
