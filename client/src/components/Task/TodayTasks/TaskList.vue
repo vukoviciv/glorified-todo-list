@@ -9,8 +9,7 @@
           @toggle:task="$emit('toggle:task', $event)"
           @task:edit="$emit('task:edit', $event)"
           :item="item"
-          :show-description="showDescription"
-          :show-created-at="showCreatedAt" />
+          v-bind="options" />
       </Transition>
     </li>
   </ul>
@@ -22,8 +21,9 @@ import TaskItem from './TaskItem.vue';
 
 const props = defineProps({
   items: { type: Array, required: true },
-  showDescription: { type: Boolean, required: true },
-  showCreatedAt: { type: Boolean, require: true }
+  options: { type: Object, required: true }
+  // showDescription: { type: Boolean, required: true },
+  // showCreatedAt: { type: Boolean, require: true }
 });
 
 const className = props.doneList ? 'done-tasks' : 'pending-tasks';

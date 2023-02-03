@@ -1,16 +1,21 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 const MainPage = () => import('./components/MainPage.vue');
-const TasksMain = () => import('./components/Task/TasksMain.vue');
+const TodayTasks = () => import('./components/Task/TodayTasks/index.vue');
+const WeekTasks = () => import('./components/Task/WeekTasks/index.vue');
 
 const routes = [{
   path: '/',
   name: 'main',
   component: MainPage,
   children: [{
-    path: '',
-    name: 'tasks-main',
-    component: TasksMain
+    path: '/today',
+    name: 'today-tasks',
+    component: TodayTasks
+  }, {
+    path: '/week',
+    name: 'week-tasks',
+    component: WeekTasks
   }]
 }];
 

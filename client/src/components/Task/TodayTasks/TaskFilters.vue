@@ -9,7 +9,7 @@
       placeholder="Order by" />
     <div class="field-checkbox ml-8">
       <Checkbox
-        v-model="showDescription"
+        v-model="description"
         @input="$emit('update:options', { showDescription: $event})"
         input-id="show-description"
         :binary="true" />
@@ -17,7 +17,7 @@
     </div>
     <div class="field-checkbox ml-8">
       <Checkbox
-        v-model="showCreatedAt"
+        v-model="createdAt"
         @input="$emit('update:options', { showCreatedAt: $event })"
         input-id="show-created-at"
         :binary="true" />
@@ -38,6 +38,6 @@ const props = defineProps({
 });
 
 const selectedOrderBy = ref();
-const showDescription = ref(props.showDescription);
-const showCreatedAt = ref(props.showCreatedAt);
+const description = ref(props.showDescription);
+const createdAt = ref(props.showCreatedAt);
 </script>
