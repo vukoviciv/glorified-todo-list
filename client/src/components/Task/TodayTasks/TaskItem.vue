@@ -24,8 +24,8 @@
               {{ item.description }}
             </p>
           </div>
-          <p v-if="item.deadline" class="ml-auto mt-2 flex">
-            <b>Deadline</b>: {{ processDate(item.deadline) }}
+          <p v-if="displayDeadline" class="ml-auto mt-2 flex">
+            <b>Deadline</b>: {{ item.deadlineDate }} {{ item.deadlineTime }}
           </p>
         </div>
       </div>
@@ -81,6 +81,9 @@ const taskWrapperClass = computed(() => {
 });
 const displayDescription = computed(() => {
   return props.item.description && props.showDescription;
+});
+const displayDeadline = computed(() => {
+  return props.item.deadlineDate && props.item.deadlineTime;
 });
 
 const processDate = dateTime => {
