@@ -3,7 +3,7 @@
     <li
       v-for="item in items"
       :key="item.id"
-      class="mt-4 list-item">
+      class="list-item">
       <Transition duration="500" name="nested">
         <TaskItem
           @toggle:task="$emit('toggle:task', $event)"

@@ -1,5 +1,5 @@
 <template>
-  <div class="relative mb-2">
+  <div class="relative">
     <div class="task-item flex align-items-center">
       <TdIcon
         :icon="config.icon"
@@ -17,7 +17,10 @@
         <div class="ml-3">
           <div>
             <label :for="item.id">{{ item.name }}</label>
-            <p v-if="showDescription" :id="`task-description-${item.id}`" class="mt-2">
+            <p
+              v-if="displayDescription"
+              :id="`task-description-${item.id}`"
+              class="mt-2">
               {{ item.description }}
             </p>
           </div>
@@ -72,11 +75,12 @@ const props = defineProps({
 
 const isDone = ref(props.item.done);
 const inputProps = { 'aria-describedby': 'task-description' };
-const config = computed(() => {
-  return priorityConfig[props.item.priority];
-});
+const config = computed(() => priorityConfig[props.item.priority]);
 const taskWrapperClass = computed(() => {
   return !props.item.done ? config.value.className : 'grey';
+});
+const displayDescription = computed(() => {
+  return props.item.description && props.showDescription;
 });
 
 const processDate = dateTime => {
