@@ -5,7 +5,9 @@
       @update:order="updateOrder"
       :order-by-values="orderByValues"
       v-bind="options" />
+    <TasksSkeleton v-if="isFetching" />
     <TaskList
+      v-else
       @toggle:task="toggleDone"
       @task:edit="updateItemsList($event)"
       :items="inProgressTasks"
@@ -14,7 +16,9 @@
     <Divider align="center">
       <span id="done-badge" class="p-tag">Done</span>
     </Divider>
+    <TasksSkeleton v-if="isFetching" />
     <TaskList
+      v-else
       @toggle:task="toggleDone"
       @task:edit="updateItemsList($event)"
       :items="doneTasks"
@@ -30,11 +34,14 @@ import { orderBy } from '@/config/task';
 import taskApi from '@/src/api/tasks';
 import TaskFilters from './TaskFilters.vue';
 import TaskList from './TaskList.vue';
+import TasksSkeleton from './TasksSkeleton.vue';
 
 const DEFAULT_ORDER = 'ASC';
 const props = defineProps({
   newTaskCreated: { type: Boolean, required: true }
 });
+
+const isFetching = ref(true);
 const items = ref([]);
 const options = ref({
   showDescription: true,
@@ -72,9 +79,11 @@ const updateOptions = payload => {
 };
 
 const fetchItems = async (params = {}) => {
+  isFetching.value = true;
   await taskApi.fetch(params)
     .then(tasks => {
       items.value = tasks;
+      isFetching.value = false;
     });
 };
 watch(
@@ -83,7 +92,9 @@ watch(
     if (val) fetchItems();
   });
 
-onMounted(() => fetchItems());
+onMounted(() => {
+  fetchItems();
+});
 </script>
 <script>
 export default { name: 'today-tasks' };

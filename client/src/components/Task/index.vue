@@ -1,21 +1,13 @@
 <template>
   <CreateTaskDialog @task:created="handleTaskCreate" />
-  <TabMenu :model="menuItems" />
-  <Suspense>
-    <template #default>
-      <RouterView :new-task-created="newTaskCreated" />
-    </template>
-    <template #fallback>
-      <TasksSkeleton />
-    </template>
-  </Suspense>
+  <TabMenu :model="menuItems" class="flex-grow-1 justify-space-around" />
+  <RouterView :new-task-created="newTaskCreated" />
 </template>
 
 <script setup>
 import CreateTaskDialog from './TaskDialog/CreateTaskDialog.vue';
 import { ref } from 'vue';
 import TabMenu from 'primevue/tabmenu';
-import TasksSkeleton from './TodayTasks/TasksSkeleton.vue';
 
 const menuItems = [
   { label: 'Today', to: '/today' }, // TODO: router name?
@@ -31,10 +23,3 @@ export default {
   name: 'tasks-main'
 };
 </script>
-
-<style lang="scss" scoped>
-:deep(.p-tabview-nav-link) {
-  display: block;
-  text-align: center;
-}
-</style>
