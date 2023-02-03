@@ -1,12 +1,11 @@
 <template>
   <main class="main-container p-5 m-auto">
-    <CreateTaskDialog />
-    <RouterView />
+    <TasksMain />
   </main>
 </template>
 
 <script setup>
-import CreateTaskDialog from './Task/TaskDialog/CreateTaskDialog.vue';
+import TasksMain from './Task/index.vue';
 </script>
 <style lang="scss" scoped>
 .main-container {
