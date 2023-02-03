@@ -6,7 +6,6 @@
       class="mt-4 list-item">
       <Transition duration="500" name="nested">
         <TaskItem
-          v-if="areDone ? item.done : !item.done"
           @toggle:task="$emit('toggle:task', $event)"
           :item="item"
           :show-description="showDescription"
@@ -21,7 +20,6 @@ import TaskItem from './TaskItem.vue';
 
 const props = defineProps({
   items: { type: Array, required: true },
-  areDone: { type: Boolean, default: false },
   showDescription: { type: Boolean, required: true },
   showCreatedAt: { type: Boolean, require: true }
 });

@@ -8,8 +8,7 @@
       :show-created-at="showCreatedAt" />
     <TaskList
       @toggle:task="toggleDone"
-      :is-fetching="isFetching"
-      :items="items"
+      :items="inProgressTasks"
       :show-description="showDescription"
       :show-created-at="showCreatedAt"
       aria-label="Pending tasks for today" />
@@ -18,11 +17,10 @@
     </Divider>
     <TaskList
       @toggle:task="toggleDone"
-      :items="items"
+      :items="doneTasks"
       :show-description="showDescription"
       :show-created-at="showCreatedAt"
-      aria-labelledby="done-badge"
-      are-done />
+      aria-labelledby="done-badge" />
   </div>
 </template>
 
@@ -55,13 +53,19 @@ export default {
       showDescription
     };
   },
+  computed: {
+    doneTasks() {
+      return this.items.filter(it => it.done);
+    },
+    inProgressTasks() {
+      return this.items.filter(it => !it.done);
+    }
+  },
   methods: {
     async toggleDone(payload) {
       const { id } = payload.task;
-      this.isFetching = true;
       const updatedTask = await taskApi.toggleDone(id).then(task => task);
       this.items = this.updateItemsList(updatedTask);
-      this.isFetching = false;
     },
     updateOptions(payload) {
       Object.assign(this, payload);
@@ -79,11 +83,9 @@ export default {
       return this.items.map(item => item.id === task.id ? task : item);
     },
     async fetchItems(params) {
-      this.isFetching = true;
       await taskApi.fetch(params)
         .then(tasks => {
           this.items = tasks;
-          this.isFetching = false;
         });
     }
   },
