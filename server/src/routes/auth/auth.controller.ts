@@ -15,13 +15,16 @@ async function login(req: Request, res: Response) {
 
   const payload = { email: user.email, id: user.id };
   const jwtData = jwt.sign(payload, SECRET_KEY);
-  res.cookie(COOKIE_NAME, jwtData);
 
-  return res.json(user);
+  return res
+    .cookie(COOKIE_NAME, jwtData)
+    .json(user);
 }
 
-async function logout(req: Request, res: Response) {
-  return res.json('logged out');
+async function logout(_req: Request, res: Response) {
+  return res
+    .clearCookie(COOKIE_NAME)
+    .json('logged out');
 }
 
 export { login, logout };
