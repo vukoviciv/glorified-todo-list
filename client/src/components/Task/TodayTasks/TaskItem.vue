@@ -32,6 +32,9 @@
       <EditTaskDialog
         @task:edit="$emit('task:edit', $event)"
         :task="item" />
+      <DeleteDialog
+        @task:delete="$emit('task:delete', $event)"
+        :task="item" />
     </div>
     <p v-if="showCreatedAt" class="ml-5 pl-1 pt-1">
       <i>Created: {{ processDate(item.createdAt) }}</i>
@@ -42,6 +45,7 @@
 <script setup>
 import { computed, ref } from 'vue';
 import Checkbox from 'primevue/checkbox';
+import DeleteDialog from '../TaskDialog/DeleteDialog.vue';
 import EditTaskDialog from '../TaskDialog/EditTaskDialog.vue';
 import { PrimeIcons } from 'primevue/api';
 import { priority } from '@/config/task';

@@ -8,6 +8,7 @@
         <TaskItem
           @toggle:task="$emit('toggle:task', $event)"
           @task:edit="$emit('task:edit', $event)"
+          @task:delete="$emit('task:delete', $event)"
           :item="item"
           v-bind="options" />
       </Transition>

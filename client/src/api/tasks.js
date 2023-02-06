@@ -4,6 +4,7 @@ import request from '@/shared/api/request';
 const url = {
   root: '/tasks',
   update: id => `${url.root}/${id}`,
+  delete: id => `${url.root}/${id}`,
   toggle: id => `${url.update(id)}/toggle`
 };
 
@@ -22,11 +23,15 @@ function update(data) {
 function toggleDone(id) {
   return request.patch(url.toggle(id)).then(extractData);
 }
+
+function deleteTask(id) {
+  return request.delete(url.delete(id)).then(extractData);
 }
 
 export default {
   create,
   fetch,
   update,
+  deleteTask,
   toggleDone
 };

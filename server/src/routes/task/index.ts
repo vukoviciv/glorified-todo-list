@@ -10,6 +10,7 @@ router
   .post('/', ctrl.create)
   .param('id', parseParamId)
   .patch('/:id', ctrl.update)
+  .delete('/:id', ctrl.deleteTask)
   .patch('/:id/toggle', ctrl.toggleDone);
 
 export default {

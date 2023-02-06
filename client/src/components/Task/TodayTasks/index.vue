@@ -10,6 +10,7 @@
       v-else
       @toggle:task="toggleDone"
       @task:edit="updateItemsList($event)"
+      @task:delete="taskDelete($event)"
       :items="inProgressTasks"
       :options="options"
       aria-label="Pending tasks for today" />
@@ -21,6 +22,7 @@
       v-else
       @toggle:task="toggleDone"
       @task:edit="updateItemsList($event)"
+      @task:delete="taskDelete($event)"
       :items="doneTasks"
       :options="options"
       aria-labelledby="done-badge" />
@@ -55,14 +57,18 @@ const inProgressTasks = computed(() => items.value.filter(it => !it.done));
 
 const toggleDone = async payload => {
   const { id } = payload.task;
-  const updatedTask = await taskApi.toggleDone(id).then(task => task);
-  updateItemsList(updatedTask);
+  const task = await taskApi.toggleDone(id).then(task => task);
+  updateItemsList(task);
 };
 
 const updateItemsList = task => {
   items.value = items.value.map(item => {
     return item.id === task.id ? task : item;
   });
+};
+
+const taskDelete = task => {
+  items.value = items.value.filter(item => item.id !== task.id);
 };
 
 const updateOrder = ({ value }) => {

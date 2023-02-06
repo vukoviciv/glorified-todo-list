@@ -31,7 +31,13 @@ async function update({ body }: Request, res: Response) {
   return res.json(task);
 }
 
-async function toggleDone({ params: { id } }: Request, res: Response) {
+async function deleteTask({ body }: Request, res: Response) {
+  const { parsedId: id } = body;
+  const task = DI.em.getReference(Task, parseInt(id));
+  await DI.em.remove(task).flush();
+
+  return res.json(task);
+}
 
 async function toggleDone({ body }: Request, res: Response) {
   const { parsedId: id } = body;
@@ -44,4 +50,4 @@ async function toggleDone({ body }: Request, res: Response) {
   return res.json(task);
 }
 
-export { create, list, update, toggleDone };
+export { create, list, update, deleteTask, toggleDone };
