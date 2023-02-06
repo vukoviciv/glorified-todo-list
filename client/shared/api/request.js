@@ -1,10 +1,20 @@
 import axios from 'axios';
 
-const config = {
-  baseURL: import.meta.env.VITE_API_PATH,
+const commonConfig = {
   headers: { 'Content-Type': 'application/json' }
 };
 
-const client = axios.create(config);
+const mainConfig = {
+  baseURL: import.meta.env.VITE_API_PATH,
+  ...commonConfig
+};
 
-export default client;
+const authConfig = {
+  baseURL: import.meta.env.VITE_API_AUTH_PATH,
+  ...commonConfig
+};
+
+const main = axios.create(mainConfig);
+const auth = axios.create(authConfig);
+
+export { auth, main };

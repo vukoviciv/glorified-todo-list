@@ -1,6 +1,6 @@
 <template>
   <div class="login-wrapper min-h-screen">
-    <form class="pt-8">
+    <form @submit.prevent class="pt-8">
       <Card class="m-auto md:col-6">
         <template #title>
           <h2 class="text-center">Hello!</h2>
@@ -27,6 +27,7 @@
           <div class="mb-5">
             <div class="px-8 flex">
               <Button
+                @click="login()"
                 type="submit"
                 label="Login"
                 class="flex-grow-1" />
@@ -44,14 +45,21 @@
 </template>
 
 <script setup>
+import authApi from '@/auth/src/api/auth';
 import Button from 'primevue/Button';
 import Card from 'primevue/card';
 import Divider from 'primevue/Divider';
 import InputText from 'primevue/inputtext';
 import { PrimeIcons } from 'primevue/api';
 import { ref } from 'vue';
-
+// TODO: validation on email field
 const email = ref('');
+const login = async () => {
+  const payload = { email: email.value };
+  await authApi
+    .login(payload)
+    .then(data => console.log(data));
+};
 </script>
 
 <style lang="scss" scoped>
