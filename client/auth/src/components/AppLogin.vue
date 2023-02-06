@@ -16,14 +16,6 @@
                 class="flex flex-grow-1" />
               <label for="email">Email</label>
             </div>
-            <div class="p-float-label mt-4 flex">
-              <InputText
-                v-model="password"
-                id="password"
-                type="password"
-                class="flex flex-grow-1" />
-              <label for="password">Password</label>
-            </div>
           </div>
         </template>
         <template #footer>
@@ -58,9 +50,8 @@ import Divider from 'primevue/Divider';
 import InputText from 'primevue/inputtext';
 import { PrimeIcons } from 'primevue/api';
 import { ref } from 'vue';
-// TODO: email for login? add to user db
+
 const email = ref('');
-const password = ref('');
 </script>
 
 <style lang="scss" scoped>
