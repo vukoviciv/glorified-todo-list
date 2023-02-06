@@ -27,7 +27,8 @@ export class UserFactory extends Factory<User> {
   definition(faker: Faker): Partial<User> {
     return {
       firstName: faker.name.firstName(),
-      lastName: faker.name.lastName()
+      lastName: faker.name.lastName(),
+      email: faker.internet.email().toLocaleLowerCase()
     };
   }
 }

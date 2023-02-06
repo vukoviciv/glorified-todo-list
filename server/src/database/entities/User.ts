@@ -4,7 +4,8 @@ import { BaseEntity } from './BaseEntity';
 
 type Props = {
   firstName: string,
-  lastName: string
+  lastName: string,
+  email: string
 }
 
 @Entity()
@@ -15,13 +16,17 @@ export class User extends BaseEntity {
   @Property()
     lastName: string;
 
+  @Property({ unique: true })
+    email: string;
+
   @OneToMany(() => Account, a => a.user)
     accounts = new Collection<Account>(this);
 
-  constructor({ firstName, lastName }: Props) {
+  constructor({ firstName, lastName, email }: Props) {
     super();
 
     this.firstName = firstName;
     this.lastName = lastName;
+    this.email = email;
   }
 }
