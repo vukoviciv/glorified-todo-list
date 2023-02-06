@@ -4,9 +4,9 @@ import type { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
 
 export class DatabaseSeeder extends Seeder {
-  #accountCount = 3;
-  #taskCount = 20;
-  #userCount = 2;
+  #accountCount = 2;
+  #taskCount = 10;
+  #userCount = 5;
 
   async run(em: EntityManager): Promise<void> {
     const users = new UserFactory(em).each(user => {
