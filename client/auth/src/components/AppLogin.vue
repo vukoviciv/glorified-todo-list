@@ -29,7 +29,7 @@
         <template #footer>
           <Divider align="center">
             <div class="inline-flex">
-              <i :class="`${PrimeIcons.USER} mx-2`"></i>
+              <span :class="`${PrimeIcons.USER} mx-2`"></span>
             </div>
           </Divider>
           <div class="mb-5">

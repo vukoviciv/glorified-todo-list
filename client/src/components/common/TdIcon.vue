@@ -1,6 +1,6 @@
 <template>
   <span>
-    <i v-bind="$attrs" aria-hidden="true" :class="icon"></i>
+    <span v-bind="$attrs" aria-hidden="true" :class="icon"></span>
     <span v-if="text" class="p-sr-only">{{ text }}</span>
   </span>
 </template>

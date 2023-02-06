@@ -2,7 +2,7 @@
   <MainHeader>
     <template #options>
       <span>Ivana Šimić</span>
-      <i :class="`${PrimeIcons.USER} ml-4`"></i>
+      <span :class="`${PrimeIcons.USER} ml-4`"></span>
     </template>
   </MainHeader>
   <RouterView />
