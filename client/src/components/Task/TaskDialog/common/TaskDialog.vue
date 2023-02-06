@@ -3,87 +3,85 @@
     <div class="create-wrapper flex justify-content-end">
       <slot name="activator"></slot>
     </div>
-    <form>
-      <Dialog
-        @update:visible="close()"
-        :visible="showDialog"
-        :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
-        :style="{ width: '50vw' }"
-        :draggable="false"
-        aria-labelledby="dialog-header-title"
-        position="top"
-        modal>
-        <template #header>
-          <h1 id="dialog-header-title" class="text-2xl">
-            <span class="capitalize">{{ actionType }}</span> task
-          </h1>
-        </template>
-        <div class="m-0 p-3">
-          <div class="p-float-label flex">
-            <InputText
-              ref="nameEl"
-              v-model="task.name"
-              id="name"
-              type="text"
-              required="required"
-              class="flex-grow-1"
-              aria-describedby="required-field-description"
-              autofocus />
-            <label for="name">Name</label>
+    <Dialog
+      @update:visible="close()"
+      :visible="showDialog"
+      :breakpoints="{ '960px': '75vw', '640px': '90vw' }"
+      :style="{ width: '50vw' }"
+      :draggable="false"
+      aria-labelledby="dialog-header-title"
+      position="top"
+      modal>
+      <template #header>
+        <h1 id="dialog-header-title" class="text-2xl">
+          <span class="capitalize">{{ actionType }}</span> task
+        </h1>
+      </template>
+      <div class="m-0 p-3">
+        <div class="p-float-label flex">
+          <InputText
+            ref="nameEl"
+            v-model="task.name"
+            id="name"
+            type="text"
+            required="required"
+            class="flex-grow-1"
+            aria-describedby="required-field-description"
+            autofocus />
+          <label for="name">Name</label>
+        </div>
+        <small id="required-field-description" class="required-field">
+          This field is required
+        </small>
+        <div class="error-msg ml-1 mt-1" aria-live="polite">
+          <span v-for="error of v$.name.$errors" :key="error.$uid">
+            Field {{ error.$property }} is required.
+          </span>
+        </div>
+        <div class="p-float-label mt-5 flex">
+          <Textarea
+            v-model="task.description"
+            id="description"
+            rows="5"
+            class="flex-grow-1"
+            auto-resize />
+          <label for="description">Description</label>
+        </div>
+        <div class="flex">
+          <div class="mt-4 col-6">
+            <label for="priority">Priority</label>
+            <Dropdown
+              v-model="task.priority"
+              :model-value="Number.parseInt(task.priority)"
+              :options="priorities"
+              input-id="priority"
+              option-label="name"
+              option-value="value"
+              class="flex flex-grow-1 mt-2" />
           </div>
-          <small id="required-field-description" class="required-field">
-            This field is required
-          </small>
-          <div class="error-msg ml-1 mt-1" aria-live="polite">
-            <span v-for="error of v$.name.$errors" :key="error.$uid">
-              Field {{ error.$property }} is required.
-            </span>
-          </div>
-          <div class="p-float-label mt-5 flex">
-            <Textarea
-              v-model="task.description"
-              id="description"
-              rows="5"
-              class="flex-grow-1"
-              auto-resize />
-            <label for="description">Description</label>
-          </div>
-          <div class="flex">
-            <div class="mt-4 col-6">
-              <label for="priority">Priority</label>
-              <Dropdown
-                v-model="task.priority"
-                :model-value="Number.parseInt(task.priority)"
-                :options="priorities"
-                input-id="priority"
-                option-label="name"
-                option-value="value"
-                class="flex flex-grow-1 mt-2" />
-            </div>
-            <div class="mt-4 col-6">
-              <label for="deadline" class="mr-3">Deadline</label>
-              <Calendar
-                v-model="task.deadline"
-                input-id="deadline"
-                class="flex flex-grow-1 mt-2"
-                show-time />
-            </div>
+          <div class="mt-4 col-6">
+            <label for="deadline" class="mr-3">Deadline</label>
+            <Calendar
+              v-model="task.deadline"
+              input-id="deadline"
+              class="flex flex-grow-1 mt-2"
+              show-time />
           </div>
         </div>
-        <template #footer>
-          <Button
-            @click="close()"
-            label="Cancel"
-            :icon="PrimeIcons.TIMES"
-            class="p-button-text" />
-          <Button
-            @click="action()"
-            :label="`${actionType} task`"
-            :icon="PrimeIcons.CHECK"
-            class="capitalize" />
-        </template>
-      </Dialog>
-    </form>
+      </div>
+      <template #footer>
+        <Button
+          @click="close()"
+          label="Cancel"
+          :icon="PrimeIcons.TIMES"
+          class="p-button-text" />
+        <Button
+          @click="action()"
+          :label="`${actionType} task`"
+          :icon="PrimeIcons.CHECK"
+          class="capitalize" />
+      </template>
+    </Dialog>
   </div>
 </template>
 
