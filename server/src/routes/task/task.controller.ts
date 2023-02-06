@@ -1,10 +1,15 @@
+import { Account, Task } from '../../database/entities';
 import { Request, Response } from 'express';
 import { DI } from '../../database/index';
-import { Task } from '../../database/entities';
 
-async function list({ query, body: { account } }: Request, res: Response) {
+async function list({ query, body: { user } }: Request, res: Response) {
   const options = { orderBy: {} };
   if (query.orderBy) options.orderBy = query.orderBy;
+
+  const accounts = await DI.em.find(Account, { user });
+  const account = accounts.pop();
+  if (!account) throw new Error('NO ACCOUNT');
+
   const tasks = await DI.em.find(Task, { account }, options);
 
   return res.json(tasks);

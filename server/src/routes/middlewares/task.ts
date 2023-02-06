@@ -1,13 +1,12 @@
 import { NextFunction, Request, Response } from 'express';
-import { Account } from '../../database/entities';
 import { DI } from '../../database/index';
+import { User } from '../../database/entities';
 
-export async function getAccount(req: Request, _res: Response, next: NextFunction) {
-  const accounts = await DI.em.find(Account, {});
-  if (!accounts) throw new Error('NO ACCOUNT');
+export async function getUser(req: Request, _res: Response, next: NextFunction) {
+  const users = await DI.em.find(User, {});
+  if (!users) throw new Error('NO USER');
 
-  const activeAccount = accounts.pop();
-  req.body.account = activeAccount;
+  req.body.user = users.pop();
   next();
 }
 
