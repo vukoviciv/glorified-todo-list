@@ -1,4 +1,4 @@
-import { extractData, processId } from '@/shared/api/utils';
+import { extractData } from '@/shared/api/utils';
 import request from '@/shared/api/request';
 
 const url = {
@@ -16,11 +16,12 @@ function create(data) {
 }
 
 function update(data) {
-  return request.patch(url.update(processId(data.id)), data).then(extractData);
+  return request.patch(url.update(data.id), data).then(extractData);
 }
 
 function toggleDone(id) {
-  return request.patch(url.toggle(processId(id))).then(extractData);
+  return request.patch(url.toggle(id)).then(extractData);
+}
 }
 
 export default {

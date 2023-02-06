@@ -1,15 +1,16 @@
-import { create, list, toggleDone, update } from './task.controller';
-import { getAccount } from '../middlewares';
+import * as ctrl from './task.controller';
+import { getAccount, parseParamId } from '../middlewares';
 import { Router } from 'express';
 
 const router = Router();
 
 router
   .use(getAccount)
-  .get('/', list)
-  .post('/', create)
-  .patch('/:id', update)
-  .patch('/:id/toggle', toggleDone);
+  .get('/', ctrl.list)
+  .post('/', ctrl.create)
+  .param('id', parseParamId)
+  .patch('/:id', ctrl.update)
+  .patch('/:id/toggle', ctrl.toggleDone);
 
 export default {
   path: '/tasks',

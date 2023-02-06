@@ -10,3 +10,11 @@ export async function getAccount(req: Request, _res: Response, next: NextFunctio
   req.body.account = activeAccount;
   next();
 }
+
+export function parseParamId(req: Request, _res: Response, next: NextFunction, id: string) {
+  const parsedId = parseInt(id);
+  if (Number.isNaN(parsedId)) throw new Error('ID is not an integer!');
+
+  req.body.parsedId = parsedId;
+  next();
+}

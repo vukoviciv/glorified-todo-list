@@ -17,8 +17,9 @@ async function create({ body }: Request, res: Response) {
   return res.json(task);
 }
 
-async function update({ body, params: { id } }: Request, res: Response) {
-  const task = await DI.em.findOne(Task, { id: parseInt(id) });
+async function update({ body }: Request, res: Response) {
+  const { parsedId: id } = body;
+  const task = await DI.em.findOne(Task, id);
   if (!task) throw new Error(`Task with ID: ${id} does not exist!`);
 
   task.name = body?.name;
@@ -31,6 +32,9 @@ async function update({ body, params: { id } }: Request, res: Response) {
 }
 
 async function toggleDone({ params: { id } }: Request, res: Response) {
+
+async function toggleDone({ body }: Request, res: Response) {
+  const { parsedId: id } = body;
   const task = await DI.em.findOne(Task, { id: parseInt(id) });
   if (!task) throw new Error(`Task with ID: ${id} does not exist!`);
 
