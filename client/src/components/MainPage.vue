@@ -10,5 +10,6 @@ import TasksMain from './Task/index.vue';
 <style lang="scss" scoped>
 .main-container {
   max-width: 82rem;
+  font-family: 'Roboto', sans-serif;
 }
 </style>
