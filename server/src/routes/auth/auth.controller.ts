@@ -25,7 +25,7 @@ async function login(req: Request, res: Response) {
 async function logout(_req: Request, res: Response) {
   return res
     .clearCookie(COOKIE_NAME)
-    .json('logged out');
+    .sendStatus(200);
 }
 
 export { login, logout };
