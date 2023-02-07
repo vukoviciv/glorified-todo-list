@@ -1,19 +1,25 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 
 const AppLogin = () => import('./components/AppLogin.vue');
+const AppLogout = () => import('./components/AppLogout.vue');
 
 const routes = [{
   path: '/',
   name: 'home',
   redirect: { name: 'login' }
 }, {
-  path: '/auth/login',
+  path: '/login',
   name: 'login',
-  redirect: AppLogin
-}];
+  component: AppLogin
+}, {
+  path: '/logout',
+  name: 'logout',
+  component: AppLogout
+}
+];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes
 });
 

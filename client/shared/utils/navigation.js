@@ -11,7 +11,7 @@ const routes = {
     return `${this[locations.ORIGIN]}/${locations.AUTH}/`;
   },
   get main() {
-    return `${this[locations.ORIGIN]}/${locations.TODAY}`;
+    return `${this[locations.ORIGIN]}/#/${locations.TODAY}/`;
   }
 };
 
