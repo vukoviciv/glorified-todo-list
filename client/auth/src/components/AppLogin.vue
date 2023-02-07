@@ -10,9 +10,11 @@
             <p>Please login or create a new account</p>
             <div class="p-float-label mt-5 flex">
               <InputText
+                ref="emailEl"
                 v-model="email"
                 id="email"
                 type="email"
+                required="required"
                 class="flex flex-grow-1" />
               <label for="email">Email</label>
             </div>
@@ -45,23 +47,38 @@
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue';
 import authApi from '@/auth/src/api/auth';
 import Button from 'primevue/Button';
 import Card from 'primevue/card';
 import Divider from 'primevue/Divider';
 import InputText from 'primevue/inputtext';
 import { PrimeIcons } from 'primevue/api';
-import { ref } from 'vue';
+import { required } from '@vuelidate/validators';
 import { routes } from '@/shared/utils/navigation';
-// TODO: validation on email field
+import { useVuelidate } from '@vuelidate/core';
+
 const email = ref('');
+const emailEl = ref(null);
+const validationRules = {
+  email: { required }
+};
+const v$ = useVuelidate(validationRules);
+
 const redirectToHome = () => (document.location.replace(routes.home));
+const focusFirstInteractiveField = () => (emailEl.value.$el.focus());
 const login = async () => {
+  const isFormCorrect = await v$.value.$validate();
+  if (!isFormCorrect) return;
+
   const payload = { email: email.value };
   await authApi
     .login(payload)
     .then(() => redirectToHome());
 };
+onMounted(() => {
+  focusFirstInteractiveField();
+});
 </script>
 
 <style lang="scss" scoped>
