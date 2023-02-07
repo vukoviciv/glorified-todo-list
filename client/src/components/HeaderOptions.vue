@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="user-menu-wrapper flex align-items-center justify-content-end">
-      <div>Ivana Šimić</div>
+      <div>{{ user.fullName }}</div>
       <Button
         ref="activatorEl"
         @click="toggle"
@@ -35,10 +35,13 @@ import { ref } from 'vue';
 import { routes } from '@/shared/utils/navigation';
 import { useConfirm } from 'primevue/useconfirm';
 
+defineProps({
+  user: { type: Object, required: true }
+});
+
 const activatorEl = ref(null);
 const confirm = useConfirm();
 const menu = ref();
-
 const items = ref([{
   label: 'Account',
   items: [{
