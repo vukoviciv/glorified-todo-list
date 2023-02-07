@@ -2,7 +2,9 @@ const locations = {
   AUTH: 'auth',
   ORIGIN: 'origin',
   TODAY: 'today',
-  WEEK: 'week'
+  WEEK: 'week',
+  LOGIN: 'login',
+  LOGOUT: 'logout'
 };
 
 const routes = {
@@ -12,6 +14,9 @@ const routes = {
   },
   get main() {
     return `${this[locations.ORIGIN]}/#/${locations.TODAY}/`;
+  },
+  get logout() {
+    return `${this[locations.AUTH]}#/${locations.LOGOUT}`;
   }
 };
 
