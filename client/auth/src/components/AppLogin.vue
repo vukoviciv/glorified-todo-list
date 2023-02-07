@@ -55,12 +55,12 @@ import { ref } from 'vue';
 import { routes } from '@/shared/utils/navigation';
 // TODO: validation on email field
 const email = ref('');
-const redirectToMain = () => (document.location.replace(routes.main));
+const redirectToHome = () => (document.location.replace(routes.home));
 const login = async () => {
   const payload = { email: email.value };
   await authApi
     .login(payload)
-    .then(() => redirectToMain());
+    .then(() => redirectToHome());
 };
 </script>
 

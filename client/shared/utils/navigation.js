@@ -12,7 +12,7 @@ const routes = {
   get auth() {
     return `${this[locations.ORIGIN]}/${locations.AUTH}/`;
   },
-  get main() {
+  get home() {
     return `${this[locations.ORIGIN]}/#/${locations.TODAY}/`;
   },
   get logout() {
