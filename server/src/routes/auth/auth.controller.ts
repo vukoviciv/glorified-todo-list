@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
+import { auth } from '../../../config/index';
 import { DI } from '../../database/index';
 import jwt from 'jsonwebtoken';
 import { User } from '../../database/entities/index';
 
-const COOKIE_NAME = 'test';
-const SECRET_KEY = 'lalalasupersecretkey';
+const COOKIE_NAME = auth.cookie.name;
+const JWT_KEY = auth.jwt.key;
 
 async function login(req: Request, res: Response) {
   const { body: { email } } = req;
@@ -14,7 +15,7 @@ async function login(req: Request, res: Response) {
   if (!user) throw Error(`User with email: ${email} does not exist.`);
 
   const payload = { email: user.email, id: user.id };
-  const jwtData = jwt.sign(payload, SECRET_KEY);
+  const jwtData = jwt.sign(payload, JWT_KEY);
 
   return res
     .cookie(COOKIE_NAME, jwtData)

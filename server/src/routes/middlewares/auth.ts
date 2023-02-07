@@ -1,23 +1,27 @@
 import { NextFunction, Request, Response } from 'express';
+import { auth } from '../../../config/index';
 import { DI } from '../../database/index';
 import jwt from 'jsonwebtoken';
 import { User } from '../../database/entities';
 
-const COOKIE_NAME = 'test'; // TODO:
-const SECRET_KEY = 'lalalasupersecretkey';
-
-type Jwt = {
+type JwtPayload = {
   email: string,
   id: number
 }
 
-export async function authorize(req: Request, _res: Response, next: NextFunction) {
+const COOKIE_NAME = auth.cookie.name;
+const JWT_KEY = auth.jwt.key;
+
+export async function authorize(req: Request, res: Response, next: NextFunction) {
   const cookie = req.cookies[COOKIE_NAME];
-  const payload = jwt.verify(cookie, SECRET_KEY) as Jwt;
+  try {
+    const payload = jwt.verify(cookie, JWT_KEY) as JwtPayload;
+    const user = await DI.em.find(User, { id: payload.id });
+    if (!user) return res.status(401);
+    req.body.user = user;
 
-  const user = await DI.em.find(User, { id: payload.id });
-  if (!user) throw new Error('NO USER');
-
-  req.body.user = user;
-  next();
+    return next();
+  } catch (error) {
+    return res.status(401);
+  }
 }
