@@ -17,11 +17,12 @@ export async function authorize(req: Request, res: Response, next: NextFunction)
   try {
     const payload = jwt.verify(cookie, JWT_KEY) as JwtPayload;
     const user = await DI.em.find(User, { id: payload.id });
-    if (!user) return res.status(401);
+    if (!user) return res.sendStatus(401);
     req.body.user = user;
 
     return next();
   } catch (error) {
-    return res.status(401);
+    console.log(error);
+    return res.sendStatus(401);
   }
 }

@@ -23,6 +23,7 @@ async function login(req: Request, res: Response) {
 }
 
 async function logout(_req: Request, res: Response) {
+  console.log('logging out ');
   return res
     .clearCookie(COOKIE_NAME)
     .json('logged out');

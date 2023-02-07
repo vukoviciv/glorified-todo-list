@@ -52,13 +52,15 @@ import Divider from 'primevue/Divider';
 import InputText from 'primevue/inputtext';
 import { PrimeIcons } from 'primevue/api';
 import { ref } from 'vue';
+import { routes } from '@/shared/utils/navigation';
 // TODO: validation on email field
 const email = ref('');
+const redirectToMain = () => (document.location.replace(routes.main));
 const login = async () => {
   const payload = { email: email.value };
   await authApi
     .login(payload)
-    .then(data => console.log(data));
+    .then(() => redirectToMain());
 };
 </script>
 
