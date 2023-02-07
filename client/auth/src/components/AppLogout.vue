@@ -14,7 +14,13 @@
 </template>
 
 <script setup>
+import authApi from '@/auth/src/api/auth';
 import Card from 'primevue/card';
+import { onMounted } from 'vue';
+
+onMounted(() => {
+  authApi.logout();
+});
 </script>
 
 <style lang="scss" scoped>
