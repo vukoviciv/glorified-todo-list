@@ -27,23 +27,27 @@
 </template>
 
 <script setup>
+import { computed, ref } from 'vue';
 import Button from 'primevue/Button';
 import ConfirmDialog from 'primevue/confirmdialog';
 import Menu from 'primevue/Menu';
 import { PrimeIcons } from 'primevue/api';
-import { ref } from 'vue';
 import { routes } from '@/shared/utils/navigation';
 import { useConfirm } from 'primevue/useconfirm';
 
-defineProps({
+const props = defineProps({
   user: { type: Object, required: true }
 });
 
-const activatorEl = ref(null);
 const confirm = useConfirm();
+const activatorEl = ref(null);
 const menu = ref();
+const accounts = computed(() => {
+  if (!props.user) return;
+  return props.user.accounts.map(({ name, id }) => ({ label: name, id }));
+});
 const items = ref([{
-  label: 'Account',
+  label: 'User',
   items: [{
     label: 'Profile',
     icon: PrimeIcons.USER
@@ -52,6 +56,9 @@ const items = ref([{
     icon: PrimeIcons.SIGN_OUT,
     command: () => { logout(); }
   }]
+}, {
+  label: 'Accounts',
+  items: accounts
 }]);
 
 const toggle = event => menu.value.toggle(event);
