@@ -29,10 +29,10 @@
 <script setup>
 import Checkbox from 'primevue/checkbox';
 import Dropdown from 'primevue/dropdown';
+import { orderBy } from '@/config/task';
 import { ref } from 'vue';
 
 const props = defineProps({
-  orderByValues: { type: Array, required: true },
   showDescription: { type: Boolean, required: true },
   showCreatedAt: { type: Boolean, require: true }
 });
@@ -40,4 +40,6 @@ const props = defineProps({
 const selectedOrderBy = ref();
 const description = ref(props.showDescription);
 const createdAt = ref(props.showCreatedAt);
+
+const orderByValues = orderBy.list.map(({ label, value }) => ({ name: label, value }));
 </script>
