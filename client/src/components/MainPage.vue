@@ -30,8 +30,9 @@ const handleTaskCreate = () => {
 const fetchItems = async (params = {}) => {
   isFetching.value = true;
   console.log('in fetch items, account: ', localStorageAccount.item);
+  const activeAccount = localStorageAccount.item;
   // todo: get account from localStorage
-  await taskApi.fetch(params)
+  await taskApi.fetch({ ...params, accountId: activeAccount.id })
     .then(tasks => {
       items.value = tasks;
       isFetching.value = false;

@@ -1,16 +1,23 @@
-import { Account, Task } from '../../database/entities';
 import { Request, Response } from 'express';
 import { DI } from '../../database/index';
+import { Task } from '../../database/entities';
 
 async function list({ query, body: { user } }: Request, res: Response) {
+  const { accountId } = query;
+  console.log({ user });
+  console.log({ accountId });
+
+  if (!accountId) throw new Error('NO ACCOUNT');
   const options = { orderBy: {} };
+  console.log('before user.accounts.init');
+  const test = await user.accounts.init({ where: { id: accountId } });
+  console.log({ test: test[0] });
+
+  // const accounts = await DI.em.find(Account, { user });
+  // const account = accounts.pop();
+
   if (query.orderBy) options.orderBy = query.orderBy;
-
-  const accounts = await DI.em.find(Account, { user });
-  const account = accounts.pop();
-  if (!account) throw new Error('NO ACCOUNT');
-
-  const tasks = await DI.em.find(Task, { account }, options);
+  const tasks = await DI.em.find(Task, { account: test[0] }, options);
 
   return res.json(tasks);
 }
