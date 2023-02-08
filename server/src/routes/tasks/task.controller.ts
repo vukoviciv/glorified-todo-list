@@ -16,7 +16,10 @@ async function list({ query, body: { user } }: Request, res: Response) {
 }
 
 async function create({ body }: Request, res: Response) {
-  const task = new Task(body);
+  const { user } = body;
+  console.log({ user });
+  const account = body.user.accounts[0]; // TODO:
+  const task = new Task({ ...body, account });
   await DI.em.persistAndFlush(task);
 
   return res.json(task);

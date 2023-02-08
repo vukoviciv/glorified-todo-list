@@ -9,7 +9,7 @@ async function list(_req: Request, res: Response) {
 }
 
 async function getMe({ body: { user } }: Request, res: Response) {
-  return res.json(user[0]); // TODO: fix this in mdw
+  return res.json(user);
 }
 
 export {
