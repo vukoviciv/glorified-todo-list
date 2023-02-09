@@ -26,7 +26,7 @@ const props = defineProps({
   user: { type: Object, required: true },
   activeAccount: { type: Object, default: () => ({}) }
 });
-const DEFAULT_ORDER = 'ASC';
+
 const isFetching = ref(true);
 const items = ref([]);
 
@@ -62,10 +62,9 @@ const taskDelete = task => {
   items.value = items.value.filter(item => item.id !== task.id);
 };
 const updateOrder = ({ value }) => {
-  const { PRIORITY } = orderBy.values;
-  const order = value === PRIORITY.value ? 'DESC' : DEFAULT_ORDER;
+  const item = orderBy.list[value];
   const params = {
-    orderBy: { [value]: order }
+    orderBy: { [item.value]: item.order }
   };
   fetchItems(params);
 };

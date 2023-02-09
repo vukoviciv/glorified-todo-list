@@ -4,8 +4,8 @@
       v-model="selectedOrderBy"
       @change="$emit('update:order', $event)"
       :options="orderByValues"
-      option-label="name"
-      option-value="value"
+      option-label="label"
+      option-value="key"
       placeholder="Order by" />
     <div class="field-checkbox ml-8">
       <Checkbox
@@ -41,5 +41,5 @@ const selectedOrderBy = ref();
 const description = ref(props.showDescription);
 const createdAt = ref(props.showCreatedAt);
 
-const orderByValues = orderBy.list.map(({ label, value }) => ({ name: label, value }));
+const orderByValues = orderBy.list.map((val, key) => ({ key, label: val.label }));
 </script>

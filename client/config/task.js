@@ -37,7 +37,7 @@ export const orderBy = {
     NAME: {
       label: 'Name',
       value: 'name',
-      order: 'ASC'
+      order: 'ASC' // this is not valid anymore because of the processOrderBy TODO:
     },
     CREATED_AT: {
       label: 'Created at',

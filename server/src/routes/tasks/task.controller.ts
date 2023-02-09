@@ -1,13 +1,16 @@
 import { Account, Task } from '../../database/entities';
 import { Request, Response } from 'express';
 import { DI } from '../../database/index';
+import { processOrderBy } from '../../utils';
 
 async function list({ query }: Request, res: Response) {
   const { accountId } = query;
   if (!accountId) throw new Error('NO ACCOUNT ID');
   const options = { orderBy: {} };
   const id = parseInt(accountId as string);
-  if (query.orderBy) options.orderBy = query.orderBy;
+  if (query.orderBy) {
+    options.orderBy = processOrderBy(query.orderBy);
+  }
   const tasks = await DI.em.find(Task, { account: { id } }, options);
 
   return res.json(tasks);
