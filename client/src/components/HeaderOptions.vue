@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="user-menu-wrapper flex align-items-center justify-content-end">
-      <div>{{ user.fullName }}</div> | <div>{{ activeAccount }}</div>
+      <span>{{ user.fullName }}</span>
+      <span v-if="activeAccount" class="ml-2">| {{ activeAccount.name }}</span>
       <Button
         ref="activatorEl"
         @click="toggle"
@@ -30,14 +31,14 @@
 import { computed, ref } from 'vue';
 import Button from 'primevue/Button';
 import ConfirmDialog from 'primevue/confirmdialog';
-import { localStorageAccount } from './service/localStorage';
 import Menu from 'primevue/Menu';
 import { PrimeIcons } from 'primevue/api';
 import { routes } from '@/shared/utils/navigation';
 import { useConfirm } from 'primevue/useconfirm';
 
 const props = defineProps({
-  user: { type: Object, required: true }
+  user: { type: Object, required: true },
+  activeAccount: { type: Object, default: () => ({}) }
 });
 
 const confirm = useConfirm();
@@ -46,8 +47,6 @@ const menu = ref();
 const accounts = computed(() => {
   return props.user.accounts.map(({ name, id }) => ({ label: name, id }));
 });
-// const activeAccount = ref(localStorageAccount.item.name);
-const activeAccount = computed(() => localStorageAccount.item.name);
 const items = ref([{
   label: 'User',
   items: [{

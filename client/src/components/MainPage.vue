@@ -8,16 +8,24 @@
       @task:created="handleTaskCreate"
       :items="items"
       :is-fetching="isFetching" />
+    <AccountsDialog
+      v-if="showDialog"
+      @account:choose="updateAccount($event)"
+      :user="user" />
   </main>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
-import { localStorageAccount } from './service/localStorage';
+import { computed, onMounted, ref } from 'vue';
+import AccountsDialog from './AccountsDialog.vue';
 import { orderBy } from '@/config/task';
 import taskApi from '@/src/api/tasks';
 import TasksMain from './Task/index.vue';
 
+const props = defineProps({
+  user: { type: Object, required: true },
+  activeAccount: { type: Object, default: () => ({}) }
+});
 const DEFAULT_ORDER = 'ASC';
 const isFetching = ref(true);
 const items = ref([]);
@@ -26,13 +34,16 @@ const newTaskCreated = ref(false);
 const handleTaskCreate = () => {
   newTaskCreated.value = true;
 };
+const showDialog = computed(() => {
+  return !props.activeAccount;
+});
+const emit = defineEmits(['account:choose']);
 // TODO: use export default and suspense/default on the parent component
 const fetchItems = async (params = {}) => {
   isFetching.value = true;
-  console.log('in fetch items, account: ', localStorageAccount.item);
-  const activeAccount = localStorageAccount.item;
-  // todo: get account from localStorage
-  await taskApi.fetch({ ...params, accountId: activeAccount.id })
+  const accountId = params.accountId ? params.accountId : props.activeAccount?.id;
+  if (!accountId) return;
+  await taskApi.fetch({ ...params, accountId })
     .then(tasks => {
       items.value = tasks;
       isFetching.value = false;
@@ -57,6 +68,11 @@ const updateOrder = ({ value }) => {
   const params = {
     orderBy: { [value]: order }
   };
+  fetchItems(params);
+};
+const updateAccount = account => {
+  const params = { accountId: account.id };
+  emit('account:choose', account);
   fetchItems(params);
 };
 
