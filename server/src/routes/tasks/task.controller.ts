@@ -1,25 +1,23 @@
+import { Account, Task } from '../../database/entities';
 import { Request, Response } from 'express';
 import { DI } from '../../database/index';
-import { Task } from '../../database/entities';
 
-async function list({ query, body: { user } }: Request, res: Response) {
+async function list({ query }: Request, res: Response) {
   const { accountId } = query;
-
-  if (!accountId) throw new Error('NO ACCOUNT');
+  if (!accountId) throw new Error('NO ACCOUNT ID');
   const options = { orderBy: {} };
-  const [account] = await user.accounts.init({ where: { id: accountId } });
-
+  const id = parseInt(accountId as string);
   if (query.orderBy) options.orderBy = query.orderBy;
-  const tasks = await DI.em.find(Task, { account }, options);
+  const tasks = await DI.em.find(Task, { account: { id } }, options);
 
   return res.json(tasks);
 }
 
 async function create({ body }: Request, res: Response) {
-  const { user } = body;
-  console.log({ user });
-  const account = body.user.accounts[0]; // TODO:
-  const task = new Task({ ...body, account });
+  const { task: taskData, accountId } = body;
+  const account = await DI.em.findOne(Account, { id: accountId });
+  if (!account) throw new Error('NO ACCOUNT');
+  const task = new Task({ ...taskData, account });
   await DI.em.persistAndFlush(task);
 
   return res.json(task);

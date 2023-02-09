@@ -15,6 +15,7 @@
 
 <script setup>
 import Button from 'primevue/Button';
+import { localStorageAccount } from '../../service/localStorage';
 import { PrimeIcons } from 'primevue/api';
 import { ref } from 'vue';
 import taskApi from '@/src/api/tasks';
@@ -26,7 +27,11 @@ const showDialog = ref(false);
 const close = () => { showDialog.value = false; };
 const open = () => { showDialog.value = true; };
 const createTask = async task => {
-  await taskApi.create(task).then(() => {
+  const payload = {
+    task,
+    accountId: localStorageAccount?.item.id
+  };
+  await taskApi.create(payload).then(() => {
     emit('task:created');
   });
   close();

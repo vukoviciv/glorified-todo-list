@@ -30,9 +30,8 @@ const DEFAULT_ORDER = 'ASC';
 const isFetching = ref(true);
 const items = ref([]);
 
-const newTaskCreated = ref(false);
 const handleTaskCreate = () => {
-  newTaskCreated.value = true;
+  fetchItems();
 };
 const showDialog = computed(() => {
   return !props.activeAccount;
