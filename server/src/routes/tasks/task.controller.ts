@@ -4,20 +4,13 @@ import { Task } from '../../database/entities';
 
 async function list({ query, body: { user } }: Request, res: Response) {
   const { accountId } = query;
-  console.log({ user });
-  console.log({ accountId });
 
   if (!accountId) throw new Error('NO ACCOUNT');
   const options = { orderBy: {} };
-  console.log('before user.accounts.init');
-  const test = await user.accounts.init({ where: { id: accountId } });
-  console.log({ test: test[0] });
-
-  // const accounts = await DI.em.find(Account, { user });
-  // const account = accounts.pop();
+  const [account] = await user.accounts.init({ where: { id: accountId } });
 
   if (query.orderBy) options.orderBy = query.orderBy;
-  const tasks = await DI.em.find(Task, { account: test[0] }, options);
+  const tasks = await DI.em.find(Task, { account }, options);
 
   return res.json(tasks);
 }
