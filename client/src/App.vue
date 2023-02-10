@@ -35,6 +35,8 @@ const items = ref([]);
 const updateAccount = account => {
   activeAccount.value = account;
   localStorageAccount.setItem(account);
+  const params = { accountId: account.id };
+  fetchTasks(params);
 };
 
 const fetchTasks = async (params = {}) => {

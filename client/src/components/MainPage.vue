@@ -10,13 +10,13 @@
       :is-fetching="isFetching" />
     <AccountsDialog
       v-if="showDialog"
-      @account:switch="updateAccount($event)"
+      @account:switch="$emit('account:switch', $event)"
       :user="user" />
   </main>
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import AccountsDialog from './AccountsDialog.vue';
 import { orderBy } from '@/config/task';
 import taskApi from '@/src/api/tasks';
@@ -54,15 +54,6 @@ const updateOrder = ({ value }) => {
   };
   emit('fetch', params);
 };
-const updateAccount = account => {
-  const params = { accountId: account.id };
-  emit('account:switch', account);
-  emit('fetch', params);
-};
-
-onMounted(() => {
-  // fetchItems();
-});
 </script>
 <style lang="scss" scoped>
 .main-container {
