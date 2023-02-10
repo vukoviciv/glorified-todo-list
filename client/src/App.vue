@@ -41,8 +41,9 @@ const updateAccount = account => {
 
 const fetchTasks = async (params = {}) => {
   isFetching.value = true;
-  const accountId = params.accountId || activeAccount.value?.id;
+  const accountId = params?.accountId || activeAccount.value?.id;
   if (!accountId) return;
+
   items.value = await taskApi
     .fetch({ ...params, accountId })
     .then(tasks => tasks);

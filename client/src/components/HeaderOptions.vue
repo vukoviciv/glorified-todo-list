@@ -79,7 +79,7 @@ const toggle = event => menu.value.toggle(event);
 const focusActivator = () => activatorEl.value.$el.focus();
 const logout = () => {
   confirm.require({
-    message: 'Are you sure you logout?',
+    message: 'Are you sure you want to logout?',
     header: 'Logout',
     acceptLabel: 'Logout',
     accept: () => {
