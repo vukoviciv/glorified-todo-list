@@ -3,13 +3,14 @@
     <template #options>
       <HeaderOptions
         v-if="!isFetching"
+        @account:switch="updateAccount($event)"
         :user="user"
         :active-account="activeAccount" />
     </template>
   </MainHeader>
   <MainPage
     v-if="!isFetching"
-    @account:choose="updateAccount($event)"
+    @account:switch="updateAccount($event)"
     :active-account="activeAccount"
     :user="user" />
 </template>
@@ -28,6 +29,7 @@ const activeAccount = ref(localStorageAccount?.item);
 
 const updateAccount = account => {
   activeAccount.value = account;
+  localStorageAccount.setItem(account);
 };
 
 onMounted(async () => {

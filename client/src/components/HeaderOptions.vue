@@ -40,12 +40,18 @@ const props = defineProps({
   user: { type: Object, required: true },
   activeAccount: { type: Object, default: () => ({}) }
 });
-
+const emit = defineEmits(['account:switch']);
 const confirm = useConfirm();
 const activatorEl = ref(null);
 const menu = ref();
 const accounts = computed(() => {
-  return props.user.accounts.map(({ name, id }) => ({ label: name, id }));
+  return props.user.accounts.map(account => {
+    return {
+      id: account.id,
+      label: account.name,
+      command: () => { emit('account:switch', account); }
+    };
+  });
 });
 const items = ref([{
   label: 'User',

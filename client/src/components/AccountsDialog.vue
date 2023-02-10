@@ -34,7 +34,6 @@
 <script setup>
 import Button from 'primevue/Button';
 import Dialog from 'primevue/Dialog';
-import { localStorageAccount } from './service/localStorage';
 import { PrimeIcons } from 'primevue/api';
 import RadioButton from 'primevue/RadioButton';
 import { ref } from 'vue';
@@ -42,12 +41,11 @@ import { ref } from 'vue';
 const props = defineProps({
   user: { type: Object, required: true }
 });
-const emit = defineEmits(['account:choose']);
+const emit = defineEmits(['account:switch']);
 const showDialog = ref(true);
 const selectedAccount = ref(props.user.accounts[0]);
 const chooseAccount = () => {
-  emit('account:choose', selectedAccount.value);
-  localStorageAccount.setItem(selectedAccount.value);
+  emit('account:switch', selectedAccount.value);
   showDialog.value = false;
 };
 

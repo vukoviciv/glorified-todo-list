@@ -10,7 +10,7 @@
       :is-fetching="isFetching" />
     <AccountsDialog
       v-if="showDialog"
-      @account:choose="updateAccount($event)"
+      @account:switch="updateAccount($event)"
       :user="user" />
   </main>
 </template>
@@ -36,7 +36,7 @@ const handleTaskCreate = () => {
 const showDialog = computed(() => {
   return !props.activeAccount;
 });
-const emit = defineEmits(['account:choose']);
+const emit = defineEmits(['account:switch']);
 // TODO: use export default and suspense/default on the parent component
 const fetchItems = async (params = {}) => {
   isFetching.value = true;
@@ -70,7 +70,7 @@ const updateOrder = ({ value }) => {
 };
 const updateAccount = account => {
   const params = { accountId: account.id };
-  emit('account:choose', account);
+  emit('account:switch', account);
   fetchItems(params);
 };
 
