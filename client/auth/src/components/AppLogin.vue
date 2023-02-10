@@ -73,7 +73,15 @@ const login = async () => {
   const payload = { email: email.value };
   await authApi
     .login(payload)
-    .then(() => redirectToHome());
+    .then(() => redirectToHome())
+    .catch(({ response }) => {
+      if (response.status === 404) {
+        console.log(response.data);
+      }
+    })
+    .finally(() => {
+      v$.value.$reset();
+    });
 };
 </script>
 

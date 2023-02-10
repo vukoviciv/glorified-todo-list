@@ -9,10 +9,10 @@ const JWT_KEY = auth.jwt.key;
 
 async function login(req: Request, res: Response) {
   const { body: { email } } = req;
-  if (!email) throw Error('Email required');
+  if (!email) return res.status(404).send('Email does not exist');
 
   const user = await DI.em.findOne(User, { email });
-  if (!user) throw Error(`User with email: ${email} does not exist.`);
+  if (!user) return res.status(404).send('User with that email not found');
 
   const payload = { email: user.email, id: user.id };
   const jwtData = jwt.sign(payload, JWT_KEY);
