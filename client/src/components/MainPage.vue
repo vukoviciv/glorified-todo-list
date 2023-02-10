@@ -5,7 +5,7 @@
       @task:edit="updateItemsList($event)"
       @task:delete="taskDelete($event)"
       @update:order="updateOrder"
-      @task:created="handleTaskCreate"
+      @task:created="$emit('fetch')"
       :items="items"
       :is-fetching="isFetching" />
     <AccountsDialog
@@ -24,30 +24,16 @@ import TasksMain from './Task/index.vue';
 
 const props = defineProps({
   user: { type: Object, required: true },
-  activeAccount: { type: Object, default: () => ({}) }
+  activeAccount: { type: Object, default: () => ({}) },
+  tasks: { type: Array, default: () => ([]) },
+  isFetching: { type: Boolean, required: true }
 });
 
-const isFetching = ref(true);
-const items = ref([]);
+const emit = defineEmits(['account:switch', 'fetch']);
 
-const handleTaskCreate = () => {
-  fetchItems();
-};
-const showDialog = computed(() => {
-  return !props.activeAccount;
-});
-const emit = defineEmits(['account:switch']);
-// TODO: use export default and suspense/default on the parent component
-const fetchItems = async (params = {}) => {
-  isFetching.value = true;
-  const accountId = params.accountId ? params.accountId : props.activeAccount?.id;
-  if (!accountId) return;
-  await taskApi.fetch({ ...params, accountId })
-    .then(tasks => {
-      items.value = tasks;
-      isFetching.value = false;
-    });
-};
+const items = ref(props.tasks);
+const showDialog = computed(() => !props.activeAccount);
+
 const updateItemsList = task => {
   items.value = items.value.map(item => {
     return item.id === task.id ? task : item;
@@ -66,16 +52,16 @@ const updateOrder = ({ value }) => {
   const params = {
     orderBy: item.value
   };
-  fetchItems(params);
+  emit('fetch', params);
 };
 const updateAccount = account => {
   const params = { accountId: account.id };
   emit('account:switch', account);
-  fetchItems(params);
+  emit('fetch', params);
 };
 
 onMounted(() => {
-  fetchItems();
+  // fetchItems();
 });
 </script>
 <style lang="scss" scoped>
