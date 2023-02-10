@@ -1,15 +1,19 @@
 <template>
   <div>
-    <div class="user-menu-wrapper flex align-items-center justify-content-end">
-      <span>{{ user.fullName }}</span>
-      <span v-if="activeAccount" class="ml-2">| {{ activeAccount.name }}</span>
-      <Button
-        ref="activatorEl"
-        @click="toggle"
-        :icon="PrimeIcons.USER"
-        class="p-button-rounded p-button-secondary ml-4"
-        aria-haspopup="true"
-        aria-controls="overlay_menu" />
+    <div class="flex justify-content-end">
+      <div class="hidden md:flex align-items-center ">
+        <span>{{ user.fullName }}</span>
+        <span class="ml-3 p-tag account-tag">{{ activeAccount.name }}</span>
+      </div>
+      <div class="ml-3">
+        <Button
+          ref="activatorEl"
+          @click="toggle"
+          :icon="PrimeIcons.USER"
+          class="p-button-rounded p-button-secondary"
+          aria-haspopup="true"
+          aria-controls="overlay_menu" />
+      </div>
     </div>
     <Menu
       ref="menu"
@@ -40,8 +44,8 @@ const props = defineProps({
   user: { type: Object, required: true },
   activeAccount: { type: Object, default: () => ({}) }
 });
-
 const emit = defineEmits(['account:switch']);
+
 const confirm = useConfirm();
 const activatorEl = ref(null);
 const menu = ref();
@@ -57,7 +61,7 @@ const accounts = computed(() => {
   });
 });
 const items = ref([{
-  label: 'User',
+  label: props.user.fullName,
   items: [{
     label: 'Profile',
     icon: PrimeIcons.USER
@@ -91,3 +95,12 @@ const logout = () => {
   });
 };
 </script>
+
+<style lang="scss" scoped>
+.account-tag {
+  background: var(--purple-100);
+  color: black;
+  font-size: 1.1rem;
+  font-weight: 300;
+}
+</style>
