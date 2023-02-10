@@ -64,7 +64,7 @@ const taskDelete = task => {
 const updateOrder = ({ value }) => {
   const item = orderBy.list[value];
   const params = {
-    orderBy: { [item.value]: item.order }
+    orderBy: item.value
   };
   fetchItems(params);
 };
