@@ -21,7 +21,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import HeaderOptions from './components/HeaderOptions.vue';
-import { localStorageAccount } from './components/service/localStorage';
+import { localStorageAccount } from './components/service/localStorageAccount';
 import MainHeader from '../shared/components/MainHeader.vue';
 import MainPage from './components/MainPage.vue';
 import taskApi from '@/src/api/tasks';

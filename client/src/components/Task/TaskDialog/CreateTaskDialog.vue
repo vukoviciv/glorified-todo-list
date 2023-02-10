@@ -15,7 +15,7 @@
 
 <script setup>
 import Button from 'primevue/Button';
-import { localStorageAccount } from '../../service/localStorage';
+import { localStorageAccount } from '../../service/localStorageAccount';
 import { PrimeIcons } from 'primevue/api';
 import { ref } from 'vue';
 import taskApi from '@/src/api/tasks';

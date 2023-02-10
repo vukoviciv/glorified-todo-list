@@ -16,13 +16,15 @@ export async function authorize(req: Request, res: Response, next: NextFunction)
   const cookie = req.cookies[COOKIE_NAME];
   try {
     const payload = jwt.verify(cookie, JWT_KEY) as JwtPayload;
-    const user = await DI.em.findOne(User, { id: payload.id }, { populate: ['accounts'] });
+    const query = { id: payload.id };
+    const user = await DI.em.findOne(User, query, { populate: ['accounts'] });
     if (!user) return res.sendStatus(401);
     req.body.user = user;
 
     return next();
   } catch (error) {
     console.log(error);
+
     return res.sendStatus(401);
   }
 }

@@ -28,20 +28,19 @@ const props = defineProps({
   tasks: { type: Array, default: () => ([]) },
   isFetching: { type: Boolean, required: true }
 });
-
 const emit = defineEmits(['account:switch', 'fetch']);
 
 const items = ref(props.tasks);
 const showDialog = computed(() => !props.activeAccount);
 
 const updateItemsList = task => {
-  items.value = items.value.map(item => {
-    return item.id === task.id ? task : item;
-  });
+  items.value = items.value.map(item => (item.id === task.id ? task : item));
 };
 const toggleDone = async payload => {
   const { id } = payload.task;
-  const task = await taskApi.toggleDone(id).then(task => task);
+  const task = await taskApi
+    .toggleDone(id)
+    .then(task => task);
   updateItemsList(task);
 };
 const taskDelete = task => {

@@ -20,7 +20,11 @@
         :input-id="account.id.toString()"
         :value="account"
         name="account" />
-      <label :for="account.id" class="button-label">{{ account.name }}</label>
+      <label
+        :for="account.id.toString()"
+        class="button-label">
+        {{ account.name }}
+      </label>
     </div>
     <template #footer>
       <Button
@@ -42,13 +46,13 @@ const props = defineProps({
   user: { type: Object, required: true }
 });
 const emit = defineEmits(['account:switch']);
+
 const showDialog = ref(true);
 const selectedAccount = ref(props.user.accounts[0]);
 const chooseAccount = () => {
   emit('account:switch', selectedAccount.value);
   showDialog.value = false;
 };
-
 </script>
 
 <style lang="scss" scoped>

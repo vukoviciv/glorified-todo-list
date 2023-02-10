@@ -48,13 +48,13 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
 import authApi from '@/auth/src/api/auth';
 import Button from 'primevue/Button';
 import Card from 'primevue/card';
 import Divider from 'primevue/Divider';
 import InputText from 'primevue/inputtext';
 import { PrimeIcons } from 'primevue/api';
+import { ref } from 'vue';
 import { required } from '@vuelidate/validators';
 import { routes } from '@/shared/utils/navigation';
 import { useVuelidate } from '@vuelidate/core';

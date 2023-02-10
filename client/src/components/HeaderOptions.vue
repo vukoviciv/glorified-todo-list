@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex justify-content-end">
-      <div class="hidden md:flex align-items-center ">
+      <div class="user-info hidden md:flex align-items-center ">
         <span>{{ user.fullName }}</span>
         <span class="ml-3 p-tag account-tag">{{ activeAccount.name }}</span>
       </div>
@@ -33,6 +33,7 @@
 
 <script setup>
 import { computed, ref } from 'vue';
+import authApi from '@/auth/src/api/auth';
 import Button from 'primevue/Button';
 import ConfirmDialog from 'primevue/confirmdialog';
 import Menu from 'primevue/Menu';
@@ -83,6 +84,7 @@ const logout = () => {
     header: 'Logout',
     acceptLabel: 'Logout',
     accept: () => {
+      authApi.logout();
       document.location.replace(routes.logout);
     },
     rejectLabel: 'Cancel',
