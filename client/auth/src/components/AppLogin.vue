@@ -15,7 +15,8 @@
                 id="email"
                 type="email"
                 required="required"
-                class="flex flex-grow-1" />
+                class="flex flex-grow-1"
+                autofocus />
               <label for="email">Email</label>
             </div>
           </div>
@@ -59,14 +60,12 @@ import { routes } from '@/shared/utils/navigation';
 import { useVuelidate } from '@vuelidate/core';
 
 const email = ref('');
-const emailEl = ref(null);
 const validationRules = {
   email: { required }
 };
 const v$ = useVuelidate(validationRules);
 
 const redirectToHome = () => (document.location.replace(routes.home));
-const focusFirstInteractiveField = () => (emailEl.value.$el.focus());
 const login = async () => {
   const isFormCorrect = await v$.value.$validate();
   if (!isFormCorrect) return;
@@ -76,9 +75,6 @@ const login = async () => {
     .login(payload)
     .then(() => redirectToHome());
 };
-onMounted(() => {
-  focusFirstInteractiveField();
-});
 </script>
 
 <style lang="scss" scoped>
