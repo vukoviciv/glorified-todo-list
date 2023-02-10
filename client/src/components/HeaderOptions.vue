@@ -40,13 +40,16 @@ const props = defineProps({
   user: { type: Object, required: true },
   activeAccount: { type: Object, default: () => ({}) }
 });
+
 const emit = defineEmits(['account:switch']);
 const confirm = useConfirm();
 const activatorEl = ref(null);
 const menu = ref();
 const accounts = computed(() => {
   return props.user.accounts.map(account => {
+    const icon = account.id === props.activeAccount?.id ? PrimeIcons.CHECK_CIRCLE : '';
     return {
+      icon,
       id: account.id,
       label: account.name,
       command: () => { emit('account:switch', account); }
