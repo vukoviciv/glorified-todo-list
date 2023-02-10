@@ -11,13 +11,19 @@
             <div class="p-float-label mt-5 flex">
               <InputText
                 ref="emailEl"
-                v-model="email"
+                v-model="form.email"
                 id="email"
                 type="email"
                 required="required"
                 class="flex flex-grow-1"
                 autofocus />
               <label for="email">Email</label>
+            </div>
+            <div class="error-msg ml-1 mt-1" aria-live="polite">
+              <span v-for="error of v$.email.$errors" :key="error.$uid">
+                Field {{ error.$property }} is required.
+              </span>
+              <span>{{ customErrorMsg }}</span>
             </div>
           </div>
         </template>
@@ -48,6 +54,7 @@
 </template>
 
 <script setup>
+import { email, required } from '@vuelidate/validators';
 import authApi from '@/auth/src/api/auth';
 import Button from 'primevue/Button';
 import Card from 'primevue/card';
@@ -55,28 +62,31 @@ import Divider from 'primevue/Divider';
 import InputText from 'primevue/inputtext';
 import { PrimeIcons } from 'primevue/api';
 import { ref } from 'vue';
-import { required } from '@vuelidate/validators';
 import { routes } from '@/shared/utils/navigation';
 import { useVuelidate } from '@vuelidate/core';
 
-const email = ref('');
+const form = ref({
+  email: '',
+  password: ''
+});
 const validationRules = {
-  email: { required }
+  email: { required, email }
 };
-const v$ = useVuelidate(validationRules);
+const v$ = useVuelidate(validationRules, form);
+const customErrorMsg = ref('');
 
 const redirectToHome = () => (document.location.replace(routes.home));
 const login = async () => {
   const isFormCorrect = await v$.value.$validate();
   if (!isFormCorrect) return;
 
-  const payload = { email: email.value };
+  const payload = { email: form.value.email };
   await authApi
     .login(payload)
     .then(() => redirectToHome())
     .catch(({ response }) => {
       if (response.status === 404) {
-        console.log(response.data);
+        customErrorMsg.value = response.data;
       }
     })
     .finally(() => {
@@ -89,6 +99,10 @@ const login = async () => {
 .login-wrapper {
   background: url(../assets/auth_background.jpg);
   background-size: cover;
+
+  .error-msg {
+    color: var(--red-500);
+  }
 
   .register-button {
     background-color: var(--purple-50);
