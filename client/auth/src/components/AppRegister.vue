@@ -7,12 +7,12 @@
         </template>
         <template #content>
           <div class="px-8 mt-5">
-            <p>Please login or create a new account</p>
+            <p>Create a new account</p>
             <div class="p-float-label mt-5 flex">
               <InputText
-                ref="emailEl"
+                ref="emil"
                 v-model="form.email"
-                @update:model-value="resetForm()"
+                @update:model-value="resetValidation()"
                 id="email"
                 type="email"
                 required="required"
@@ -21,12 +21,35 @@
               <label for="email">Email</label>
             </div>
             <div class="error-msg ml-1 mt-1" aria-live="polite">
-              <div v-if="hasValidationErrors">
-                <span v-for="error of v$.email.$errors" :key="error.$uid">
-                  Field {{ error.$property }} is required.
-                </span>
+              <span v-for="error of v$.email.$errors" :key="error.$uid">
+                Field {{ error.$property }} is required.
+              </span>
+            </div>
+          </div>
+          <div class="px-8 mt-5">
+            <div class="mt-5 flex">
+              <div class="p-inputgroup">
+                <div class="p-float-label">
+                  <InputText
+                    v-model="form.password"
+                    @update:model-value="resetValidation()"
+                    id="password"
+                    :type="passwordFieldType"
+                    required="required"
+                    class="flex flex-grow-1" />
+                  <label for="password">Password</label>
+                </div>
+                <Button
+                  @click="handlePassIconClick()"
+                  :icon="passwordIcon"
+                  :aria-label="passwordLabel"
+                  :title="passwordLabel" />
               </div>
-              <span v-else-if="customErrorMsg">{{ customErrorMsg }}</span>
+            </div>
+            <div class="error-msg ml-1 mt-1" aria-live="polite">
+              <span v-for="error of v$.password.$errors" :key="error.$uid">
+                Field {{ error.$property }} is required.
+              </span>
             </div>
           </div>
         </template>
@@ -39,16 +62,16 @@
           <div class="mb-5">
             <div class="px-8 flex">
               <Button
-                @click="login()"
+                @click="register()"
                 type="submit"
-                label="Login"
+                label="Register"
                 class="flex-grow-1" />
             </div>
-            <div class="px-8 mt-3 flex">
+            <div class="px-8 flex">
               <RouterLink
-                :to="{ name: 'register' }"
+                :to="{ name: 'login' }"
                 class="block mx-auto pt-4">
-                Register a new account
+                Back to login
               </RouterLink>
             </div>
           </div>
@@ -70,35 +93,62 @@ import { PrimeIcons } from 'primevue/api';
 import { routes } from '@/shared/utils/navigation';
 import { useVuelidate } from '@vuelidate/core';
 
+const PASS_TYPES = {
+  PASSWORD: {
+    value: 'password',
+    label: 'Show password'
+  },
+  TEXT: {
+    value: 'text',
+    label: 'Hide password'
+  }
+};
+
 const form = ref({
   email: '',
   password: ''
 });
 const validationRules = {
-  email: { required, email }
+  email: { required, email },
+  password: { required }
 };
 const v$ = useVuelidate(validationRules, form);
 const customErrorMsg = ref('');
 const emailEl = ref(null);
+const passwordFieldType = ref('password');
 
 const redirectToHome = () => (document.location.replace(routes.home));
 const focusEmailField = () => (emailEl.value.$el.focus());
-const hasValidationErrors = computed(() => v$.value.email.$errors.length);
-const resetForm = () => {
+const isPassHidden = computed(() => {
+  return passwordFieldType.value === PASS_TYPES.PASSWORD.value;
+});
+const passwordIcon = computed(() => {
+  return isPassHidden.value ? PrimeIcons.EYE : PrimeIcons.EYE_SLASH;
+});
+const passwordLabel = computed(() => {
+  return isPassHidden.value ? PASS_TYPES.PASSWORD.label : PASS_TYPES.TEXT.label;
+});
+const resetValidation = () => {
   v$.value.$reset();
   customErrorMsg.value = '';
 };
-const login = async () => {
-  resetForm();
+const handlePassIconClick = () => {
+  passwordFieldType.value = isPassHidden.value ? PASS_TYPES.TEXT.value : PASS_TYPES.PASSWORD.value;
+};
+const register = async () => {
+  resetValidation();
   const isFormCorrect = await v$.value.$validate();
   if (!isFormCorrect) return;
-  const payload = { email: form.value.email };
+  const payload = {
+    email: form.value.email,
+    password: form.value.password
+  };
 
   return authApi
-    .login(payload)
-    .then(() => redirectToHome())
+    .register(payload)
+    .then(data => console.log(data)) // redirect to login?
     .catch(({ response }) => {
-      if (response.status === 404) { customErrorMsg.value = response.data; }
+      // if (response.status === 404) { customErrorMsg.value = response.data; }
     })
     .finally(() => {
       focusEmailField();
