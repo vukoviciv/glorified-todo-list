@@ -12,7 +12,7 @@ async function login(req: Request, res: Response) {
   if (!email) return res.status(404).send('Email does not exist.');
 
   const user = await DI.em.findOne(User, { email });
-  if (!user) return res.status(404).send('User with given email does not exist.');
+  if (!user) return res.status(404).send('User with the given email does not exist.');
 
   const payload = { email: user.email, id: user.id };
   const jwtData = jwt.sign(payload, JWT_KEY);
