@@ -28,4 +28,11 @@ async function logout(_req: Request, res: Response) {
     .sendStatus(200);
 }
 
-export { login, logout };
+async function register(req: Request, res: Response) {
+  const { body: { email, password } } = req;
+  console.log({ email });
+  console.log({ password });
+  return res.json({ email, password });
+}
+
+export { login, logout, register };
