@@ -10,14 +10,30 @@
             <p>Create a new account</p>
             <div class="p-float-label mt-5 flex">
               <InputText
-                ref="emil"
+                v-model="form.firstName"
+                id="firstName"
+                type="text"
+                class="flex flex-grow-1"
+                autofocus />
+              <label for="firstName">First Name</label>
+            </div>
+            <div class="p-float-label mt-5 flex">
+              <InputText
+                v-model="form.lastName"
+                id="lastName"
+                type="text"
+                class="flex flex-grow-1" />
+              <label for="lastName">Last Name</label>
+            </div>
+            <div class="p-float-label mt-5 flex">
+              <InputText
+                ref="emailEl"
                 v-model="form.email"
                 @update:model-value="resetValidation()"
                 id="email"
                 type="email"
                 required="required"
-                class="flex flex-grow-1"
-                autofocus />
+                class="flex flex-grow-1" />
               <label for="email">Email</label>
             </div>
             <div class="error-msg ml-1 mt-1" aria-live="polite">
@@ -52,6 +68,7 @@
               </span>
             </div>
           </div>
+          <span v-if="customErrorMsg">{{ customErrorMsg }}</span>
         </template>
         <template #footer>
           <Divider align="center">
@@ -105,6 +122,8 @@ const PASS_TYPES = {
 };
 
 const form = ref({
+  firstName: '',
+  lastName: '',
   email: '',
   password: ''
 });
@@ -139,16 +158,14 @@ const register = async () => {
   resetValidation();
   const isFormCorrect = await v$.value.$validate();
   if (!isFormCorrect) return;
-  const payload = {
-    email: form.value.email,
-    password: form.value.password
-  };
+  const payload = form.value;
 
   return authApi
     .register(payload)
     .then(data => console.log(data)) // redirect to login?
     .catch(({ response }) => {
-      // if (response.status === 404) { customErrorMsg.value = response.data; }
+      if (response.status === 409) { customErrorMsg.value = response.data; }
+      if (response.status === 500) { customErrorMsg.value = 'Something went wrong'; }
     })
     .finally(() => {
       focusEmailField();

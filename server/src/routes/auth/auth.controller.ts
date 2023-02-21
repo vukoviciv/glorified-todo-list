@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { auth } from '../../../config/index';
+import bcrypt from 'bcrypt';
 import { DI } from '../../database/index';
 import jwt from 'jsonwebtoken';
 import { User } from '../../database/entities/index';
@@ -28,11 +29,15 @@ async function logout(_req: Request, res: Response) {
     .sendStatus(200);
 }
 
-async function register(req: Request, res: Response) {
-  const { body: { email, password } } = req;
-  console.log({ email });
-  console.log({ password });
-  return res.json({ email, password });
+async function register({ body }: Request, res: Response) {
+  const { firstName, lastName, email, password } = body;
+  const existingUser = await DI.em.findOne(User, { email });
+  if (existingUser) return res.status(409).send('User with the given email already exists');
+
+  const user = new User({ firstName, lastName, email, password });
+  await DI.em.persistAndFlush(user);
+
+  return res.json(user);
 }
 
 export { login, logout, register };
