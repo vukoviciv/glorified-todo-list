@@ -17,6 +17,9 @@ const routes = {
   },
   get logout() {
     return `${this[locations.AUTH]}#/${locations.LOGOUT}`;
+  },
+  get login() {
+    return `${this[locations.AUTH]}#/${locations.LOGIN}`;
   }
 };
 

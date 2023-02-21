@@ -99,6 +99,7 @@
 </template>
 
 <script setup>
+// TODO: add confirm password, min length etc
 import { computed, ref } from 'vue';
 import { email, required } from '@vuelidate/validators';
 import authApi from '@/auth/src/api/auth';
@@ -136,7 +137,7 @@ const customErrorMsg = ref('');
 const emailEl = ref(null);
 const passwordFieldType = ref('password');
 
-const redirectToHome = () => (document.location.replace(routes.home));
+const redirectToLogin = () => (document.location.replace(routes.login));
 const focusEmailField = () => (emailEl.value.$el.focus());
 const isPassHidden = computed(() => {
   return passwordFieldType.value === PASS_TYPES.PASSWORD.value;
@@ -162,7 +163,7 @@ const register = async () => {
 
   return authApi
     .register(payload)
-    .then(data => console.log(data)) // redirect to login?
+    .then(() => redirectToLogin())
     .catch(({ response }) => {
       if (response.status === 409) { customErrorMsg.value = response.data; }
       if (response.status === 500) { customErrorMsg.value = 'Something went wrong'; }
