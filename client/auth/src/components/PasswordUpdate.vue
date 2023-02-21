@@ -3,28 +3,12 @@
     <form @submit.prevent class="pt-8">
       <Card class="m-auto md:col-6">
         <template #title>
-          <h2 class="text-center">Hello!</h2>
         </template>
         <template #content>
           <div class="px-8 mt-5">
-            <p>Create a new account</p>
-            <div class="p-float-label mt-5 flex">
-              <InputText
-                v-model="form.firstName"
-                id="firstName"
-                type="text"
-                class="flex flex-grow-1"
-                autofocus />
-              <label for="firstName">First Name</label>
-            </div>
-            <div class="p-float-label mt-5 flex">
-              <InputText
-                v-model="form.lastName"
-                id="lastName"
-                type="text"
-                class="flex flex-grow-1" />
-              <label for="lastName">Last Name</label>
-            </div>
+            <p>Create a password</p>
+          </div>
+          <div class="px-8 mt-5">
             <div class="p-float-label mt-5 flex">
               <InputText
                 ref="emailEl"
@@ -33,16 +17,10 @@
                 id="email"
                 type="email"
                 required="required"
-                class="flex flex-grow-1" />
+                class="flex flex-grow-1"
+                autofocus />
               <label for="email">Email</label>
             </div>
-            <div class="error-msg ml-1 mt-1" aria-live="polite">
-              <span v-for="error of v$.email.$errors" :key="error.$uid">
-                Field {{ error.$property }} is required.
-              </span>
-            </div>
-          </div>
-          <div class="px-8 mt-5">
             <div class="mt-5 flex">
               <div class="p-inputgroup">
                 <div class="p-float-label">
@@ -79,17 +57,10 @@
           <div class="mb-5">
             <div class="px-8 flex">
               <Button
-                @click="register()"
+                @click="update()"
                 type="submit"
-                label="Register"
+                label="Update password"
                 class="flex-grow-1" />
-            </div>
-            <div class="px-8 flex">
-              <RouterLink
-                :to="{ name: 'login' }"
-                class="block mx-auto pt-4">
-                Back to login
-              </RouterLink>
             </div>
           </div>
         </template>
@@ -101,13 +72,13 @@
 <script setup>
 // TODO: add confirm password, min length etc
 import { computed, ref } from 'vue';
-import { email, required } from '@vuelidate/validators';
 import authApi from '@/auth/src/api/auth';
 import Button from 'primevue/Button';
 import Card from 'primevue/card';
 import Divider from 'primevue/Divider';
 import InputText from 'primevue/inputtext';
 import { PrimeIcons } from 'primevue/api';
+import { required } from '@vuelidate/validators';
 import { routes } from '@/shared/utils/navigation';
 import { useVuelidate } from '@vuelidate/core';
 
@@ -123,13 +94,10 @@ const PASS_TYPES = {
 };
 
 const form = ref({
-  firstName: '',
-  lastName: '',
   email: '',
   password: ''
 });
 const validationRules = {
-  email: { required, email },
   password: { required }
 };
 const v$ = useVuelidate(validationRules, form);
@@ -155,17 +123,19 @@ const resetValidation = () => {
 const handlePassIconClick = () => {
   passwordFieldType.value = isPassHidden.value ? PASS_TYPES.TEXT.value : PASS_TYPES.PASSWORD.value;
 };
-const register = async () => {
+const update = async () => {
   resetValidation();
   const isFormCorrect = await v$.value.$validate();
   if (!isFormCorrect) return;
   const payload = form.value;
 
   return authApi
-    .register(payload)
-    .then(() => redirectToLogin())
+    .updatePassword(payload)
+    .then(({ success }) => {
+      if (success) redirectToLogin();
+    })
     .catch(({ response }) => {
-      if (response.status === 409) customErrorMsg.value = response.data;
+      if (response.status === 401) customErrorMsg.value = response.data;
       else customErrorMsg.value = 'Something went wrong';
     })
     .finally(() => {

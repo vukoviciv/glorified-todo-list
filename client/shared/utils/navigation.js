@@ -4,7 +4,9 @@ const locations = {
   TODAY: 'today',
   WEEK: 'week',
   LOGIN: 'login',
-  LOGOUT: 'logout'
+  LOGOUT: 'logout',
+  REGISTER: 'register',
+  UPDATE_PASSWORD: 'update-password'
 };
 
 const routes = {
@@ -20,6 +22,12 @@ const routes = {
   },
   get login() {
     return `${this[locations.AUTH]}#/${locations.LOGIN}`;
+  },
+  get register() {
+    return `${this[locations.AUTH]}#/${locations.REGISTER}`;
+  },
+  get updatePassword() {
+    return `${this[locations.AUTH]}#/${locations.UPDATE_PASSWORD}`;
   }
 };
 

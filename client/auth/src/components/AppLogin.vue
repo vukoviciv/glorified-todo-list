@@ -70,6 +70,13 @@
                 Register a new account
               </RouterLink>
             </div>
+            <div class="px-8 mt-3 flex">
+              <RouterLink
+                :to="{ name: 'update-password' }"
+                class="block mx-auto pt-4">
+                I don't have a password
+              </RouterLink>
+            </div>
           </div>
         </template>
       </Card>
@@ -141,8 +148,8 @@ const login = async () => {
     .login(payload)
     .then(() => redirectToHome())
     .catch(({ response }) => {
-      if (response.status === 404) { customErrorMsg.value = response.data; }
-      if (response.status === 403) { customErrorMsg.value = response.data; }
+      if ([403, 404].includes(response.status)) customErrorMsg.value = response.data;
+      else customErrorMsg.value = 'Something went wrong';
     })
     .finally(() => {
       focusEmailField();
