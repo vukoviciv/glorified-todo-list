@@ -5,7 +5,8 @@ import { BaseEntity } from './BaseEntity';
 type Props = {
   firstName: string,
   lastName: string,
-  email: string
+  email: string,
+  hashedPassword: string
 }
 
 @Entity()
@@ -19,6 +20,12 @@ export class User extends BaseEntity {
   @Property({ unique: true })
     email: string;
 
+  @Property({ hidden: true })
+    password: string;
+
+  @Property()
+    hasTempPassword?: boolean = false;
+
   @OneToMany(() => Account, a => a.user)
     accounts = new Collection<Account>(this);
 
@@ -27,11 +34,12 @@ export class User extends BaseEntity {
     return `${this.firstName} ${this.lastName}`;
   }
 
-  constructor({ firstName, lastName, email }: Props) {
+  constructor({ firstName, lastName, email, hashedPassword }: Props) {
     super();
 
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
+    this.password = hashedPassword;
   }
 }

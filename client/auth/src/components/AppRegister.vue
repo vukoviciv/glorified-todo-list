@@ -7,7 +7,24 @@
         </template>
         <template #content>
           <div class="px-8 mt-5">
-            <p>Please login</p>
+            <p>Create a new account</p>
+            <div class="p-float-label mt-5 flex">
+              <InputText
+                v-model="form.firstName"
+                id="firstName"
+                type="text"
+                class="flex flex-grow-1"
+                autofocus />
+              <label for="firstName">First Name</label>
+            </div>
+            <div class="p-float-label mt-5 flex">
+              <InputText
+                v-model="form.lastName"
+                id="lastName"
+                type="text"
+                class="flex flex-grow-1" />
+              <label for="lastName">Last Name</label>
+            </div>
             <div class="p-float-label mt-5 flex">
               <InputText
                 ref="emailEl"
@@ -16,10 +33,16 @@
                 id="email"
                 type="email"
                 required="required"
-                class="flex flex-grow-1"
-                autofocus />
+                class="flex flex-grow-1" />
               <label for="email">Email</label>
             </div>
+            <div class="error-msg ml-1 mt-1" aria-live="polite">
+              <span v-for="error of v$.email.$errors" :key="error.$uid">
+                Field {{ error.$property }} is required.
+              </span>
+            </div>
+          </div>
+          <div class="px-8 mt-5">
             <div class="mt-5 flex">
               <div class="p-inputgroup">
                 <div class="p-float-label">
@@ -40,14 +63,12 @@
               </div>
             </div>
             <div class="error-msg ml-1 mt-1" aria-live="polite">
-              <div v-if="hasValidationErrors">
-                <span v-for="error of v$.email.$errors" :key="error.$uid">
-                  Field {{ error.$property }} is required.
-                </span>
-              </div>
-              <span v-else-if="customErrorMsg">{{ customErrorMsg }}</span>
+              <span v-for="error of v$.password.$errors" :key="error.$uid">
+                Field {{ error.$property }} is required.
+              </span>
             </div>
           </div>
+          <span v-if="customErrorMsg">{{ customErrorMsg }}</span>
         </template>
         <template #footer>
           <Divider align="center">
@@ -58,23 +79,16 @@
           <div class="mb-5">
             <div class="px-8 flex">
               <Button
-                @click="login()"
+                @click="register()"
                 type="submit"
-                label="Login"
+                label="Register"
                 class="flex-grow-1" />
             </div>
-            <div class="px-8 mt-3 flex">
+            <div class="px-8 flex">
               <RouterLink
-                :to="{ name: 'register' }"
+                :to="{ name: 'login' }"
                 class="block mx-auto pt-4">
-                Register a new account
-              </RouterLink>
-            </div>
-            <div class="px-8 mt-3 flex">
-              <RouterLink
-                :to="{ name: 'update-password' }"
-                class="block mx-auto pt-4">
-                I don't have a password
+                Back to login
               </RouterLink>
             </div>
           </div>
@@ -85,6 +99,7 @@
 </template>
 
 <script setup>
+// TODO: add confirm password, min length etc
 import { computed, ref } from 'vue';
 import { email, required } from '@vuelidate/validators';
 import authApi from '@/auth/src/api/auth';
@@ -106,7 +121,10 @@ const PASS_TYPES = {
     label: 'Hide password'
   }
 };
+
 const form = ref({
+  firstName: '',
+  lastName: '',
   email: '',
   password: ''
 });
@@ -119,7 +137,7 @@ const customErrorMsg = ref('');
 const emailEl = ref(null);
 const passwordFieldType = ref('password');
 
-const redirectToHome = () => (document.location.replace(routes.home));
+const redirectToLogin = () => (document.location.replace(routes.login));
 const focusEmailField = () => (emailEl.value.$el.focus());
 const isPassHidden = computed(() => {
   return passwordFieldType.value === PASS_TYPES.PASSWORD.value;
@@ -130,7 +148,6 @@ const passwordIcon = computed(() => {
 const passwordLabel = computed(() => {
   return isPassHidden.value ? PASS_TYPES.PASSWORD.label : PASS_TYPES.TEXT.label;
 });
-const hasValidationErrors = computed(() => v$.value.email.$errors.length);
 const resetValidation = () => {
   v$.value.$reset();
   customErrorMsg.value = '';
@@ -138,17 +155,17 @@ const resetValidation = () => {
 const handlePassIconClick = () => {
   passwordFieldType.value = isPassHidden.value ? PASS_TYPES.TEXT.value : PASS_TYPES.PASSWORD.value;
 };
-const login = async () => {
+const register = async () => {
   resetValidation();
   const isFormCorrect = await v$.value.$validate();
   if (!isFormCorrect) return;
   const payload = form.value;
 
   return authApi
-    .login(payload)
-    .then(() => redirectToHome())
+    .register(payload)
+    .then(() => redirectToLogin())
     .catch(({ response }) => {
-      if ([403, 404].includes(response.status)) customErrorMsg.value = response.data;
+      if (response.status === 409) customErrorMsg.value = response.data;
       else customErrorMsg.value = 'Something went wrong';
     })
     .finally(() => {
