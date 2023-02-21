@@ -21,7 +21,7 @@ export class User extends BaseEntity {
     email: string;
 
   @Property({ hidden: true })
-    password?: string;
+    password: string;
 
   @Property()
     hasTempPassword?: boolean = false;

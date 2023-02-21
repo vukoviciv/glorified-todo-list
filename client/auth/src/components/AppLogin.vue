@@ -7,18 +7,37 @@
         </template>
         <template #content>
           <div class="px-8 mt-5">
-            <p>Please login or create a new account</p>
+            <p>Please login</p>
             <div class="p-float-label mt-5 flex">
               <InputText
                 ref="emailEl"
                 v-model="form.email"
-                @update:model-value="resetForm()"
+                @update:model-value="resetValidation()"
                 id="email"
                 type="email"
                 required="required"
                 class="flex flex-grow-1"
                 autofocus />
               <label for="email">Email</label>
+            </div>
+            <div class="mt-5 flex">
+              <div class="p-inputgroup">
+                <div class="p-float-label">
+                  <InputText
+                    v-model="form.password"
+                    @update:model-value="resetValidation()"
+                    id="password"
+                    :type="passwordFieldType"
+                    required="required"
+                    class="flex flex-grow-1" />
+                  <label for="password">Password</label>
+                </div>
+                <Button
+                  @click="handlePassIconClick()"
+                  :icon="passwordIcon"
+                  :aria-label="passwordLabel"
+                  :title="passwordLabel" />
+              </div>
             </div>
             <div class="error-msg ml-1 mt-1" aria-live="polite">
               <div v-if="hasValidationErrors">
@@ -70,35 +89,60 @@ import { PrimeIcons } from 'primevue/api';
 import { routes } from '@/shared/utils/navigation';
 import { useVuelidate } from '@vuelidate/core';
 
+const PASS_TYPES = {
+  PASSWORD: {
+    value: 'password',
+    label: 'Show password'
+  },
+  TEXT: {
+    value: 'text',
+    label: 'Hide password'
+  }
+};
 const form = ref({
   email: '',
   password: ''
 });
 const validationRules = {
-  email: { required, email }
+  email: { required, email },
+  password: { required }
 };
 const v$ = useVuelidate(validationRules, form);
 const customErrorMsg = ref('');
 const emailEl = ref(null);
+const passwordFieldType = ref('password');
 
 const redirectToHome = () => (document.location.replace(routes.home));
 const focusEmailField = () => (emailEl.value.$el.focus());
+const isPassHidden = computed(() => {
+  return passwordFieldType.value === PASS_TYPES.PASSWORD.value;
+});
+const passwordIcon = computed(() => {
+  return isPassHidden.value ? PrimeIcons.EYE : PrimeIcons.EYE_SLASH;
+});
+const passwordLabel = computed(() => {
+  return isPassHidden.value ? PASS_TYPES.PASSWORD.label : PASS_TYPES.TEXT.label;
+});
 const hasValidationErrors = computed(() => v$.value.email.$errors.length);
-const resetForm = () => {
+const resetValidation = () => {
   v$.value.$reset();
   customErrorMsg.value = '';
 };
+const handlePassIconClick = () => {
+  passwordFieldType.value = isPassHidden.value ? PASS_TYPES.TEXT.value : PASS_TYPES.PASSWORD.value;
+};
 const login = async () => {
-  resetForm();
+  resetValidation();
   const isFormCorrect = await v$.value.$validate();
   if (!isFormCorrect) return;
-  const payload = { email: form.value.email };
+  const payload = form.value;
 
   return authApi
     .login(payload)
     .then(() => redirectToHome())
     .catch(({ response }) => {
       if (response.status === 404) { customErrorMsg.value = response.data; }
+      if (response.status === 403) { customErrorMsg.value = response.data; }
     })
     .finally(() => {
       focusEmailField();

@@ -9,11 +9,14 @@ const COOKIE_NAME = auth.cookie.name;
 const JWT_KEY = auth.jwt.key;
 
 async function login(req: Request, res: Response) {
-  const { body: { email } } = req;
+  const { body: { email, password } } = req;
   if (!email) return res.status(404).send('Email does not exist.');
 
   const user = await DI.em.findOne(User, { email });
-  if (!user) return res.status(404).send('User with the given email does not exist.');
+  if (!user) return res.status(403).send('Invalid password or email');
+
+  const result = await bcrypt.compare(password, user.password);
+  if (!result) return res.status(403).send('Invalid password or email');
 
   const payload = { email: user.email, id: user.id };
   const jwtData = jwt.sign(payload, JWT_KEY);
