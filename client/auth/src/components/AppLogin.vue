@@ -21,23 +21,8 @@
               <label for="email">Email</label>
             </div>
             <div class="mt-5 flex">
-              <div class="p-inputgroup">
-                <div class="p-float-label">
-                  <InputText
-                    v-model="form.password"
-                    @update:model-value="resetValidation()"
-                    id="password"
-                    :type="passwordFieldType"
-                    required="required"
-                    class="flex flex-grow-1" />
-                  <label for="password">Password</label>
-                </div>
-                <Button
-                  @click="handlePassIconClick()"
-                  :icon="passwordIcon"
-                  :aria-label="passwordLabel"
-                  :title="passwordLabel" />
-              </div>
+              <PasswordInput
+                @updated="passwordUpdate($event)" />
             </div>
             <div class="error-msg ml-1 mt-1" aria-live="polite">
               <div v-if="hasValidationErrors">
@@ -92,20 +77,11 @@ import Button from 'primevue/Button';
 import Card from 'primevue/card';
 import Divider from 'primevue/Divider';
 import InputText from 'primevue/inputtext';
+import PasswordInput from './common/PasswordInput.vue';
 import { PrimeIcons } from 'primevue/api';
 import { routes } from '@/shared/utils/navigation';
 import { useVuelidate } from '@vuelidate/core';
 
-const PASS_TYPES = {
-  PASSWORD: {
-    value: 'password',
-    label: 'Show password'
-  },
-  TEXT: {
-    value: 'text',
-    label: 'Hide password'
-  }
-};
 const form = ref({
   email: '',
   password: ''
@@ -117,26 +93,16 @@ const validationRules = {
 const v$ = useVuelidate(validationRules, form);
 const customErrorMsg = ref('');
 const emailEl = ref(null);
-const passwordFieldType = ref('password');
 
 const redirectToHome = () => (document.location.replace(routes.home));
 const focusEmailField = () => (emailEl.value.$el.focus());
-const isPassHidden = computed(() => {
-  return passwordFieldType.value === PASS_TYPES.PASSWORD.value;
-});
-const passwordIcon = computed(() => {
-  return isPassHidden.value ? PrimeIcons.EYE : PrimeIcons.EYE_SLASH;
-});
-const passwordLabel = computed(() => {
-  return isPassHidden.value ? PASS_TYPES.PASSWORD.label : PASS_TYPES.TEXT.label;
-});
+const passwordUpdate = ({ password }) => {
+  form.value.password = password;
+};
 const hasValidationErrors = computed(() => v$.value.email.$errors.length);
 const resetValidation = () => {
   v$.value.$reset();
   customErrorMsg.value = '';
-};
-const handlePassIconClick = () => {
-  passwordFieldType.value = isPassHidden.value ? PASS_TYPES.TEXT.value : PASS_TYPES.PASSWORD.value;
 };
 const login = async () => {
   resetValidation();

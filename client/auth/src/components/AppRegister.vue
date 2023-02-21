@@ -44,23 +44,8 @@
           </div>
           <div class="px-8 mt-5">
             <div class="mt-5 flex">
-              <div class="p-inputgroup">
-                <div class="p-float-label">
-                  <InputText
-                    v-model="form.password"
-                    @update:model-value="resetValidation()"
-                    id="password"
-                    :type="passwordFieldType"
-                    required="required"
-                    class="flex flex-grow-1" />
-                  <label for="password">Password</label>
-                </div>
-                <Button
-                  @click="handlePassIconClick()"
-                  :icon="passwordIcon"
-                  :aria-label="passwordLabel"
-                  :title="passwordLabel" />
-              </div>
+              <PasswordInput
+                @updated="passwordUpdate($event)" />
             </div>
             <div class="error-msg ml-1 mt-1" aria-live="polite">
               <span v-for="error of v$.password.$errors" :key="error.$uid">
@@ -100,27 +85,17 @@
 
 <script setup>
 // TODO: add confirm password, min length etc
-import { computed, ref } from 'vue';
 import { email, required } from '@vuelidate/validators';
 import authApi from '@/auth/src/api/auth';
 import Button from 'primevue/Button';
 import Card from 'primevue/card';
 import Divider from 'primevue/Divider';
 import InputText from 'primevue/inputtext';
+import PasswordInput from './common/PasswordInput.vue';
 import { PrimeIcons } from 'primevue/api';
+import { ref } from 'vue';
 import { routes } from '@/shared/utils/navigation';
 import { useVuelidate } from '@vuelidate/core';
-
-const PASS_TYPES = {
-  PASSWORD: {
-    value: 'password',
-    label: 'Show password'
-  },
-  TEXT: {
-    value: 'text',
-    label: 'Hide password'
-  }
-};
 
 const form = ref({
   firstName: '',
@@ -135,25 +110,17 @@ const validationRules = {
 const v$ = useVuelidate(validationRules, form);
 const customErrorMsg = ref('');
 const emailEl = ref(null);
-const passwordFieldType = ref('password');
 
 const redirectToLogin = () => (document.location.replace(routes.login));
 const focusEmailField = () => (emailEl.value.$el.focus());
-const isPassHidden = computed(() => {
-  return passwordFieldType.value === PASS_TYPES.PASSWORD.value;
-});
-const passwordIcon = computed(() => {
-  return isPassHidden.value ? PrimeIcons.EYE : PrimeIcons.EYE_SLASH;
-});
-const passwordLabel = computed(() => {
-  return isPassHidden.value ? PASS_TYPES.PASSWORD.label : PASS_TYPES.TEXT.label;
-});
+
+const passwordUpdate = ({ password }) => {
+  console.log({ password });
+  form.value.password = password;
+};
 const resetValidation = () => {
   v$.value.$reset();
   customErrorMsg.value = '';
-};
-const handlePassIconClick = () => {
-  passwordFieldType.value = isPassHidden.value ? PASS_TYPES.TEXT.value : PASS_TYPES.PASSWORD.value;
 };
 const register = async () => {
   resetValidation();
