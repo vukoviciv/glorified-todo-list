@@ -34,7 +34,8 @@ async function register({ body }: Request, res: Response) {
   const existingUser = await DI.em.findOne(User, { email });
   if (existingUser) return res.status(409).send('User with the given email already exists');
 
-  const user = new User({ firstName, lastName, email, password });
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const user = new User({ firstName, lastName, email, hashedPassword });
   await DI.em.persistAndFlush(user);
 
   return res.json(user);
