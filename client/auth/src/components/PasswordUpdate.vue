@@ -78,20 +78,3 @@ const update = async () => {
     });
 };
 </script>
-
-<style lang="scss" scoped>
-.login-wrapper {
-  background: url(../assets/auth_background.jpg);
-  background-size: cover;
-
-  .error-msg {
-    color: var(--red-500);
-  }
-
-  .register-button {
-    background-color: var(--purple-50);
-    color: var(--purple-500);
-    border: 1px solid var(--purple-500);
-  }
-}
-</style>
