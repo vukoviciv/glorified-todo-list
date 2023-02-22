@@ -1,5 +1,5 @@
 <template>
-  <LogistrationWrapper title="hello" :error-messages="errorMessages">
+  <LogistrationForm title="Registration" :error-messages="errorMessages">
     <div class="px-8 mt-5">
       <p>Create a new account</p>
       <div class="p-float-label mt-5 flex">
@@ -51,7 +51,7 @@
         </RouterLink>
       </div>
     </template>
-  </LogistrationWrapper>
+  </LogistrationForm>
 </template>
 
 <script setup>
@@ -61,7 +61,7 @@ import { email as emailValidator, required } from '@vuelidate/validators';
 import authApi from '@/auth/src/api/auth';
 import Button from 'primevue/Button';
 import InputText from 'primevue/inputtext';
-import LogistrationWrapper from './common/LogistrationWrapper.vue';
+import LogistrationForm from './common/LogistrationForm.vue';
 import PasswordInput from './common/PasswordInput.vue';
 import { routes } from '@/shared/utils/navigation';
 import { useVuelidate } from '@vuelidate/core';

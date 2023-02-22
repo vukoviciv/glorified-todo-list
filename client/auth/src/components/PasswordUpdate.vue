@@ -1,11 +1,16 @@
 <template>
-  <LogistrationWrapper title="Password update" :error-messages="errorMessages">
+  <LogistrationForm
+    @submit="update()"
+    title="Password update"
+    submit-text="Update Password"
+    :custom-error-msg="customErrorMsg"
+    :is-dirty="isDirty"
+    :validation-rules="validationRules">
     <div class="px-8 mt-5">
       <div class="p-float-label mt-5 flex">
         <InputText
-          ref="emailEl"
           v-model="form.email"
-          @update:model-value="resetValidation()"
+          @update:model-value="onUpdate()"
           id="email"
           type="email"
           required="required"
@@ -17,14 +22,7 @@
         <PasswordInput @updated="passwordUpdate($event)" />
       </div>
     </div>
-    <template #actions>
-      <div class="px-8 flex">
-        <Button
-          @click="update()"
-          type="submit"
-          label="Update password"
-          class="flex-grow-1" />
-      </div>
+    <template #additional-actions>
       <div class="px-8 flex">
         <RouterLink
           :to="{ name: 'login' }"
@@ -33,20 +31,18 @@
         </RouterLink>
       </div>
     </template>
-  </LogistrationWrapper>
+  </LogistrationForm>
 </template>
 
 <script setup>
 // TODO: add confirm password, min length etc
-import { computed, ref } from 'vue';
 import { email, required } from '@vuelidate/validators';
 import authApi from '@/auth/src/api/auth';
-import Button from 'primevue/Button';
 import InputText from 'primevue/inputtext';
-import LogistrationWrapper from './common/LogistrationWrapper.vue';
+import LogistrationForm from './common/LogistrationForm.vue';
 import PasswordInput from './common/PasswordInput.vue';
+import { ref } from 'vue';
 import { routes } from '@/shared/utils/navigation';
-import { useVuelidate } from '@vuelidate/core';
 
 const form = ref({
   email: '',
@@ -56,32 +52,19 @@ const validationRules = {
   email: { required, email },
   password: { required }
 };
-const v$ = useVuelidate(validationRules, form);
 const customErrorMsg = ref(null);
-const emailEl = ref(null);
+const isDirty = ref(false);
 
-const errorMessages = computed(() => {
-  const validationErrors = v$.value.$errors.map(err => {
-    console.log(err);
-    return `${err.$property} ${err.$message.toLocaleLowerCase()}.`;
-  });
-  if (customErrorMsg.value) validationErrors.push(customErrorMsg.value);
-
-  console.log(v$.value);
-  return validationErrors;
-});
 const redirectToLogin = () => (document.location.replace(routes.login));
 const passwordUpdate = ({ password }) => {
   form.value.password = password;
 };
-const resetValidation = () => {
-  v$.value.$reset();
-  customErrorMsg.value = null;
+const onUpdate = () => {
+  customErrorMsg.value = '';
+  isDirty.value = true;
 };
 const update = async () => {
-  resetValidation();
-  const isFormCorrect = await v$.value.$validate();
-  if (!isFormCorrect) return;
+  customErrorMsg.value = '';
   const payload = form.value;
 
   return authApi
