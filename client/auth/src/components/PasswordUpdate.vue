@@ -25,6 +25,13 @@
           label="Update password"
           class="flex-grow-1" />
       </div>
+      <div class="px-8 flex">
+        <RouterLink
+          :to="{ name: 'login' }"
+          class="block mx-auto pt-4">
+          Back to login
+        </RouterLink>
+      </div>
     </template>
   </LogistrationWrapper>
 </template>
