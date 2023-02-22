@@ -1,16 +1,14 @@
 <template>
   <LogistrationForm
-    @submit="update()"
+    :submit-action="update"
+    :validation-rules="validationRules"
+    :form="form"
     title="Password update"
-    submit-text="Update Password"
-    :custom-error-msg="customErrorMsg"
-    :is-dirty="isDirty"
-    :validation-rules="validationRules">
+    submit-text="Update Password">
     <div class="px-8 mt-5">
       <div class="p-float-label mt-5 flex">
         <InputText
           v-model="form.email"
-          @update:model-value="onUpdate()"
           id="email"
           type="email"
           required="required"
@@ -49,32 +47,21 @@ const form = ref({
   password: ''
 });
 const validationRules = {
-  email: { required, email },
-  password: { required }
+  password: { required },
+  email: { required, email }
 };
-const customErrorMsg = ref(null);
-const isDirty = ref(false);
 
 const redirectToLogin = () => (document.location.replace(routes.login));
 const passwordUpdate = ({ password }) => {
   form.value.password = password;
 };
-const onUpdate = () => {
-  customErrorMsg.value = '';
-  isDirty.value = true;
-};
 const update = async () => {
-  customErrorMsg.value = '';
   const payload = form.value;
 
   return authApi
     .updatePassword(payload)
     .then(({ success }) => {
       if (success) redirectToLogin();
-    })
-    .catch(({ response }) => {
-      if (response.status === 401) customErrorMsg.value = response.data;
-      else customErrorMsg.value = 'Something went wrong';
     });
 };
 </script>

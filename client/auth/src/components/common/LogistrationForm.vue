@@ -38,29 +38,32 @@
 </template>
 
 <script setup>
-import { computed, watch } from 'vue';
+import { computed, ref } from 'vue';
 import Button from 'primevue/Button';
 import Card from 'primevue/card';
 import Divider from 'primevue/Divider';
 import { PrimeIcons } from 'primevue/api';
 import { useVuelidate } from '@vuelidate/core';
 
+const DEFAULT_ERROR_MSG = 'Something went wrong. Try again later.';
 const props = defineProps({
   title: { type: String, default: null },
   form: { type: Object, default: () => ({}) },
   submitText: { type: String, default: 'Submit' },
-  customErrorMsg: { type: String, default: '' },
-  isDirty: { type: Boolean, default: false },
-  validationRules: { type: Object, default: () => ({}) }
+  validationRules: { type: Object, default: () => ({}) },
+  submitAction: { type: Function, required: true }
 });
-
-const v$ = useVuelidate(props.validationRules, props.form);
 const emit = defineEmits(['submit']);
+const v$ = useVuelidate(props.validationRules, props.form);
+const customErrorMsg = ref(null);
+
 const errorMessages = computed(() => {
   const validationErrors = v$.value.$errors.map(err => {
     return `${err.$property} ${err.$message.toLocaleLowerCase()}.`;
   });
-  if (props.customErrorMsg) validationErrors.push(props.customErrorMsg);
+  if (customErrorMsg.value) {
+    validationErrors.push(customErrorMsg.value);
+  }
 
   return validationErrors;
 });
@@ -74,12 +77,19 @@ const submit = async () => {
   const isFormCorrect = await v$.value.$validate();
   if (!isFormCorrect) return;
 
-  emit('submit');
+  return props.submitAction()
+    .then(() => {
+      emit('submit');
+      resetValidation();
+    })
+    .catch(({ response }) => {
+      if (response.data) {
+        customErrorMsg.value = response.data;
+      } else {
+        customErrorMsg.value = DEFAULT_ERROR_MSG;
+      }
+    });
 };
-
-watch(() => props.isDirty, val => {
-  if (val) resetValidation();
-});
 </script>
 
 <style lang="scss" scoped>
