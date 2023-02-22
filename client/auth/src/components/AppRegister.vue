@@ -32,9 +32,7 @@
     </div>
     <div class="px-8 mt-5">
       <div class="mt-5 flex">
-        <PasswordInput
-          @updated="passwordUpdate($event)"
-          ref-props="password" />
+        <PasswordInput @updated="passwordUpdate($event)" />
       </div>
     </div>
     <template #actions>
@@ -88,7 +86,7 @@ const errorMessages = computed(() => {
   const validationErrors = v$.value.$errors.map(err => {
     return `${err.$property} ${err.$message.toLocaleLowerCase()}.`;
   });
-  if (customErrorMsg.value.length > 0) validationErrors.push(customErrorMsg);
+  if (customErrorMsg.value.length > 0) validationErrors.push(customErrorMsg.value);
 
   return validationErrors;
 });

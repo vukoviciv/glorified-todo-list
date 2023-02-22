@@ -70,7 +70,7 @@ const errorMessages = computed(() => {
   const validationErrors = v$.value.$errors.map(err => {
     return `${err.$property} ${err.$message.toLocaleLowerCase()}.`;
   });
-  if (customErrorMsg.value.length > 0) validationErrors.push(customErrorMsg);
+  if (customErrorMsg.value.length > 0) validationErrors.push(customErrorMsg.value);
 
   return validationErrors;
 });
