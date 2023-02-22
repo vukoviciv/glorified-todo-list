@@ -1,72 +1,47 @@
 <template>
-  <div class="login-wrapper min-h-screen">
-    <form @submit.prevent class="pt-8">
-      <Card class="m-auto md:col-6">
-        <template #title>
-          <h2 class="text-center">Hello!</h2>
-        </template>
-        <template #content>
-          <div class="px-8 mt-5">
-            <p>Please login</p>
-            <div class="p-float-label mt-5 flex">
-              <InputText
-                ref="emailEl"
-                v-model="form.email"
-                @update:model-value="resetValidation()"
-                id="email"
-                type="email"
-                required="required"
-                class="flex flex-grow-1"
-                autofocus />
-              <label for="email">Email</label>
-            </div>
-            <div class="mt-5 flex">
-              <PasswordInput
-                @updated="passwordUpdate($event)" />
-            </div>
-            <div class="error-msg ml-1 mt-1" aria-live="polite">
-              <div v-if="hasValidationErrors">
-                <span v-for="error of v$.email.$errors" :key="error.$uid">
-                  Field {{ error.$property }} is required.
-                </span>
-              </div>
-              <span v-else-if="customErrorMsg">{{ customErrorMsg }}</span>
-            </div>
-          </div>
-        </template>
-        <template #footer>
-          <Divider align="center">
-            <div class="inline-flex">
-              <span :class="`${PrimeIcons.USER} mx-2`"></span>
-            </div>
-          </Divider>
-          <div class="mb-5">
-            <div class="px-8 flex">
-              <Button
-                @click="login()"
-                type="submit"
-                label="Login"
-                class="flex-grow-1" />
-            </div>
-            <div class="px-8 mt-3 flex">
-              <RouterLink
-                :to="{ name: 'register' }"
-                class="block mx-auto pt-4">
-                Register a new account
-              </RouterLink>
-            </div>
-            <div class="px-8 mt-3 flex">
-              <RouterLink
-                :to="{ name: 'update-password' }"
-                class="block mx-auto pt-4">
-                I don't have a password
-              </RouterLink>
-            </div>
-          </div>
-        </template>
-      </Card>
-    </form>
-  </div>
+  <LogistrationWrapper title="Login" :error-messages="errorMessages">
+    <div class="px-8 mt-5">
+      <p>Please login</p>
+      <div class="p-float-label mt-5 flex">
+        <InputText
+          ref="emailEl"
+          v-model="form.email"
+          @update:model-value="resetValidation()"
+          id="email"
+          type="email"
+          required="required"
+          class="flex flex-grow-1"
+          autofocus />
+        <label for="email">Email</label>
+      </div>
+      <div class="mt-5 flex">
+        <PasswordInput @updated="passwordUpdate($event)" />
+      </div>
+    </div>
+    <template #actions>
+      <div class="px-8 flex">
+        <Button
+          @click="login()"
+          type="submit"
+          label="Login"
+          class="flex-grow-1" />
+      </div>
+      <div class="px-8 mt-3 flex">
+        <RouterLink
+          :to="{ name: 'register' }"
+          class="block mx-auto pt-4">
+          Register a new account
+        </RouterLink>
+      </div>
+      <div class="px-8 mt-3 flex">
+        <RouterLink
+          :to="{ name: 'update-password' }"
+          class="block mx-auto pt-4">
+          I don't have a password
+        </RouterLink>
+      </div>
+    </template>
+  </LogistrationWrapper>
 </template>
 
 <script setup>
@@ -74,11 +49,9 @@ import { computed, ref } from 'vue';
 import { email, required } from '@vuelidate/validators';
 import authApi from '@/auth/src/api/auth';
 import Button from 'primevue/Button';
-import Card from 'primevue/card';
-import Divider from 'primevue/Divider';
 import InputText from 'primevue/inputtext';
+import LogistrationWrapper from './common/LogistrationWrapper.vue';
 import PasswordInput from './common/PasswordInput.vue';
-import { PrimeIcons } from 'primevue/api';
 import { routes } from '@/shared/utils/navigation';
 import { useVuelidate } from '@vuelidate/core';
 
@@ -92,14 +65,20 @@ const validationRules = {
 };
 const v$ = useVuelidate(validationRules, form);
 const customErrorMsg = ref('');
-const emailEl = ref(null);
+
+const errorMessages = computed(() => {
+  const validationErrors = v$.value.$errors.map(err => {
+    return `${err.$property} ${err.$message.toLocaleLowerCase()}.`;
+  });
+  if (customErrorMsg.value.length > 0) validationErrors.push(customErrorMsg);
+
+  return validationErrors;
+});
 
 const redirectToHome = () => (document.location.replace(routes.home));
-const focusEmailField = () => (emailEl.value.$el.focus());
 const passwordUpdate = ({ password }) => {
   form.value.password = password;
 };
-const hasValidationErrors = computed(() => v$.value.email.$errors.length);
 const resetValidation = () => {
   v$.value.$reset();
   customErrorMsg.value = '';
@@ -116,26 +95,6 @@ const login = async () => {
     .catch(({ response }) => {
       if ([403, 404].includes(response.status)) customErrorMsg.value = response.data;
       else customErrorMsg.value = 'Something went wrong';
-    })
-    .finally(() => {
-      focusEmailField();
     });
 };
 </script>
-
-<style lang="scss" scoped>
-.login-wrapper {
-  background: url(../assets/auth_background.jpg);
-  background-size: cover;
-
-  .error-msg {
-    color: var(--red-500);
-  }
-
-  .register-button {
-    background-color: var(--purple-50);
-    color: var(--purple-500);
-    border: 1px solid var(--purple-500);
-  }
-}
-</style>
