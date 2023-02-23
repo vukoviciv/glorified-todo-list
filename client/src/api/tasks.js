@@ -1,5 +1,5 @@
 import { extractData } from '@/shared/api/utils';
-import request from '@/shared/api/request';
+import { main as request } from '@/shared/api/request';
 
 const url = {
   root: '/tasks',

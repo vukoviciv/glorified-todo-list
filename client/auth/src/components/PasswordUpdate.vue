@@ -1,15 +1,13 @@
 <template>
   <LogistrationForm
+    :submit-action="update"
     :validation-rules="validationRules"
     :form="form"
-    :submit-action="login"
-    submit-text="Login"
-    title="Login">
+    title="Password update"
+    submit-text="Update Password">
     <div class="px-8 mt-5">
-      <p>Please login</p>
       <div class="p-float-label mt-5 flex">
         <InputText
-          ref="emailEl"
           v-model="form.email"
           id="email"
           type="email"
@@ -23,18 +21,11 @@
       </div>
     </div>
     <template #additional-actions>
-      <div class="px-8 mt-3 flex">
+      <div class="px-8 flex">
         <RouterLink
-          :to="{ name: 'register' }"
+          :to="{ name: 'login' }"
           class="block mx-auto pt-4">
-          Register a new account
-        </RouterLink>
-      </div>
-      <div class="px-8 mt-3 flex">
-        <RouterLink
-          :to="{ name: 'update-password' }"
-          class="block mx-auto pt-4">
-          I don't have a password
+          Back to login
         </RouterLink>
       </div>
     </template>
@@ -42,6 +33,7 @@
 </template>
 
 <script setup>
+// TODO: add confirm password, min length etc
 import { email, required } from '@vuelidate/validators';
 import authApi from '@/auth/src/api/auth';
 import InputText from 'primevue/inputtext';
@@ -55,18 +47,19 @@ const form = ref({
   password: ''
 });
 const validationRules = {
-  email: { required, email },
-  password: { required }
+  password: { required },
+  email: { required, email }
 };
 
-const redirectToHome = () => (document.location.replace(routes.home));
+const redirectToLogin = () => (document.location.replace(routes.login));
 const passwordUpdate = ({ password }) => {
   form.value.password = password;
 };
-
-const login = () => {
+const update = () => {
   return authApi
-    .login(form.value)
-    .then(() => redirectToHome());
+    .updatePassword(form.value)
+    .then(({ success }) => {
+      if (success) redirectToLogin();
+    });
 };
 </script>

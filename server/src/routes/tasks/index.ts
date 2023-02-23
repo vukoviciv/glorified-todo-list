@@ -1,11 +1,10 @@
 import * as ctrl from './task.controller';
-import { getAccount, parseParamId } from '../middlewares';
+import { parseParamId } from '../middlewares';
 import { Router } from 'express';
 
 const router = Router();
 
 router
-  .use(getAccount)
   .get('/', ctrl.list)
   .post('/', ctrl.create)
   .param('id', parseParamId)

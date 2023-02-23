@@ -4,8 +4,8 @@
       v-model="selectedOrderBy"
       @change="$emit('update:order', $event)"
       :options="orderByValues"
-      option-label="name"
-      option-value="value"
+      option-label="label"
+      option-value="key"
       placeholder="Order by" />
     <div class="field-checkbox ml-8">
       <Checkbox
@@ -29,10 +29,10 @@
 <script setup>
 import Checkbox from 'primevue/checkbox';
 import Dropdown from 'primevue/dropdown';
+import { orderBy } from '@/config/task';
 import { ref } from 'vue';
 
 const props = defineProps({
-  orderByValues: { type: Array, required: true },
   showDescription: { type: Boolean, required: true },
   showCreatedAt: { type: Boolean, require: true }
 });
@@ -40,4 +40,6 @@ const props = defineProps({
 const selectedOrderBy = ref();
 const description = ref(props.showDescription);
 const createdAt = ref(props.showCreatedAt);
+
+const orderByValues = orderBy.list.map((val, key) => ({ key, label: val.label }));
 </script>

@@ -1,4 +1,4 @@
-import { CustomMigrationGenerator } from '../src/database/utils/MigrationGenerator';
+import { CustomMigrationGenerator } from '../src/database/utils/migrationGenerator';
 import { defineConfig } from '@mikro-orm/core';
 import { entities } from './../src/database/entities';
 import { envs } from './index';

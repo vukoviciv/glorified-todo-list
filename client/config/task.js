@@ -26,23 +26,19 @@ export const orderBy = {
   values: {
     DEADLINE: {
       label: 'Deadline',
-      value: 'deadline',
-      order: 'ASC'
+      value: 'deadline'
     },
     PRIORITY: {
       label: 'Priority',
-      value: 'priority',
-      order: 'DESC'
+      value: 'priority'
     },
     NAME: {
       label: 'Name',
-      value: 'name',
-      order: 'ASC'
+      value: 'name'
     },
     CREATED_AT: {
       label: 'Created at',
-      value: 'createdAt',
-      order: 'ASC'
+      value: 'createdAt'
     }
   },
   get list() {
