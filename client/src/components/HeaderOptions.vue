@@ -12,12 +12,13 @@
           :icon="PrimeIcons.USER"
           class="p-button-rounded p-button-secondary"
           aria-haspopup="true"
-          aria-controls="overlay_menu" />
+          aria-label="Account menu"
+          aria-controls="overlay-menu" />
       </div>
     </div>
     <Menu
       ref="menu"
-      id="overlay_menu"
+      id="overlay-menu"
       :model="items"
       :popup="true" />
     <ConfirmDialog>

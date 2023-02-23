@@ -1,7 +1,10 @@
 <template>
   <div class="tasks-main">
     <CreateTaskDialog @task:created="$emit('task:created', $event)" />
-    <TabMenu :model="menuItems" class="flex-grow-1 justify-space-around" />
+    <TabMenu
+      :model="menuItems"
+      aria-label="Main navigation"
+      class="flex-grow-1 justify-space-around" />
     <RouterView
       @toggle:task="$emit('toggle:task', $event)"
       @task:edit="$emit('task:edit', $event)"
@@ -14,6 +17,7 @@
 
 <script setup>
 import CreateTaskDialog from './TaskDialog/CreateTaskDialog.vue';
+import { onMounted } from 'vue';
 import TabMenu from 'primevue/tabmenu';
 
 defineProps({
@@ -22,12 +26,28 @@ defineProps({
 });
 
 const menuItems = [
-  { label: 'Today', to: '/today' }, // TODO: router name?
+  { label: 'Today', to: '/today' },
   { label: 'Week', to: '/week' }
 ];
+onMounted(() => {
+  // a11y fix - Ensures elements with an ARIA role that require child roles contain them
+  const unusedEl = document.querySelector('.p-tabmenu-ink-bar');
+  unusedEl.remove();
+});
 </script>
 <script>
 export default {
   name: 'tasks-main'
 };
 </script>
+
+<style lang="scss" scoped>
+::v-deep .p-tabmenu .p-tabmenu-nav .p-tabmenuitem {
+  .p-menuitem-link {
+    border: none;
+  }
+  &.p-highlight {
+    border-bottom: 5px solid var(--primary-500);
+  }
+}
+</style>
