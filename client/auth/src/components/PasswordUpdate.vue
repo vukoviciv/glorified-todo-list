@@ -55,11 +55,9 @@ const redirectToLogin = () => (document.location.replace(routes.login));
 const passwordUpdate = ({ password }) => {
   form.value.password = password;
 };
-const update = async () => {
-  const payload = form.value;
-
+const update = () => {
   return authApi
-    .updatePassword(payload)
+    .updatePassword(form.value)
     .then(({ success }) => {
       if (success) redirectToLogin();
     });

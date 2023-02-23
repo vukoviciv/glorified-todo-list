@@ -75,11 +75,9 @@ const validationRules = {
 const redirectToLogin = () => (document.location.replace(routes.login));
 const passwordUpdate = ({ password }) => (form.value.password = password);
 
-const register = async () => {
-  const payload = form.value;
-
+const register = () => {
   return authApi
-    .register(payload)
+    .register(form.value)
     .then(() => redirectToLogin());
 };
 </script>

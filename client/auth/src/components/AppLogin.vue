@@ -64,11 +64,9 @@ const passwordUpdate = ({ password }) => {
   form.value.password = password;
 };
 
-const login = async () => {
-  const payload = form.value;
-
+const login = () => {
   return authApi
-    .login(payload)
+    .login(form.value)
     .then(() => redirectToHome());
 };
 </script>
