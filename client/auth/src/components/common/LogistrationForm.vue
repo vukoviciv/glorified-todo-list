@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import Button from 'primevue/Button';
 import Card from 'primevue/card';
 import Divider from 'primevue/Divider';
@@ -51,9 +51,10 @@ const props = defineProps({
   form: { type: Object, default: () => ({}) },
   submitText: { type: String, default: 'Submit' },
   validationRules: { type: Object, default: () => ({}) },
-  submitAction: { type: Function, required: true }
+  submitAction: { type: Function, required: true },
+  isDirty: { type: Boolean, required: true }
 });
-const emit = defineEmits(['submit']);
+const emit = defineEmits(['submit', 'reset:dirty']);
 const v$ = useVuelidate(props.validationRules, props.form);
 const customErrorMsg = ref(null);
 
@@ -75,7 +76,10 @@ const resetValidation = () => {
 const submit = async () => {
   resetValidation();
   const isFormCorrect = await v$.value.$validate();
-  if (!isFormCorrect) return;
+  if (!isFormCorrect) {
+    emit('reset:dirty');
+    return;
+  }
 
   return props.submitAction()
     .then(() => {
@@ -90,6 +94,9 @@ const submit = async () => {
       }
     });
 };
+watch(() => props.isDirty, val => {
+  if (val) resetValidation();
+});
 </script>
 
 <style lang="scss" scoped>
