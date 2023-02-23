@@ -3,6 +3,7 @@
     <div class="p-float-label">
       <InputText
         v-model="password"
+        v-bind="$attrs"
         @update:model-value="$emit('updated', { password })"
         id="password"
         :type="passwordFieldType"
