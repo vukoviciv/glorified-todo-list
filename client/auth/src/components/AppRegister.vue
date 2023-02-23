@@ -8,8 +8,8 @@
     submit-text="Register"
     title="Registration">
     <div class="px-8 mt-5">
-      <p>Create a new account</p>
-      <div class="p-float-label mt-5 flex">
+      <p class="ml-3">All fields marked with * are required</p>
+      <div class="p-float-label mt-5 ml-3 flex">
         <InputText
           v-model="form.firstName"
           @update:model-value="isDirty=true"
@@ -20,7 +20,7 @@
           autofocus />
         <label for="firstName">First Name</label>
       </div>
-      <div class="p-float-label mt-5 flex">
+      <div class="p-float-label mt-5  ml-3 flex">
         <InputText
           v-model="form.lastName"
           @update:model-value="isDirty=true"
@@ -30,24 +30,25 @@
           class="flex flex-grow-1" />
         <label for="lastName">Last Name</label>
       </div>
-      <div class="p-float-label mt-5 flex">
-        <InputText
-          v-model="form.email"
-          @update:model-value="isDirty=true"
-          id="email"
-          type="email"
-          required="required"
-          autocomplete="email"
-          class="flex flex-grow-1" />
-        <label for="email">Email</label>
-      </div>
+      <RequiredFieldWrapper class="mt-5 p-inputgroup">
+        <div class="p-float-label">
+          <InputText
+            v-model="form.email"
+            @update:model-value="isDirty=true"
+            id="email"
+            type="email"
+            required="required"
+            autocomplete="email" />
+          <label for="email">Email</label>
+        </div>
+      </RequiredFieldWrapper>
     </div>
     <div class="px-8 mt-5">
-      <div class="mt-5 flex">
+      <RequiredFieldWrapper class="mt-5 flex">
         <PasswordInput
           @updated="passwordUpdate($event)"
           autocomplete="new-password" />
-      </div>
+      </RequiredFieldWrapper>
     </div>
     <template #additional-actions>
       <div class="px-8 flex">
@@ -69,6 +70,7 @@ import InputText from 'primevue/inputtext';
 import LogistrationForm from './common/LogistrationForm.vue';
 import PasswordInput from './common/PasswordInput.vue';
 import { ref } from 'vue';
+import RequiredFieldWrapper from './common/RequiredFieldWrapper.vue';
 import { routes } from '@/shared/utils/navigation';
 
 const form = ref({

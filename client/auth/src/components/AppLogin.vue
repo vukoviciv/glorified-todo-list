@@ -8,16 +8,15 @@
     submit-text="Login"
     title="Login">
     <div class="px-8 mt-5">
-      <p>All fields marked with * are required</p>
+      <p class="ml-3">All fields marked with * are required</p>
       <RequiredFieldWrapper class="mt-5 p-inputgroup">
-        <div class="p-float-label flex">
+        <div class="p-float-label">
           <InputText
             v-model="form.email"
             @update:model-value="isDirty=true"
             id="email"
             type="email"
             required="required"
-            class="flex flex-grow-1"
             autocomplete="email"
             autofocus />
           <label for="email">Email</label>

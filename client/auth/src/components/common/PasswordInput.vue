@@ -7,8 +7,7 @@
         @update:model-value="$emit('updated', { password })"
         id="password"
         :type="passwordFieldType"
-        required="required"
-        class="flex flex-grow-1" />
+        required="required" />
       <label for="password">Password</label>
     </div>
     <Button
