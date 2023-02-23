@@ -8,24 +8,27 @@
     submit-text="Login"
     title="Login">
     <div class="px-8 mt-5">
-      <p>Please login</p>
-      <div class="p-float-label mt-5 flex">
-        <InputText
-          v-model="form.email"
-          @update:model-value="isDirty=true"
-          id="email"
-          type="email"
-          required="required"
-          class="flex flex-grow-1"
-          autocomplete="email"
-          autofocus />
-        <label for="email">Email</label>
-      </div>
-      <div class="mt-5 flex">
+      <p>All fields marked with * are required</p>
+      <RequiredFieldWrapper class="mt-5 p-inputgroup">
+        <div class="p-float-label flex">
+          <InputText
+            v-model="form.email"
+            @update:model-value="isDirty=true"
+            id="email"
+            type="email"
+            required="required"
+            class="flex flex-grow-1"
+            autocomplete="email"
+            autofocus />
+          <label for="email">Email</label>
+        </div>
+      </RequiredFieldWrapper>
+      <RequiredFieldWrapper class="mt-5 flex">
         <PasswordInput
           @updated="passwordUpdate($event)"
-          autocomplete="current-password" />
-      </div>
+          autocomplete="current-password"
+          aria-describedby="required-field-description" />
+      </RequiredFieldWrapper>
     </div>
     <template #additional-actions>
       <div class="px-8 mt-3 flex">
@@ -53,6 +56,7 @@ import InputText from 'primevue/inputtext';
 import LogistrationForm from './common/LogistrationForm.vue';
 import PasswordInput from './common/PasswordInput.vue';
 import { ref } from 'vue';
+import RequiredFieldWrapper from './common/RequiredFieldWrapper.vue';
 import { routes } from '@/shared/utils/navigation';
 
 const form = ref({
