@@ -1,23 +1,29 @@
 <template>
   <LogistrationForm
+    @reset:dirty="isDirty = false"
     :submit-action="update"
     :validation-rules="validationRules"
     :form="form"
+    :is-dirty="isDirty"
     title="Password update"
     submit-text="Update Password">
     <div class="px-8 mt-5">
       <div class="p-float-label mt-5 flex">
         <InputText
           v-model="form.email"
+          @update:model-value="isDirty=true"
           id="email"
           type="email"
           required="required"
           class="flex flex-grow-1"
+          autocomplete="email"
           autofocus />
         <label for="email">Email</label>
       </div>
       <div class="mt-5 flex">
-        <PasswordInput @updated="passwordUpdate($event)" />
+        <PasswordInput
+          @updated="passwordUpdate($event)"
+          autocomplete="new-password" />
       </div>
     </div>
     <template #additional-actions>
@@ -50,10 +56,12 @@ const validationRules = {
   password: { required },
   email: { required, email }
 };
+const isDirty = ref(false);
 
 const redirectToLogin = () => (document.location.replace(routes.login));
 const passwordUpdate = ({ password }) => {
   form.value.password = password;
+  isDirty.value = true;
 };
 const update = () => {
   return authApi
