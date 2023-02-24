@@ -1,4 +1,5 @@
 import { defineAsyncComponent, reactive } from 'vue';
+import { snackbarConfig } from '../../config/snackbar';
 
 const TodoSnackbar = () => import('../components/TodoSnackbar.vue');
 
@@ -9,10 +10,9 @@ export default {
       defineAsyncComponent(TodoSnackbar)
     );
     const snackbar = reactive({
-      title: 'Default title',
       text: '',
       isActive: false,
-      type: 'info'
+      ...snackbarConfig.info
     });
     app.provide('snackbar', snackbar);
   }
