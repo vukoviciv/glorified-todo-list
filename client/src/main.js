@@ -8,9 +8,11 @@ import ConfirmationService from 'primevue/confirmationservice';
 import { createApp } from 'vue';
 import PrimeVue from 'primevue/config';
 import router from './router';
+import Snackbar from '../shared/plugins/Snackbar';
 
 const app = createApp(App);
 app
+  .use(Snackbar)
   .use(PrimeVue)
   .use(ConfirmationService)
   .use(router)

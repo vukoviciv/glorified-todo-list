@@ -4,8 +4,12 @@
       <div class="message-body">
         <span :class="`snackbar-icon ${PrimeIcons.INFO_CIRCLE}`"></span>
         <div class="message-text">
-          <span class="message-title font-bold">{{ title }}</span>
-          <div v-if="content" class="message-content mt-1">{{ content }}</div>
+          <div class="font-bold">
+            <slot name="title">Notification</slot>
+          </div>
+          <div class="message-content mt-1">
+            <slot name="text">Notification text</slot>
+          </div>
         </div>
         <div>
           <Button
@@ -22,11 +26,6 @@
 <script setup>
 import Button from 'primevue/Button';
 import { PrimeIcons } from 'primevue/api';
-
-defineProps({
-  title: { type: String, required: true },
-  content: { type: String, default: '' }
-});
 </script>
 
 <style lang="scss" scoped>

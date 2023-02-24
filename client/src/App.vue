@@ -22,7 +22,7 @@
     :active-account="activeAccount"
     :user="user"
     :is-fetching="isFetching" />
-  <TodoSnackbar />
+  <todo-snackbar />
 </template>
 
 <script setup>
@@ -33,7 +33,6 @@ import MainHeader from '../shared/components/MainHeader.vue';
 import MainPage from './components/MainPage.vue';
 import { routes } from '@/shared/utils/navigation';
 import taskApi from '@/src/api/tasks';
-import TodoSnackbar from '../shared/components/TodoSnackbar.vue';
 import usersApi from '@/src/api/users';
 
 const user = ref(null);
