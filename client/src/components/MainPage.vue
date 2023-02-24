@@ -5,7 +5,7 @@
       @task:edit="updateItemsList($event)"
       @task:delete="taskDelete($event)"
       @update:order="updateOrder"
-      @task:created="$emit('fetch')"
+      @task:created="taskCreated()"
       :items="items"
       :is-fetching="isFetching" />
     <AccountsDialog
@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, inject, ref } from 'vue';
 import AccountsDialog from './AccountsDialog.vue';
 import { orderBy } from '@/config/task';
 import taskApi from '@/src/api/tasks';
@@ -29,6 +29,7 @@ const props = defineProps({
   isFetching: { type: Boolean, required: true }
 });
 const emit = defineEmits(['account:switch', 'fetch']);
+const snackbar = inject('snackbar');
 
 const items = ref(props.tasks);
 const showDialog = computed(() => !props.activeAccount);
@@ -52,6 +53,13 @@ const updateOrder = ({ value }) => {
     orderBy: item.value
   };
   emit('fetch', params);
+};
+const taskCreated = () => {
+  emit('fetch');
+  snackbar.title = 'Success';
+  snackbar.text = 'Task has been successfully created!';
+  snackbar.type = 'success';
+  snackbar.isActive = true;
 };
 </script>
 <style lang="scss" scoped>

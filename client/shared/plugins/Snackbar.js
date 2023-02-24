@@ -11,7 +11,8 @@ export default {
     const snackbar = reactive({
       title: 'Default title',
       text: '',
-      isActive: true
+      isActive: false,
+      type: 'info'
     });
     app.provide('snackbar', snackbar);
   }

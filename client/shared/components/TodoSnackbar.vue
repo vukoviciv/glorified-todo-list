@@ -11,6 +11,7 @@
         </div>
         <div>
           <Button
+            @click="snackbar.isActive = false"
             :icon="PrimeIcons.TIMES"
             class="p-button-rounded p-button-text"
             aria-live="Close"
@@ -22,16 +23,21 @@
 </template>
 
 <script setup>
-import { computed, inject } from 'vue';
+import { computed, inject, watch } from 'vue';
 import Button from 'primevue/Button';
 import { PrimeIcons } from 'primevue/api';
 import { snackbarConfig } from '../../config/snackbar';
 
-const props = defineProps({
-  type: { type: String, default: 'info' }
-});
 const snackbar = inject('snackbar');
-const config = computed(() => snackbarConfig[props.type]);
+const config = computed(() => snackbarConfig[snackbar.type]);
+
+watch(() => snackbar.isActive, val => {
+  if (val) {
+    setTimeout(() => {
+      snackbar.isActive = false;
+    }, 4000);
+  }
+});
 </script>
 
 <style lang="scss" scoped>
