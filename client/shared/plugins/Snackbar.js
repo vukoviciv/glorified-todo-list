@@ -1,8 +1,18 @@
-import TodoSnackbar from '../components/TodoSnackbar.vue';
+import { defineAsyncComponent, reactive } from 'vue';
+
+const TodoSnackbar = () => import('../components/TodoSnackbar.vue');
 
 export default {
-  install: (app, options = {}) => {
-    // eslint-disable-next-line vue/component-definition-name-casing
-    app.component('TodoSnackbar', TodoSnackbar);
+  install: app => {
+    app.component(
+      'todo-snackbar',
+      defineAsyncComponent(TodoSnackbar)
+    );
+    const snackbar = reactive({
+      title: 'Default title',
+      text: '',
+      isActive: true
+    });
+    app.provide('snackbar', snackbar);
   }
 };

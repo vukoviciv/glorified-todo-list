@@ -1,14 +1,12 @@
 <template>
-  <div class="p-component snackbar-wrapper z-5">
+  <div v-show="snackbar.isActive" class="p-component snackbar-wrapper z-5">
     <div class="message-info" aria-live="polite" aria-atomic="true">
       <div class="message-body">
-        <span :class="`snackbar-icon ${PrimeIcons.INFO_CIRCLE}`"></span>
-        <div class="message-text">
-          <div class="font-bold">
-            <slot name="title">Notification</slot>
-          </div>
+        <span :class="`snackbar-icon ${config.icon}`"></span>
+        <div class="message-text text-bold">
+          <span class="font-bold">{{ snackbar.title }}</span>
           <div class="message-content mt-1">
-            <slot name="text">Notification text</slot>
+            {{ snackbar.text }}
           </div>
         </div>
         <div>
@@ -24,8 +22,16 @@
 </template>
 
 <script setup>
+import { computed, inject } from 'vue';
 import Button from 'primevue/Button';
 import { PrimeIcons } from 'primevue/api';
+import { snackbarConfig } from '../../config/snackbar';
+
+const props = defineProps({
+  type: { type: String, default: 'info' }
+});
+const snackbar = inject('snackbar');
+const config = computed(() => snackbarConfig[props.type]);
 </script>
 
 <style lang="scss" scoped>
