@@ -1,5 +1,5 @@
 <template>
-  <div class="login-wrapper min-h-screen">
+  <div class="min-h-screen">
     <form @submit.prevent class="pt-8">
       <Card class="m-auto md:col-6">
         <template v-if="title" #title>
@@ -9,7 +9,7 @@
           <slot></slot>
         </template>
         <template #footer>
-          <Divider align="center">
+          <Divider v-if="withDivider" align="center">
             <div class="inline-flex">
               <span :class="`${PrimeIcons.USER} mx-2`"></span>
             </div>
@@ -54,7 +54,9 @@ const props = defineProps({
   submitAction: { type: Function, required: true },
   submitDisabled: { type: Boolean, default: false },
   validationRules: { type: Object, default: () => ({}) },
-  isDirty: { type: Boolean, required: true }
+  isDirty: { type: Boolean, required: true },
+  withDivider: { type: Boolean, default: false },
+  dividerIcon: { type: String, default: PrimeIcons.USER }
 });
 const emit = defineEmits(['submit', 'reset:dirty']);
 const v$ = useVuelidate(props.validationRules, props.form);
@@ -100,14 +102,3 @@ watch(() => props.isDirty, val => {
   if (val) resetValidation();
 });
 </script>
-
-<style lang="scss" scoped>
-.login-wrapper {
-  background: url(../../assets/auth_background.jpg);
-  background-size: cover;
-
-  .error-msg {
-    color: var(--red-500);
-  }
-}
-</style>

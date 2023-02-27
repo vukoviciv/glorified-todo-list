@@ -1,12 +1,14 @@
 <template>
-  <LogistrationForm
+  <TodoForm
     @reset:dirty="isDirty = false"
     :submit-action="update"
     :validation-rules="validationRules"
     :form="form"
     :is-dirty="isDirty"
     title="Password update"
-    submit-text="Update Password">
+    submit-text="Update Password"
+    class="login-wrapper"
+    with-divider>
     <div class="px-8 mt-5">
       <p class="ml-3">All fields marked with * are required</p>
 
@@ -38,7 +40,7 @@
         </RouterLink>
       </div>
     </template>
-  </LogistrationForm>
+  </TodoForm>
 </template>
 
 <script setup>
@@ -46,11 +48,11 @@
 import { email, required } from '@vuelidate/validators';
 import authApi from '@/auth/src/api/auth';
 import InputText from 'primevue/inputtext';
-import LogistrationForm from './common/LogistrationForm.vue';
 import PasswordInput from './common/PasswordInput.vue';
 import { ref } from 'vue';
 import RequiredFieldWrapper from './common/RequiredFieldWrapper.vue';
 import { routes } from '@/shared/utils/navigation';
+import TodoForm from '../../../shared/components/TodoForm.vue';
 
 const form = ref({
   email: '',
@@ -75,3 +77,14 @@ const update = () => {
     });
 };
 </script>
+
+<style lang="scss" scoped>
+.login-wrapper {
+  background: url(../assets/auth_background.jpg);
+  background-size: cover;
+
+  .error-msg {
+    color: var(--red-500);
+  }
+}
+</style>

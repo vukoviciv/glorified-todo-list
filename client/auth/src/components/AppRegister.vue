@@ -1,12 +1,14 @@
 <template>
-  <LogistrationForm
+  <TodoForm
     @reset:dirty="isDirty = false"
     :validation-rules="validationRules"
     :form="form"
     :submit-action="register"
     :is-dirty="isDirty"
     submit-text="Register"
-    title="Registration">
+    title="Registration"
+    class="login-wrapper"
+    with-divider>
     <div class="px-8 mt-5">
       <p class="ml-3">All fields marked with * are required</p>
       <div class="p-float-label mt-5 ml-3 flex">
@@ -59,7 +61,7 @@
         </RouterLink>
       </div>
     </template>
-  </LogistrationForm>
+  </TodoForm>
 </template>
 
 <script setup>
@@ -67,11 +69,11 @@
 import { email as emailValidator, required } from '@vuelidate/validators';
 import authApi from '@/auth/src/api/auth';
 import InputText from 'primevue/inputtext';
-import LogistrationForm from './common/LogistrationForm.vue';
 import PasswordInput from './common/PasswordInput.vue';
 import { ref } from 'vue';
 import RequiredFieldWrapper from './common/RequiredFieldWrapper.vue';
 import { routes } from '@/shared/utils/navigation';
+import TodoForm from '../../../shared/components/TodoForm.vue';
 
 const form = ref({
   firstName: '',
@@ -85,7 +87,7 @@ const validationRules = {
 };
 const isDirty = ref(false);
 
-const redirectToAccountCreation = () => (document.location.replace(routes.accountCreate));
+const redirectToAccountCreation = () => (document.location.replace(routes.createAccount));
 const passwordUpdate = ({ password }) => {
   form.value.password = password;
   isDirty.value = true;
@@ -97,3 +99,14 @@ const register = () => {
     .then(() => redirectToAccountCreation());
 };
 </script>
+
+<style lang="scss" scoped>
+.login-wrapper {
+  background: url(../assets/auth_background.jpg);
+  background-size: cover;
+
+  .error-msg {
+    color: var(--red-500);
+  }
+}
+</style>

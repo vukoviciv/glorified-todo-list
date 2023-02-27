@@ -1,12 +1,14 @@
 <template>
-  <LogistrationForm
+  <TodoForm
     @reset:dirty="isDirty = false"
     :validation-rules="validationRules"
     :form="form"
     :submit-action="login"
     :is-dirty="isDirty"
     submit-text="Login"
-    title="Login">
+    title="Login"
+    class="login-wrapper"
+    with-divider>
     <div class="px-8 mt-5">
       <p class="ml-3">All fields marked with * are required</p>
       <RequiredFieldWrapper class="mt-5 p-inputgroup">
@@ -45,18 +47,18 @@
         </RouterLink>
       </div>
     </template>
-  </LogistrationForm>
+  </TodoForm>
 </template>
 
 <script setup>
 import { email, required } from '@vuelidate/validators';
 import authApi from '@/auth/src/api/auth';
 import InputText from 'primevue/inputtext';
-import LogistrationForm from './common/LogistrationForm.vue';
 import PasswordInput from './common/PasswordInput.vue';
 import { ref } from 'vue';
 import RequiredFieldWrapper from './common/RequiredFieldWrapper.vue';
 import { routes } from '@/shared/utils/navigation';
+import TodoForm from '../../../shared/components/TodoForm.vue';
 
 const form = ref({
   email: '',
@@ -80,3 +82,14 @@ const login = () => {
     .then(() => redirectToHome());
 };
 </script>
+
+<style lang="scss" scoped>
+.login-wrapper {
+  background: url(../assets/auth_background.jpg);
+  background-size: cover;
+
+  .error-msg {
+    color: var(--red-500);
+  }
+}
+</style>
