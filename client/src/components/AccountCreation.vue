@@ -1,5 +1,5 @@
 <template>
-  <LogistrationForm
+  <TodoForm
     @reset:dirty="isDirty = false"
     :validation-rules="validationRules"
     :form="form"
@@ -53,17 +53,18 @@
         </div>
       </div>
     </div>
-  </LogistrationForm>
+  </TodoForm>
 </template>
 
 <script setup>
 import { computed, nextTick, ref } from 'vue';
 import Button from 'primevue/Button';
 import InputText from 'primevue/inputtext';
-import LogistrationForm from './common/LogistrationForm.vue';
 import { PrimeIcons } from 'primevue/api';
 import { required } from '@vuelidate/validators';
-import RequiredFieldWrapper from './common/RequiredFieldWrapper.vue';
+import RequiredFieldWrapper from '../../auth/src/components/common/RequiredFieldWrapper.vue';
+import TodoForm from '../../shared/components/TodoForm.vue';
+import usersApi from '@/src/api/users';
 
 const form = ref({ mainAccount: '' });
 const mainAccountId = 'main-account';
@@ -78,7 +79,20 @@ const submitDisabled = computed(() => {
 });
 const accountCount = computed(() => accounts.value.length);
 const login = () => {
-  console.log('logging in with account');
+  const payload = {
+    accounts: [
+      { name: form.value.mainAccount },
+      ...accounts.value
+    ]
+  };
+  return usersApi
+    .createAccounts(payload)
+    .then(data => {
+      console.log(data);
+    })
+    .catch(err => {
+      console.log(err);
+    });
 };
 const focusNewInput = id => {
   nextTick(() => {

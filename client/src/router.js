@@ -3,12 +3,13 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 const TodayTasks = () => import('./components/Task/TodayTasks/index.vue');
 const WeekTasks = () => import('./components/Task/WeekTasks/index.vue');
 const PageNotFound = () => import('../shared/components/PageNotFound.vue');
+const AccountCreation = () => import('./components/AccountCreation.vue');
 
 const routes = [{
   path: '/',
   name: 'main',
   redirect: { name: 'today' },
-  children: [{
+  children: [{ // TODO: this is not working how it should be, fix the router-view placement!!!
     path: '/today',
     name: 'today',
     component: TodayTasks
@@ -17,6 +18,10 @@ const routes = [{
     name: 'week',
     component: WeekTasks
   }]
+}, {
+  path: '/create-account',
+  name: 'create-account',
+  component: AccountCreation
 }, {
   path: '/:pathMatch(.*)*',
   name: 'not-found',

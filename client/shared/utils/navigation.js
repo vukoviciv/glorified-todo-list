@@ -7,7 +7,7 @@ const locations = {
   LOGOUT: 'logout',
   REGISTER: 'register',
   UPDATE_PASSWORD: 'update-password',
-  ACCOUNT_CREATE: 'account-create'
+  CREATE_ACCOUNT: 'create-account'
 };
 
 const routes = {
@@ -17,6 +17,9 @@ const routes = {
   },
   get home() {
     return `${this[locations.ORIGIN]}/#/${locations.TODAY}/`;
+  },
+  get createAccount() {
+    return `${this[locations.ORIGIN]}#/${locations.CREATE_ACCOUNT}`;
   },
   get logout() {
     return `${this[locations.AUTH]}#/${locations.LOGOUT}`;
@@ -29,9 +32,6 @@ const routes = {
   },
   get updatePassword() {
     return `${this[locations.AUTH]}#/${locations.UPDATE_PASSWORD}`;
-  },
-  get accountCreate() {
-    return `${this[locations.AUTH]}#/${locations.ACCOUNT_CREATE}`;
   }
 };
 

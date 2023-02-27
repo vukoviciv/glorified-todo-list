@@ -7,7 +7,7 @@ router
   .post('/login', ctrl.login)
   .post('/register', ctrl.register)
   .post('/logout', ctrl.logout)
-  .patch('/update-password', ctrl.updatePassword);
+  .patch('/update-password', ctrl.updatePassword); // rename route to password - patch implies update!
 
 export default {
   path: '/auth',

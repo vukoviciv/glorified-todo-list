@@ -5,7 +5,8 @@ const router = Router();
 
 router
   .get('/', ctrl.list)
-  .get('/me', ctrl.getMe);
+  .get('/me', ctrl.getMe)
+  .post('/me/accounts', ctrl.createAccounts);
 
 export default {
   path: '/users',

@@ -57,4 +57,9 @@ async function updatePassword({ body }: Request, res: Response) {
   return res.status(200).json({ success: true });
 }
 
-export { login, logout, register, updatePassword };
+export {
+  login,
+  logout,
+  register,
+  updatePassword
+};
