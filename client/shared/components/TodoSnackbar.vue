@@ -1,6 +1,9 @@
 <template>
   <div v-show="snackbar.isActive" class="p-component snackbar-wrapper z-5">
-    <div :class="`message-info ${snackbar.className}`" aria-live="polite" aria-atomic="true">
+    <div
+      :class="`message-info mb-1 ${snackbar.className}`"
+      aria-live="polite"
+      aria-atomic="true">
       <div class="message-body">
         <span :class="`snackbar-icon ${snackbar.icon}`"></span>
         <div class="message-text text-bold">
@@ -29,16 +32,24 @@ import { PrimeIcons } from 'primevue/api';
 
 const snackbar = inject('snackbar');
 
+const triggerTimeout = () => {
+  setTimeout(() => {
+    snackbar.isActive = false;
+  }, snackbar.time);
+};
+
 watch(() => snackbar.isActive, val => {
-  if (val) {
-    setTimeout(() => {
-      snackbar.isActive = false;
-    }, 4000);
-  }
+  if (val) triggerTimeout();
 });
 </script>
 
 <style lang="scss" scoped>
+@mixin border($color) {
+  border: solid $color;
+  color: $color;
+  border-width: 0 0 0 6px;
+  border-radius: 6px;
+}
 .snackbar-wrapper {
   position: fixed;
   width: 25rem;
@@ -49,29 +60,20 @@ watch(() => snackbar.isActive, val => {
 
   .message-info {
     background: #e9e9ff;
-    border: solid var(--primary-400);
-    color: var(--primary-400);
-
-    margin: 0 0 1rem 0;
     box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
-    border-radius: 6px;
+    @include border(var(--primary-400));
 
     &.success {
-      border: solid var(--green-600);
-      color: var(--green-600);
+      @include border(var(--green-600));
     }
 
     &.error {
-      border: solid var(--red-600);
-      color: var(--red-600);
+      @include border(var(--red-600));
     }
 
     &.warning {
-      border: solid var(--yellow-800);
-      color: var(--yellow-800);
+      @include border(var(--yellow-800));
     }
-
-    border-width: 0 0 0 6px;
   }
 
   .message-body {
