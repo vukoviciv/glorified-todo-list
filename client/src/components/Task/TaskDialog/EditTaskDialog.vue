@@ -17,10 +17,11 @@
 </template>
 
 <script setup>
+import { inject, ref } from 'vue';
 import Button from 'primevue/Button';
 import isEqual from 'lodash/isEqual';
 import { PrimeIcons } from 'primevue/api';
-import { ref } from 'vue';
+import { snackbarConfig } from '../../../../config/snackbar';
 import taskApi from '@/src/api/tasks';
 import TaskDialog from './common/TaskDialog.vue';
 
@@ -29,6 +30,16 @@ const props = defineProps({
 });
 const showDialog = ref(false);
 const emit = defineEmits(['task:edit']);
+let snackbar = inject('snackbar');
+
+const showSnackbar = (text, type) => {
+  const config = {
+    ...snackbarConfig[type],
+    text,
+    isActive: true
+  };
+  snackbar = Object.assign(snackbar, config);
+};
 const close = () => { showDialog.value = false; };
 const open = () => { showDialog.value = true; };
 const updateTask = async task => {
@@ -36,9 +47,14 @@ const updateTask = async task => {
     close();
     return;
   }
-  await taskApi.update(task).then(task => {
-    emit('task:edit', task);
-  });
-  close();
+  await taskApi
+    .update(task)
+    .then(task => {
+      emit('task:edit', task);
+      showSnackbar({ text: 'Task edited!' }, 'success');
+    }).catch(error => {
+      const text = error.response.data;
+      showSnackbar({ text }, 'error');
+    }).finally(() => close());
 };
 </script>

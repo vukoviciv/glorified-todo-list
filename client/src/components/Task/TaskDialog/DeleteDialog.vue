@@ -18,10 +18,11 @@
 </template>
 
 <script setup>
+import { inject, ref } from 'vue';
 import Button from 'primevue/Button';
 import ConfirmDialog from 'primevue/confirmdialog';
 import { PrimeIcons } from 'primevue/api';
-import { ref } from 'vue';
+import { snackbarConfig } from '../../../../config/snackbar';
 import taskApi from '@/src/api/tasks';
 import { useConfirm } from 'primevue/useconfirm';
 
@@ -32,6 +33,16 @@ const props = defineProps({
 const confirm = useConfirm();
 const emit = defineEmits(['task:delete']);
 const dialogId = ref(`${props.task.id}-confirm`);
+let snackbar = inject('snackbar');
+
+const showSnackbar = (text, type) => {
+  const config = {
+    ...snackbarConfig[type],
+    text,
+    isActive: true
+  };
+  snackbar = Object.assign(snackbar, config);
+};
 
 const showDialog = () => {
   confirm.require({
@@ -48,6 +59,10 @@ const showDialog = () => {
         .deleteTask(props.task.id)
         .then(task => {
           emit('task:delete', task);
+          showSnackbar({ text: 'Task deleted!' }, 'success');
+        }).catch(error => {
+          const text = error.response.data;
+          showSnackbar({ text }, 'error');
         });
     }
   });
