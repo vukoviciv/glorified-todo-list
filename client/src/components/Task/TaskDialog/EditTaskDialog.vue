@@ -51,10 +51,10 @@ const updateTask = async task => {
     .update(task)
     .then(task => {
       emit('task:edit', task);
-      showSnackbar({ text: 'Task edited!' }, 'success');
+      showSnackbar('Task edited!', 'success');
     }).catch(error => {
       const text = error.response.data;
-      showSnackbar({ text }, 'error');
+      showSnackbar(text, 'error');
     }).finally(() => close());
 };
 </script>

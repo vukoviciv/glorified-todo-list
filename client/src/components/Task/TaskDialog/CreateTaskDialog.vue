@@ -45,10 +45,10 @@ const createTask = async task => {
     .create(payload)
     .then(() => {
       emit('task:created');
-      showSnackbar({ text: 'Task created!' }, 'success');
+      showSnackbar('Task created!', 'success');
     }).catch(error => {
       const text = error.response.data;
-      showSnackbar({ text }, 'error');
+      showSnackbar(text, 'error');
     }).finally(() => close());
 };
 </script>
