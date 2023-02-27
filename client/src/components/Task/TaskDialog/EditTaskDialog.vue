@@ -42,12 +42,12 @@ const showSnackbar = (text, type) => {
 };
 const close = () => { showDialog.value = false; };
 const open = () => { showDialog.value = true; };
-const updateTask = async task => {
+const updateTask = task => {
   if (isEqual(task, props.task)) {
     close();
     return;
   }
-  await taskApi
+  return taskApi
     .update(task)
     .then(task => {
       emit('task:edit', task);

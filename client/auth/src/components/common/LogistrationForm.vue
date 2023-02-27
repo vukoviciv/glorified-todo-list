@@ -26,6 +26,7 @@
               <Button
                 @click="submit()"
                 type="submit"
+                :disabled="submitDisabled"
                 :label="submitText"
                 class="flex-grow-1" />
             </div>
@@ -50,8 +51,9 @@ const props = defineProps({
   title: { type: String, default: null },
   form: { type: Object, default: () => ({}) },
   submitText: { type: String, default: 'Submit' },
-  validationRules: { type: Object, default: () => ({}) },
   submitAction: { type: Function, required: true },
+  submitDisabled: { type: Boolean, default: false },
+  validationRules: { type: Object, default: () => ({}) },
   isDirty: { type: Boolean, required: true }
 });
 const emit = defineEmits(['submit', 'reset:dirty']);

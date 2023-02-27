@@ -6,7 +6,8 @@ const locations = {
   LOGIN: 'login',
   LOGOUT: 'logout',
   REGISTER: 'register',
-  UPDATE_PASSWORD: 'update-password'
+  UPDATE_PASSWORD: 'update-password',
+  ACCOUNT_CREATE: 'account-create'
 };
 
 const routes = {
@@ -28,6 +29,9 @@ const routes = {
   },
   get updatePassword() {
     return `${this[locations.AUTH]}#/${locations.UPDATE_PASSWORD}`;
+  },
+  get accountCreate() {
+    return `${this[locations.AUTH]}#/${locations.ACCOUNT_CREATE}`;
   }
 };
 

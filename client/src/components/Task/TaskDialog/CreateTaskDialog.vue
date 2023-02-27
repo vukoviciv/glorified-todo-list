@@ -36,12 +36,12 @@ const showSnackbar = (text, type) => {
 };
 const close = () => { showDialog.value = false; };
 const open = () => { showDialog.value = true; };
-const createTask = async task => {
+const createTask = task => {
   const payload = {
     task,
     accountId: localStorageAccount?.item.id
   };
-  await taskApi
+  return taskApi
     .create(payload)
     .then(() => {
       emit('task:created');

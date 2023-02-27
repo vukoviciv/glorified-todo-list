@@ -85,7 +85,7 @@ const validationRules = {
 };
 const isDirty = ref(false);
 
-const redirectToLogin = () => (document.location.replace(routes.login));
+const redirectToAccountCreation = () => (document.location.replace(routes.accountCreate));
 const passwordUpdate = ({ password }) => {
   form.value.password = password;
   isDirty.value = true;
@@ -94,6 +94,6 @@ const passwordUpdate = ({ password }) => {
 const register = () => {
   return authApi
     .register(form.value)
-    .then(() => redirectToLogin());
+    .then(() => redirectToAccountCreation());
 };
 </script>
