@@ -7,7 +7,6 @@
     <TasksSkeleton v-if="isFetching" />
     <TaskList
       v-else
-      @toggle:task="$emit('toggle:task', $event)"
       :items="inProgressTasks"
       :options="options"
       aria-label="Pending tasks for today" />
@@ -17,7 +16,6 @@
     <TasksSkeleton v-if="isFetching" />
     <TaskList
       v-else
-      @toggle:task="$emit('toggle:task', $event)"
       :items="doneTasks"
       :options="options"
       aria-labelledby="done-badge" />

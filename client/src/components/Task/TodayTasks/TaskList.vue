@@ -5,10 +5,7 @@
       :key="item.id"
       class="list-item">
       <Transition duration="500" name="nested">
-        <TaskItem
-          @toggle:task="$emit('toggle:task', $event)"
-          :item="item"
-          v-bind="options" />
+        <TaskItem :item="item" v-bind="options" />
       </Transition>
     </li>
   </ul>

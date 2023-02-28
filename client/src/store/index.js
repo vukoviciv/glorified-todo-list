@@ -42,6 +42,13 @@ export default createStore({
         .then(task => {
           commit('deleteTask', task);
         });
+    },
+    toggleDone: async ({ commit }, id) => {
+      return tasksApi
+        .toggleDone(id)
+        .then(task => {
+          commit('updateTasks', task);
+        });
     }
   },
   mutations: {

@@ -1,7 +1,6 @@
 <template>
   <main class="main-container p-5 m-auto">
     <TasksMain
-      @toggle:task="toggleDone"
       @update:order="updateOrder"
       @task:created="taskCreated()"
       :items="items"
@@ -17,7 +16,6 @@
 import { computed, ref } from 'vue';
 import AccountsDialog from './AccountsDialog.vue';
 import { orderBy } from '@/config/task';
-import taskApi from '@/src/api/tasks';
 import TasksMain from './Task/index.vue';
 
 const props = defineProps({
@@ -30,16 +28,6 @@ const emit = defineEmits(['account:switch', 'fetch']);
 const items = ref(props.tasks);
 const showDialog = computed(() => !props.activeAccount);
 
-const updateItemsList = task => {
-  items.value = items.value.map(item => (item.id === task.id ? task : item));
-};
-const toggleDone = async payload => {
-  const { id } = payload.task;
-  const task = await taskApi
-    .toggleDone(id)
-    .then(task => task);
-  updateItemsList(task);
-};
 const updateOrder = ({ value }) => {
   const item = orderBy.list[value];
   const params = {

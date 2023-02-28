@@ -6,7 +6,6 @@
       aria-label="Main navigation"
       class="flex-grow-1 justify-space-around" />
     <RouterView
-      @toggle:task="$emit('toggle:task', $event)"
       @update:order="$emit('update:order', $event)"
       :is-fetching="isFetching" />
   </div>
