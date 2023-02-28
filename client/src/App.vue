@@ -37,7 +37,7 @@ const store = useStore();
 
 const isFetching = computed(() => store.state.isFetching);
 const user = computed(() => {
-  return store.getters.getUser;
+  return store.state.user;
 });
 const hasTempPassword = computed(() => user.value?.hasTempPassword);
 

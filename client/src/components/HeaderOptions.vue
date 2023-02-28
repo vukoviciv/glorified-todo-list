@@ -55,16 +55,15 @@ const menu = ref();
 
 const createAccount = () => document.location.replace(routes.createAccount);
 const getAccounts = () => {
-  const accounts = props.user.accounts.map(account => {
-    const icon = account.id === props.activeAccount?.id ? PrimeIcons.CHECK_CIRCLE : '';
+  return props.user.accounts.map(it => {
+    const icon = it.id === props.activeAccount?.id ? PrimeIcons.CHECK_CIRCLE : '';
     return {
       icon,
-      id: account.id,
-      label: account.name,
-      command: () => { emit('account:switch', account); }
+      id: it.id,
+      label: it.name,
+      command: () => { emit('itd:switch', it); }
     };
   });
-  return accounts;
 };
 
 const items = ref([{

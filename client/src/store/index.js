@@ -2,6 +2,10 @@ import { createStore } from 'vuex';
 import tasksApi from '../api/tasks';
 import userApi from '../api/users';
 
+const getUpdatedList = (items, task) => {
+  return items.map(item => (item.id === task.id ? task : item));
+};
+
 export default createStore({
   state: {
     tasks: [],
@@ -9,73 +13,48 @@ export default createStore({
     isFetching: false
   },
   getters: {
-    getAllTasks: state => {
-      return state.tasks;
-    },
     getDoneTasks: state => {
       return state.tasks.filter(task => task.done);
     },
     getPendingTasks: state => {
       return state.tasks.filter(task => !task.done);
-    },
-    getUser: state => {
-      return state.user;
     }
   },
   actions: {
-    fetchTasks: async ({ commit, state }, params = {}) => {
+    fetchTasks: async ({ state }, params = {}) => {
       const accountId = 1; // TODO:
       state.isFetching = true;
-      return tasksApi
-        .fetch({ accountId, ...params })
+      return tasksApi.fetch({ accountId, ...params })
         .then(tasks => {
-          commit('setTasks', tasks);
+          state.tasks = tasks;
           state.isFetching = false;
         });
     },
-    updateTask: async ({ commit }, task) => {
-      return tasksApi
-        .update(task)
+    updateTask: async ({ state }, task) => {
+      return tasksApi.update(task)
         .then(task => {
-          commit('updateTasks', task);
+          state.tasks = getUpdatedList(state.tasks, task);
         });
     },
-    deleteTask: async ({ commit }, id) => {
-      return tasksApi
-        .deleteTask(id)
+    deleteTask: async ({ state }, id) => {
+      return tasksApi.deleteTask(id)
         .then(task => {
-          commit('deleteTask', task);
+          state.tasks = state.tasks.filter(item => (item.id !== task.id));
         });
     },
-    toggleDone: async ({ commit }, id) => {
-      return tasksApi
-        .toggleDone(id)
+    toggleDone: async ({ state }, id) => {
+      return tasksApi.toggleDone(id)
         .then(task => {
-          commit('updateTasks', task);
+          state.tasks = getUpdatedList(state.tasks, task);
         });
     },
-    fetchUser: async ({ commit, state }) => {
+    fetchUser: async ({ state }) => {
       state.isFetching = true;
-      return userApi
-        .getMe()
+      return userApi.getMe()
         .then(user => {
-          commit('setUser', user);
+          state.user = user;
           state.isFetching = false;
         });
-    }
-  },
-  mutations: {
-    setTasks(state, tasks) {
-      state.tasks = tasks;
-    },
-    updateTasks(state, task) {
-      state.tasks = state.tasks.map(item => (item.id === task.id ? task : item));
-    },
-    deleteTask(state, task) {
-      state.tasks = state.tasks.filter(item => (item.id !== task.id));
-    },
-    setUser(state, user) {
-      state.user = user;
     }
   }
 });
