@@ -7,7 +7,6 @@
       class="flex-grow-1 justify-space-around" />
     <RouterView
       @toggle:task="$emit('toggle:task', $event)"
-      @task:delete="$emit('task:delete', $event)"
       @update:order="$emit('update:order', $event)"
       :is-fetching="isFetching" />
   </div>
@@ -39,7 +38,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .p-tabmenu .p-tabmenu-nav .p-tabmenuitem {
+::v-deep .p-tabmenu .p-tabmenu-nav .p-tabmenuitem { // TODO: ::v-deep usage as a combinator has been deprecated. Use :deep(<inner-selector>) instead.
   .p-menuitem-link {
     border: none;
   }

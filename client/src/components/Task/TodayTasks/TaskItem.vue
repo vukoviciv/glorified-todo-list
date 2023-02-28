@@ -30,9 +30,7 @@
         </div>
       </div>
       <EditTaskDialog :task="item" />
-      <DeleteDialog
-        @task:delete="$emit('task:delete', $event)"
-        :task="item" />
+      <DeleteDialog :task="item" />
     </div>
     <p v-if="showCreatedAt" class="ml-5 pl-1 pt-1">
       <i>Created: {{ processDate(item.createdAt) }}</i>

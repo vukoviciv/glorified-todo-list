@@ -23,17 +23,17 @@ import Button from 'primevue/Button';
 import ConfirmDialog from 'primevue/confirmdialog';
 import { PrimeIcons } from 'primevue/api';
 import { snackbarConfig } from '../../../../config/snackbar';
-import taskApi from '@/src/api/tasks';
 import { useConfirm } from 'primevue/useconfirm';
+import { useStore } from 'vuex';
 
 const props = defineProps({
   task: { type: Object, required: true }
 });
 
 const confirm = useConfirm();
-const emit = defineEmits(['task:delete']);
 const dialogId = ref(`${props.task.id}-confirm`);
 let snackbar = inject('snackbar');
+const store = useStore();
 
 const showSnackbar = (text, type) => {
   const config = {
@@ -55,14 +55,12 @@ const showDialog = () => {
     rejectIcon: PrimeIcons.TIMES,
     rejectLabel: 'Cancel',
     accept: () => {
-      taskApi
-        .deleteTask(props.task.id)
-        .then(task => {
-          emit('task:delete', task);
+      store.dispatch('deleteTask', props.task.id)
+        .then(() => {
           showSnackbar('Task deleted!', 'success');
         }).catch(error => {
           const text = error.response.data;
-          showSnackbar(text, 'error');
+          showSnackbar({ text }, 'error');
         });
     }
   });

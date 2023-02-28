@@ -7,7 +7,6 @@
       <Transition duration="500" name="nested">
         <TaskItem
           @toggle:task="$emit('toggle:task', $event)"
-          @task:delete="$emit('task:delete', $event)"
           :item="item"
           v-bind="options" />
       </Transition>

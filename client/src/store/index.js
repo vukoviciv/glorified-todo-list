@@ -35,6 +35,13 @@ export default createStore({
         .then(task => {
           commit('updateTasks', task);
         });
+    },
+    deleteTask: async ({ commit }, id) => {
+      return tasksApi
+        .deleteTask(id)
+        .then(task => {
+          commit('deleteTask', task);
+        });
     }
   },
   mutations: {
@@ -43,6 +50,9 @@ export default createStore({
     },
     updateTasks(state, task) {
       state.tasks = state.tasks.map(item => (item.id === task.id ? task : item));
+    },
+    deleteTask(state, task) {
+      state.tasks = state.tasks.filter(item => (item.id !== task.id));
     }
   }
 });

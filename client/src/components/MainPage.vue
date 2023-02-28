@@ -2,7 +2,6 @@
   <main class="main-container p-5 m-auto">
     <TasksMain
       @toggle:task="toggleDone"
-      @task:delete="taskDelete($event)"
       @update:order="updateOrder"
       @task:created="taskCreated()"
       :items="items"
@@ -40,9 +39,6 @@ const toggleDone = async payload => {
     .toggleDone(id)
     .then(task => task);
   updateItemsList(task);
-};
-const taskDelete = task => {
-  items.value = items.value.filter(item => item.id !== task.id);
 };
 const updateOrder = ({ value }) => {
   const item = orderBy.list[value];
