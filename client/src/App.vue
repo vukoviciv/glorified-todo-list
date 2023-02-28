@@ -43,12 +43,14 @@ const registerPath = routes.updatePassword;
 
 const hasTempPassword = computed(() => user.value?.hasTempPassword);
 const updateAccount = account => {
-  activeAccount.value = account;
-  localStorageAccount.setItem(account);
+  setActiveAccount(account);
   const params = { accountId: account.id };
   fetchTasks(params);
 };
-
+const setActiveAccount = account => {
+  activeAccount.value = account;
+  localStorageAccount.setItem(account);
+};
 const fetchTasks = async (params = {}) => {
   isFetching.value = true;
   const accountId = params?.accountId || activeAccount.value?.id;
@@ -63,6 +65,7 @@ const fetchTasks = async (params = {}) => {
 const fetchUser = async () => {
   isFetching.value = true;
   user.value = await usersApi.getMe().then(user => user);
+  setActiveAccount(user.value.accounts[0]);
   isFetching.value = false;
 };
 

@@ -28,7 +28,9 @@ export class UserFactory extends Factory<User> {
     return {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
-      email: faker.internet.email().toLocaleLowerCase()
+      email: faker.internet.email().toLocaleLowerCase(),
+      hasTempPassword: true,
+      password: '1234'
     };
   }
 }
