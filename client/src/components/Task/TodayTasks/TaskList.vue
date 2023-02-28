@@ -1,5 +1,5 @@
 <template>
-  <ul :class="className">
+  <ul>
     <li
       v-for="item in items"
       :key="item.id"
@@ -20,36 +20,8 @@
 // TODO: test a11y for removal and addition of items in lists
 import TaskItem from './TaskItem.vue';
 
-const props = defineProps({
+defineProps({
   items: { type: Array, required: true },
   options: { type: Object, required: true }
 });
-
-const className = props.doneList ? 'done-tasks' : 'pending-tasks';
 </script>
-
-<style lang="scss" scoped>
-@mixin transition($y: 20px) {
-  .nested-enter-active, .nested-leave-active {
-  transition: all 0.3s ease-in-out;
-  }
-  /* delay leave of parent element */
-  .nested-leave-active {
-    transition-delay: 0.25s;
-  }
-
-  .nested-enter-from,
-  .nested-leave-to {
-    transform: translateY($y);
-    opacity: 0;
-  }
-}
-
-.pending-tasks {
-  @include transition;
-}
-
-.done-tasks {
-  @include transition(-20px);
-}
-</style>

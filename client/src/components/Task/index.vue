@@ -10,7 +10,6 @@
       @task:edit="$emit('task:edit', $event)"
       @task:delete="$emit('task:delete', $event)"
       @update:order="$emit('update:order', $event)"
-      :items="items"
       :is-fetching="isFetching" />
   </div>
 </template>
@@ -21,7 +20,6 @@ import { onMounted } from 'vue';
 import TabMenu from 'primevue/tabmenu';
 
 defineProps({
-  items: { type: Array, required: true },
   isFetching: { type: Boolean, required: true }
 });
 const menuItems = [

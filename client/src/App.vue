@@ -18,7 +18,6 @@
     v-if="!isFetching"
     @account:switch="updateAccount($event)"
     @fetch="fetchTasks($event)"
-    :tasks="items"
     :active-account="activeAccount"
     :user="user"
     :is-fetching="isFetching" />
@@ -32,34 +31,22 @@ import { localStorageAccount } from './components/service/localStorage';
 import MainHeader from '../shared/components/MainHeader.vue';
 import MainPage from './components/MainPage.vue';
 import { routes } from '@/shared/utils/navigation';
-import taskApi from '@/src/api/tasks';
 import usersApi from '@/src/api/users';
+import { useStore } from 'vuex';
 
 const user = ref(null);
 const isFetching = ref(true);
 const activeAccount = ref(localStorageAccount?.item);
-const items = ref([]);
 const registerPath = routes.updatePassword;
+const store = useStore();
 
 const hasTempPassword = computed(() => user.value?.hasTempPassword);
 const updateAccount = account => {
   setActiveAccount(account);
-  const params = { accountId: account.id };
-  fetchTasks(params);
 };
 const setActiveAccount = account => {
   activeAccount.value = account;
   localStorageAccount.setItem(account);
-};
-const fetchTasks = async (params = {}) => {
-  isFetching.value = true;
-  const accountId = params?.accountId || activeAccount.value?.id;
-  if (!accountId) return;
-
-  items.value = await taskApi
-    .fetch({ ...params, accountId })
-    .then(tasks => tasks);
-  isFetching.value = false;
 };
 
 const fetchUser = async () => {
@@ -71,7 +58,7 @@ const fetchUser = async () => {
 
 onMounted(async () => {
   await fetchUser();
-  await fetchTasks();
+  store.dispatch('fetchTasks');
 });
 </script>
 
