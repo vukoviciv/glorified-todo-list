@@ -8,7 +8,6 @@
     <TaskList
       v-else
       @toggle:task="$emit('toggle:task', $event)"
-      @task:edit="$emit('task:edit', $event)"
       @task:delete="$emit('task:delete', $event)"
       :items="inProgressTasks"
       :options="options"
@@ -20,7 +19,6 @@
     <TaskList
       v-else
       @toggle:task="$emit('toggle:task', $event)"
-      @task:edit="$emit('task:edit', $event)"
       @task:delete="$emit('task:delete', $event)"
       :items="doneTasks"
       :options="options"

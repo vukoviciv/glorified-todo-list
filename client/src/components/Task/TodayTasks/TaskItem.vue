@@ -29,9 +29,7 @@
           </p>
         </div>
       </div>
-      <EditTaskDialog
-        @task:edit="$emit('task:edit', $event)"
-        :task="item" />
+      <EditTaskDialog :task="item" />
       <DeleteDialog
         @task:delete="$emit('task:delete', $event)"
         :task="item" />

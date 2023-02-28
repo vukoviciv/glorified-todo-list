@@ -22,15 +22,15 @@ import Button from 'primevue/Button';
 import isEqual from 'lodash/isEqual';
 import { PrimeIcons } from 'primevue/api';
 import { snackbarConfig } from '../../../../config/snackbar';
-import taskApi from '@/src/api/tasks';
 import TaskDialog from './common/TaskDialog.vue';
+import { useStore } from 'vuex';
 
 const props = defineProps({
   task: { type: Object, required: true }
 });
 const showDialog = ref(false);
-const emit = defineEmits(['task:edit']);
 let snackbar = inject('snackbar');
+const store = useStore();
 
 const showSnackbar = (text, type) => {
   const config = {
@@ -47,12 +47,9 @@ const updateTask = task => {
     close();
     return;
   }
-  return taskApi
-    .update(task)
-    .then(task => {
-      emit('task:edit', task);
-      showSnackbar('Task edited!', 'success');
-    }).catch(error => {
+  store.dispatch('updateTask', task)
+    .then(() => showSnackbar('Task edited!', 'success'))
+    .catch(error => { // TODO: test if this is working
       const text = error.response.data;
       showSnackbar(text, 'error');
     }).finally(() => close());

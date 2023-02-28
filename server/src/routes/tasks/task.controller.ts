@@ -33,7 +33,7 @@ async function update({ body }: Request, res: Response) {
 
   task.name = body?.name;
   task.description = body?.description;
-  task.deadline = body?.deadline;
+  task.deadline = body?.deadline || task.deadline; // TODO: fix FE empty deadline
   task.priority = body?.priority;
   await DI.em.persistAndFlush(task);
 

@@ -1,5 +1,5 @@
 import { createStore } from 'vuex';
-import tasks from '../api/tasks';
+import tasksApi from '../api/tasks';
 
 export default createStore({
   state: {
@@ -23,16 +23,26 @@ export default createStore({
   actions: {
     fetchTasks: async ({ commit }) => {
       const accountId = 1; // TODO:
-      tasks
+      return tasksApi
         .fetch({ accountId })
         .then(tasks => {
           commit('setTasks', tasks);
+        });
+    },
+    updateTask: async ({ commit }, task) => {
+      return tasksApi
+        .update(task)
+        .then(task => {
+          commit('updateTasks', task);
         });
     }
   },
   mutations: {
     setTasks(state, tasks) {
       state.tasks = tasks;
+    },
+    updateTasks(state, task) {
+      state.tasks = state.tasks.map(item => (item.id === task.id ? task : item));
     }
   }
 });

@@ -2,7 +2,6 @@
   <main class="main-container p-5 m-auto">
     <TasksMain
       @toggle:task="toggleDone"
-      @task:edit="updateItemsList($event)"
       @task:delete="taskDelete($event)"
       @update:order="updateOrder"
       @task:created="taskCreated()"

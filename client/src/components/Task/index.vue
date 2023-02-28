@@ -7,7 +7,6 @@
       class="flex-grow-1 justify-space-around" />
     <RouterView
       @toggle:task="$emit('toggle:task', $event)"
-      @task:edit="$emit('task:edit', $event)"
       @task:delete="$emit('task:delete', $event)"
       @update:order="$emit('update:order', $event)"
       :is-fetching="isFetching" />
