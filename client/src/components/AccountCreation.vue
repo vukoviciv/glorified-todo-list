@@ -3,13 +3,16 @@
     @reset:dirty="isDirty = false"
     :validation-rules="validationRules"
     :form="form"
-    :submit-action="login"
+    :submit-action="saveAccounts"
     :is-dirty="isDirty"
     :submit-disabled="submitDisabled"
     submit-text="Continue"
     title="Create Account(s)">
     <div class="px-8 mt-5">
       <p class="ml-3 mb-3">Create an account</p>
+      <small id="main-account" class="ml-3">
+        This will be used as your currently selected account
+      </small>
       <div class="flex">
         <RequiredFieldWrapper class="p-inputgroup">
           <div class="p-float-label">
@@ -18,6 +21,7 @@
               @update:model-value="isDirty=true"
               :id="mainAccountId"
               required="required"
+              aria-describedby="main-account"
               autofocus />
             <label :for="mainAccountId">Account</label>
           </div>
@@ -60,9 +64,11 @@
 import { computed, nextTick, ref } from 'vue';
 import Button from 'primevue/Button';
 import InputText from 'primevue/inputtext';
+import { localStorageAccount } from './service/localStorage';
 import { PrimeIcons } from 'primevue/api';
 import { required } from '@vuelidate/validators';
 import RequiredFieldWrapper from '../../auth/src/components/common/RequiredFieldWrapper.vue';
+import { routes } from '@/shared/utils/navigation';
 import TodoForm from '../../shared/components/TodoForm.vue';
 import usersApi from '@/src/api/users';
 
@@ -78,20 +84,26 @@ const submitDisabled = computed(() => {
   return form.value.mainAccount.length < 1;
 });
 const accountCount = computed(() => accounts.value.length);
-const login = () => {
+const updateAccount = accounts => {
+  const activeAccount = accounts.find(it => it.name === form.value.mainAccount);
+  localStorageAccount.setItem(activeAccount);
+};
+const redirectToMain = () => {
+  document.location.replace(routes.home);
+};
+const saveAccounts = () => {
+  const activeAccountName = form.value.mainAccount;
   const payload = {
     accounts: [
-      { name: form.value.mainAccount },
+      { name: activeAccountName },
       ...accounts.value
     ]
   };
   return usersApi
     .createAccounts(payload)
-    .then(data => {
-      console.log(data);
-    })
-    .catch(err => {
-      console.log(err);
+    .then(({ user }) => {
+      updateAccount(user.accounts);
+      redirectToMain();
     });
 };
 const focusNewInput = id => {

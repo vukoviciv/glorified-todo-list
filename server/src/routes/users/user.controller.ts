@@ -13,12 +13,15 @@ async function getMe({ body: { user } }: Request, res: Response) {
 }
 
 async function createAccounts({ body: { accounts, user } }: Request, res: Response) {
-  for (const account of accounts) {
-    const accountEntity = new Account({ user, name: account.name });
-    DI.em.persist(accountEntity);
+  const activeUser = await DI.em.findOne(User, { id: user.id });
+  if (!activeUser) throw Error('User not found');
+  for (const acc of accounts) {
+    const account = new Account({ user, name: acc.name });
+    await DI.em.persist(account);
+    activeUser.accounts.add(account);
   }
-  DI.em.flush();
-  return res.status(200).json({ user, accounts });
+  await DI.em.flush();
+  return res.status(200).json({ user });
 }
 
 export {
