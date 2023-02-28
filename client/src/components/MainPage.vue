@@ -7,8 +7,7 @@
       :is-fetching="isFetching" />
     <AccountsDialog
       v-if="showDialog"
-      @account:switch="$emit('account:switch', $event)"
-      :user="user" />
+      @account:switch="$emit('account:switch', $event)" />
   </main>
 </template>
 
@@ -17,16 +16,18 @@ import { computed, ref } from 'vue';
 import AccountsDialog from './AccountsDialog.vue';
 import { orderBy } from '@/config/task';
 import TasksMain from './Task/index.vue';
+import { useStore } from 'vuex';
 
 const props = defineProps({
-  user: { type: Object, required: true },
   activeAccount: { type: Object, default: () => ({}) },
-  tasks: { type: Array, default: () => ([]) },
-  isFetching: { type: Boolean, required: true }
+  tasks: { type: Array, default: () => ([]) }
 });
+const store = useStore();
 const emit = defineEmits(['account:switch', 'fetch']);
 const items = ref(props.tasks);
+
 const showDialog = computed(() => !props.activeAccount);
+const isFetching = computed(() => store.state.isFetching);
 
 const updateOrder = ({ value }) => {
   const item = orderBy.list[value];

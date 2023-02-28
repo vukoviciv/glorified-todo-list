@@ -37,7 +37,7 @@ const options = ref({
   showCreatedAt: false
 });
 
-const isFetching = computed(() => store.getters.hasTasks);
+const isFetching = computed(() => store.state.isFetching);
 const doneTasks = computed(() => store.getters.getDoneTasks);
 const inProgressTasks = computed(() => store.getters.getPendingTasks);
 

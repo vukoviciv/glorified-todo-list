@@ -1,15 +1,14 @@
 import { createStore } from 'vuex';
 import tasksApi from '../api/tasks';
+import userApi from '../api/users';
 
 export default createStore({
   state: {
     tasks: [],
-    user: null
+    user: null,
+    isFetching: false
   },
   getters: {
-    hasTasks: state => {
-      return !state.tasks.length;
-    },
     getAllTasks: state => {
       return state.tasks;
     },
@@ -18,15 +17,20 @@ export default createStore({
     },
     getPendingTasks: state => {
       return state.tasks.filter(task => !task.done);
+    },
+    getUser: state => {
+      return state.user;
     }
   },
   actions: {
-    fetchTasks: async ({ commit }) => {
+    fetchTasks: async ({ commit, state }, params = {}) => {
       const accountId = 1; // TODO:
+      state.isFetching = true;
       return tasksApi
-        .fetch({ accountId })
+        .fetch({ accountId, ...params })
         .then(tasks => {
           commit('setTasks', tasks);
+          state.isFetching = false;
         });
     },
     updateTask: async ({ commit }, task) => {
@@ -49,6 +53,15 @@ export default createStore({
         .then(task => {
           commit('updateTasks', task);
         });
+    },
+    fetchUser: async ({ commit, state }) => {
+      state.isFetching = true;
+      return userApi
+        .getMe()
+        .then(user => {
+          commit('setUser', user);
+          state.isFetching = false;
+        });
     }
   },
   mutations: {
@@ -60,6 +73,9 @@ export default createStore({
     },
     deleteTask(state, task) {
       state.tasks = state.tasks.filter(item => (item.id !== task.id));
+    },
+    setUser(state, user) {
+      state.user = user;
     }
   }
 });

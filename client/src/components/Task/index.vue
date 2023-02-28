@@ -5,9 +5,7 @@
       :model="menuItems"
       aria-label="Main navigation"
       class="flex-grow-1 justify-space-around" />
-    <RouterView
-      @update:order="$emit('update:order', $event)"
-      :is-fetching="isFetching" />
+    <RouterView @update:order="$emit('update:order', $event)" />
   </div>
 </template>
 
@@ -16,9 +14,6 @@ import CreateTaskDialog from './TaskDialog/CreateTaskDialog.vue';
 import { onMounted } from 'vue';
 import TabMenu from 'primevue/tabmenu';
 
-defineProps({
-  isFetching: { type: Boolean, required: true }
-});
 const menuItems = [
   { label: 'Today', to: '/today' },
   { label: 'Week', to: '/week' }

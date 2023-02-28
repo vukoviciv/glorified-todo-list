@@ -2,7 +2,7 @@
   <div>
     <div class="flex justify-content-end">
       <div class="user-info hidden md:flex align-items-center ">
-        <span>{{ user.fullName }}</span>
+        <span>{{ user?.fullName }}</span>
         <span class="ml-3 p-tag account-tag">{{ activeAccount.name }}</span>
       </div>
       <div class="ml-3">
@@ -17,6 +17,7 @@
       </div>
     </div>
     <Menu
+      v-if="user.accounts"
       ref="menu"
       id="overlay-menu"
       :model="items"
@@ -43,14 +44,15 @@ import { routes } from '@/shared/utils/navigation';
 import { useConfirm } from 'primevue/useconfirm';
 
 const props = defineProps({
-  user: { type: Object, required: true },
-  activeAccount: { type: Object, default: () => ({}) }
+  activeAccount: { type: Object, default: () => ({}) },
+  user: { type: Object, required: true }
 });
 const emit = defineEmits(['account:switch']);
 
 const confirm = useConfirm();
 const activatorEl = ref(null);
 const menu = ref();
+
 const createAccount = () => document.location.replace(routes.createAccount);
 const getAccounts = () => {
   const accounts = props.user.accounts.map(account => {
@@ -64,6 +66,7 @@ const getAccounts = () => {
   });
   return accounts;
 };
+
 const items = ref([{
   label: props.user.fullName,
   items: [{
