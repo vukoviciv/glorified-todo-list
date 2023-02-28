@@ -51,8 +51,9 @@ const emit = defineEmits(['account:switch']);
 const confirm = useConfirm();
 const activatorEl = ref(null);
 const menu = ref();
-const accounts = computed(() => {
-  return props.user.accounts.map(account => {
+const createAccount = () => document.location.replace(routes.createAccount);
+const getAccounts = () => {
+  const accounts = props.user.accounts.map(account => {
     const icon = account.id === props.activeAccount?.id ? PrimeIcons.CHECK_CIRCLE : '';
     return {
       icon,
@@ -61,7 +62,8 @@ const accounts = computed(() => {
       command: () => { emit('account:switch', account); }
     };
   });
-});
+  return accounts;
+};
 const items = ref([{
   label: props.user.fullName,
   items: [{
@@ -74,7 +76,11 @@ const items = ref([{
   }]
 }, {
   label: 'Accounts',
-  items: accounts
+  items: [{
+    label: 'Create account',
+    command: () => { createAccount(); }
+  },
+  ...getAccounts()]
 }]);
 
 const toggle = event => menu.value.toggle(event);
