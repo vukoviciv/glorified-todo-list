@@ -60,7 +60,7 @@ const showDialog = () => {
           showSnackbar('Task deleted!', 'success');
         }).catch(error => {
           const text = error.response.data;
-          showSnackbar({ text }, 'error');
+          showSnackbar(text, 'error');
         });
     }
   });

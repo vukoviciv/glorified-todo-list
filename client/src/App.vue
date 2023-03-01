@@ -10,8 +10,7 @@
       <HeaderOptions v-if="user" :user="user" />
     </template>
   </MainHeader>
-  <TasksSkeleton v-if="isFetching" />
-  <MainPage v-else />
+  <MainPage />
   <todo-snackbar />
 </template>
 
@@ -21,13 +20,11 @@ import HeaderOptions from './components/HeaderOptions.vue';
 import MainHeader from '../shared/components/MainHeader.vue';
 import MainPage from './components/MainPage.vue';
 import { routes } from '@/shared/utils/navigation';
-import TasksSkeleton from './components/Task/TodayTasks/TasksSkeleton.vue';
 import { useStore } from 'vuex';
 
 const registerPath = routes.updatePassword;
 const store = useStore();
 
-const isFetching = computed(() => store.state.isFetching);
 const user = computed(() => store.state.user);
 const hasTempPassword = computed(() => user.value?.hasTempPassword);
 
