@@ -30,6 +30,10 @@ export default createStore({
     }
   },
   actions: {
+    initialFetch: async ({ dispatch }) => {
+      await dispatch('fetchUser');
+      await dispatch('fetchTasks');
+    },
     fetchTasks: async ({ commit, state }, options = {}) => {
       const accountId = options?.accountId || state.activeAccount?.id;
       state.isFetching = true;

@@ -38,6 +38,7 @@ import { computed, ref } from 'vue';
 import authApi from '@/auth/src/api/auth';
 import Button from 'primevue/Button';
 import ConfirmDialog from 'primevue/confirmdialog';
+import { localStorageAccount } from './service/localStorage';
 import Menu from 'primevue/Menu';
 import { PrimeIcons } from 'primevue/api';
 import { routes } from '@/shared/utils/navigation';
@@ -47,7 +48,6 @@ import { useStore } from 'vuex';
 const props = defineProps({
   user: { type: Object, required: true }
 });
-const emit = defineEmits(['account:switch']);
 
 const confirm = useConfirm();
 const activatorEl = ref(null);
@@ -79,6 +79,10 @@ const items = computed(() => {
 const createAccount = () => document.location.replace(routes.createAccount);
 const toggle = event => menu.value.toggle(event);
 const focusActivator = () => activatorEl.value.$el.focus();
+const updateAccount = account => {
+  localStorageAccount.setItem(account);
+  store.dispatch('updateActiveAccount', account);
+};
 const getAccounts = () => {
   return store.getters.getAccounts.map(it => {
     const isActive = it.id === activeAccount.value?.id;
@@ -87,7 +91,7 @@ const getAccounts = () => {
       icon,
       id: it.id,
       label: `${it.name} - ${it.id}`,
-      command: () => { emit('account:switch', it); }
+      command: () => { updateAccount(it); }
     };
   });
 };

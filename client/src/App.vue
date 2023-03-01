@@ -9,21 +9,17 @@
     <template #options>
       <HeaderOptions
         v-if="user"
-        @account:switch="updateAccount($event)"
         :user="user" />
     </template>
   </MainHeader>
   <TasksSkeleton v-if="isFetching" />
-  <MainPage
-    v-else
-    @account:switch="updateAccount($event)" />
+  <MainPage v-else />
   <todo-snackbar />
 </template>
 
 <script setup>
 import { computed, onMounted } from 'vue';
 import HeaderOptions from './components/HeaderOptions.vue';
-import { localStorageAccount } from './components/service/localStorage';
 import MainHeader from '../shared/components/MainHeader.vue';
 import MainPage from './components/MainPage.vue';
 import { routes } from '@/shared/utils/navigation';
@@ -36,14 +32,9 @@ const store = useStore();
 const isFetching = computed(() => store.state.isFetching);
 const user = computed(() => store.state.user);
 const hasTempPassword = computed(() => user.value?.hasTempPassword);
-const updateAccount = account => {
-  localStorageAccount.setItem(account);
-  store.dispatch('updateActiveAccount', account);
-};
 
 onMounted(() => {
-  store.dispatch('fetchUser')
-    .then(() => store.dispatch('fetchTasks'));
+  store.dispatch('initialFetch');
 });
 </script>
 
