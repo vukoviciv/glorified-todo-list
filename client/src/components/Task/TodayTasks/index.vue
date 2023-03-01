@@ -8,13 +8,17 @@
       :items="inProgressTasks"
       :options="options"
       aria-label="Pending tasks for today" />
-    <Divider align="center">
+    <Divider v-if="doneTasks.length" align="center">
       <span id="done-badge" class="p-tag">Done</span>
     </Divider>
     <TaskList
       :items="doneTasks"
       :options="options"
       aria-labelledby="done-badge" />
+    <div v-if="!hasTasks" class="text-center">
+      No tasks available for this account.
+      <br>Click on 'Create new task' to create your first task!
+    </div>
   </div>
 </template>
 
@@ -34,6 +38,7 @@ const options = ref({
 
 const doneTasks = computed(() => store.getters.getDoneTasks);
 const inProgressTasks = computed(() => store.getters.getPendingTasks);
+const hasTasks = computed(() => store.state.tasks.length);
 
 const updateOptions = payload => {
   Object.assign(options.value, payload);
