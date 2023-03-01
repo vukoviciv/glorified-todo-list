@@ -5,7 +5,7 @@ import { processOrderBy } from './utils';
 
 async function list({ query }: Request, res: Response) {
   const { accountId, orderBy } = query;
-  if (!accountId) return res.json({ tasks: [] });
+  if (!accountId) throw new Error('NO ACCOUNT ID');
   const options = { orderBy: {} };
   const id = parseInt(accountId as string);
   if (orderBy) {
