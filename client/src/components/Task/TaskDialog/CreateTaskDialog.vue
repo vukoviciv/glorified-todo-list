@@ -15,27 +15,19 @@
 </template>
 
 <script setup>
-import { inject, ref } from 'vue';
 import Button from 'primevue/Button';
 import { PrimeIcons } from 'primevue/api';
-import { snackbarConfig } from '../../../../config/snackbar';
+import { ref } from 'vue';
 import TaskDialog from './common/TaskDialog.vue';
+import { useSnackbar } from '../../composables/snackbar';
 import { useStore } from 'vuex';
 
 const DEFAULT_ERROR_MSG = 'Something went wrong';
 const showDialog = ref(false);
-let snackbar = inject('snackbar');
 const store = useStore();
 const task = ref({ name: '' });
+const { showSnackbar } = useSnackbar();
 
-const showSnackbar = (text, type) => {
-  const config = {
-    ...snackbarConfig[type],
-    text,
-    isActive: true
-  };
-  snackbar = Object.assign(snackbar, config);
-};
 const close = () => {
   showDialog.value = false;
 };

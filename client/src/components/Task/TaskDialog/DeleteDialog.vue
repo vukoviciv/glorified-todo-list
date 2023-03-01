@@ -18,12 +18,12 @@
 </template>
 
 <script setup>
-import { inject, ref } from 'vue';
 import Button from 'primevue/Button';
 import ConfirmDialog from 'primevue/confirmdialog';
 import { PrimeIcons } from 'primevue/api';
-import { snackbarConfig } from '../../../../config/snackbar';
+import { ref } from 'vue';
 import { useConfirm } from 'primevue/useconfirm';
+import { useSnackbar } from '../../composables/snackbar';
 import { useStore } from 'vuex';
 
 const props = defineProps({
@@ -32,17 +32,8 @@ const props = defineProps({
 
 const confirm = useConfirm();
 const dialogId = ref(`${props.task.id}-confirm`);
-let snackbar = inject('snackbar');
 const store = useStore();
-
-const showSnackbar = (text, type) => {
-  const config = {
-    ...snackbarConfig[type],
-    text,
-    isActive: true
-  };
-  snackbar = Object.assign(snackbar, config);
-};
+const { showSnackbar } = useSnackbar();
 
 const showDialog = () => {
   confirm.require({
