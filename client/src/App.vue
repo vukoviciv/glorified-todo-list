@@ -7,9 +7,7 @@
   </div>
   <MainHeader>
     <template #options>
-      <HeaderOptions
-        v-if="user"
-        :user="user" />
+      <HeaderOptions v-if="user" :user="user" />
     </template>
   </MainHeader>
   <TasksSkeleton v-if="isFetching" />
