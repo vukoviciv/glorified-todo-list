@@ -5,7 +5,7 @@
       :model="menuItems"
       aria-label="Main navigation"
       class="flex-grow-1 justify-space-around" />
-    <RouterView @update:order="$emit('update:order', $event)" />
+    <RouterView />
   </div>
 </template>
 

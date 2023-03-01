@@ -1,5 +1,6 @@
 import { createStore } from 'vuex';
 import { localStorageAccount } from '../components/service/localStorage';
+import { orderBy } from '@/config/task';
 import tasksApi from '../api/tasks';
 import userApi from '../api/users';
 
@@ -84,6 +85,10 @@ export default createStore({
         .then(() => {
           commit('setActiveAccount', account);
         });
+    },
+    updateOrder: async ({ commit, dispatch }, orderValue) => {
+      const item = orderBy.list[orderValue];
+      dispatch('fetchTasks', { orderBy: item.value });
     }
   },
   mutations: {

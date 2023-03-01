@@ -2,7 +2,6 @@
   <div>
     <TaskFilters
       @update:options="updateOptions"
-      @update:order="$emit('update:order', $event)"
       v-bind="options" />
     <TaskList
       :items="inProgressTasks"
