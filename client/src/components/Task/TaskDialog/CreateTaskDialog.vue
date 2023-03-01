@@ -3,7 +3,8 @@
     @close="close"
     @action:emit="createTask"
     action-type="create"
-    :show-dialog="showDialog">
+    :show-dialog="showDialog"
+    :initial-task="task">
     <template #activator>
       <Button
         @click="open"
@@ -21,9 +22,11 @@ import { snackbarConfig } from '../../../../config/snackbar';
 import TaskDialog from './common/TaskDialog.vue';
 import { useStore } from 'vuex';
 
+const DEFAULT_ERROR_MSG = 'Something went wrong';
 const showDialog = ref(false);
 let snackbar = inject('snackbar');
 const store = useStore();
+const task = ref({ name: '' });
 
 const showSnackbar = (text, type) => {
   const config = {
@@ -33,14 +36,16 @@ const showSnackbar = (text, type) => {
   };
   snackbar = Object.assign(snackbar, config);
 };
-const close = () => { showDialog.value = false; };
+const close = () => {
+  showDialog.value = false;
+};
 const open = () => { showDialog.value = true; };
 const createTask = task => {
   store.dispatch('createTask', task)
     .then(() => {
       showSnackbar('Task created!', 'success');
     }).catch(error => {
-      const text = error.response.data;
+      const text = error.response.data || DEFAULT_ERROR_MSG;
       showSnackbar(text, 'error');
     }).finally(() => close());
 };

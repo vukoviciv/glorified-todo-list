@@ -25,6 +25,7 @@ import { snackbarConfig } from '../../../../config/snackbar';
 import TaskDialog from './common/TaskDialog.vue';
 import { useStore } from 'vuex';
 
+const DEFAULT_ERROR_MSG = 'Something went wrong';
 const props = defineProps({
   task: { type: Object, required: true }
 });
@@ -50,7 +51,7 @@ const updateTask = task => {
   store.dispatch('updateTask', task)
     .then(() => showSnackbar('Task edited!', 'success'))
     .catch(error => { // TODO: test if this is working
-      const text = error.response.data;
+      const text = error.response.data || DEFAULT_ERROR_MSG;
       showSnackbar(text, 'error');
     }).finally(() => close());
 };

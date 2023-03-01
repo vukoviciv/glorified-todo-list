@@ -9,7 +9,7 @@ const routes = [{
   path: '/',
   name: 'main',
   redirect: { name: 'today' },
-  children: [{ // TODO: this is not working how it should be, fix the router-view placement!!!
+  children: [{
     path: '/today',
     name: 'today',
     component: TodayTasks

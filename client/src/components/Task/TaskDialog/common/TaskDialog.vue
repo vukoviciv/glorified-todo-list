@@ -89,6 +89,7 @@
 // TODO: use form here!!!
 // TODO: check label for priority
 // TODO: focus back on activator after the dialog is closed
+import { computed, ref } from 'vue';
 import Button from 'primevue/Button';
 import Calendar from 'primevue/calendar';
 import Dialog from 'primevue/Dialog';
@@ -96,7 +97,6 @@ import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';
 import { PrimeIcons } from 'primevue/api';
 import { priority } from '@/config/task';
-import { ref } from 'vue';
 import { required } from '@vuelidate/validators';
 import Textarea from 'primevue/textarea';
 import { useVuelidate } from '@vuelidate/core';
@@ -104,12 +104,12 @@ import { useVuelidate } from '@vuelidate/core';
 const props = defineProps({
   showDialog: { type: Boolean, required: true },
   actionType: { type: String, required: true },
-  initialTask: { type: Object, default: () => ({}) }
+  initialTask: { type: Object, required: true }
 });
 const emit = defineEmits(['close', 'action:emit']);
 const nameEl = ref(null);
 const priorities = priority.list.map(({ label, value }) => ({ name: label, value }));
-const task = ref(Object.assign({}, props.initialTask));
+const task = computed(() => props.initialTask);
 
 const validationRules = {
   name: { required }
@@ -126,6 +126,7 @@ const action = async () => {
   if (!isFormCorrect) return;
 
   emit('action:emit', task.value);
+  v$.value.$reset();
 };
 const focusFirstInteractiveField = () => (nameEl.value.$el.focus());
 </script>
