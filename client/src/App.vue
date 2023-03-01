@@ -13,8 +13,9 @@
         :user="user" />
     </template>
   </MainHeader>
+  <TasksSkeleton v-if="isFetching" />
   <MainPage
-    v-if="!isFetching"
+    v-else
     @account:switch="updateAccount($event)" />
   <todo-snackbar />
 </template>
@@ -26,6 +27,7 @@ import { localStorageAccount } from './components/service/localStorage';
 import MainHeader from '../shared/components/MainHeader.vue';
 import MainPage from './components/MainPage.vue';
 import { routes } from '@/shared/utils/navigation';
+import TasksSkeleton from './components/Task/TodayTasks/TasksSkeleton.vue';
 import { useStore } from 'vuex';
 
 const registerPath = routes.updatePassword;

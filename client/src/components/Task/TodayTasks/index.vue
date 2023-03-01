@@ -4,18 +4,14 @@
       @update:options="updateOptions"
       @update:order="$emit('update:order', $event)"
       v-bind="options" />
-    <TasksSkeleton v-if="isFetching" />
     <TaskList
-      v-else
       :items="inProgressTasks"
       :options="options"
       aria-label="Pending tasks for today" />
     <Divider align="center">
       <span id="done-badge" class="p-tag">Done</span>
     </Divider>
-    <TasksSkeleton v-if="isFetching" />
     <TaskList
-      v-else
       :items="doneTasks"
       :options="options"
       aria-labelledby="done-badge" />
@@ -27,7 +23,6 @@ import { computed, ref } from 'vue';
 import Divider from 'primevue/Divider';
 import TaskFilters from './TaskFilters.vue';
 import TaskList from './TaskList.vue';
-import TasksSkeleton from './TasksSkeleton.vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
@@ -37,7 +32,6 @@ const options = ref({
   showCreatedAt: false
 });
 
-const isFetching = computed(() => store.state.isFetching);
 const doneTasks = computed(() => store.getters.getDoneTasks);
 const inProgressTasks = computed(() => store.getters.getPendingTasks);
 
