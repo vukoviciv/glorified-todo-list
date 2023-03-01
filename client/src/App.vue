@@ -16,14 +16,12 @@
   </MainHeader>
   <MainPage
     v-if="!isFetching"
-    @account:switch="updateAccount($event)"
-    :active-account="activeAccount"
-    :is-fetching="isFetching" />
+    @account:switch="updateAccount($event)" />
   <todo-snackbar />
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted } from 'vue';
 import HeaderOptions from './components/HeaderOptions.vue';
 import { localStorageAccount } from './components/service/localStorage';
 import MainHeader from '../shared/components/MainHeader.vue';
@@ -31,7 +29,6 @@ import MainPage from './components/MainPage.vue';
 import { routes } from '@/shared/utils/navigation';
 import { useStore } from 'vuex';
 
-const activeAccount = ref(localStorageAccount?.item);
 const registerPath = routes.updatePassword;
 const store = useStore();
 
@@ -40,18 +37,22 @@ const user = computed(() => {
   return store.state.user;
 });
 const hasTempPassword = computed(() => user.value?.hasTempPassword);
-
+const activeAccount = computed(() => {
+  return store.getters.getActiveAccount;
+});
 const updateAccount = account => {
   setActiveAccount(account);
 };
 const setActiveAccount = account => {
-  activeAccount.value = account;
   localStorageAccount.setItem(account);
+  store.dispatch('updateActiveAccount', account);
 };
 
 onMounted(() => {
-  store.dispatch('fetchTasks');
-  store.dispatch('fetchUser');
+  store.dispatch('fetchUser')
+    .then(() => {
+      store.dispatch('fetchTasks');
+    });
 });
 </script>
 

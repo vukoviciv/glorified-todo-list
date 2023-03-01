@@ -3,8 +3,7 @@
     <TasksMain
       @update:order="updateOrder"
       @task:created="taskCreated()"
-      :items="items"
-      :is-fetching="isFetching" />
+      :items="items" />
     <AccountsDialog
       v-if="showDialog"
       @account:switch="$emit('account:switch', $event)" />
@@ -19,15 +18,13 @@ import TasksMain from './Task/index.vue';
 import { useStore } from 'vuex';
 
 const props = defineProps({
-  activeAccount: { type: Object, default: () => ({}) },
   tasks: { type: Array, default: () => ([]) }
 });
 const store = useStore();
 const emit = defineEmits(['account:switch', 'fetch']);
 const items = ref(props.tasks);
 
-const showDialog = computed(() => !props.activeAccount);
-const isFetching = computed(() => store.state.isFetching);
+const showDialog = computed(() => store.getters?.getActiveAccounts);
 
 const updateOrder = ({ value }) => {
   const item = orderBy.list[value];

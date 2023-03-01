@@ -3,8 +3,8 @@ import { Request, Response } from 'express';
 import { DI } from '../../database/index';
 import { processOrderBy } from './utils';
 
-async function list({ query }: Request, res: Response) {
-  const { accountId } = query;
+async function list({ query, body: { user } }: Request, res: Response) {
+  const accountId = query.accountId || user.accounts[0].id;
   if (!accountId) throw new Error('NO ACCOUNT ID');
   const options = { orderBy: {} };
   const id = parseInt(accountId as string);

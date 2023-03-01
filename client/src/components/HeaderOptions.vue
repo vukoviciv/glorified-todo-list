@@ -34,12 +34,12 @@
 </template>
 
 <script setup>
+import { computed, ref } from 'vue';
 import authApi from '@/auth/src/api/auth';
 import Button from 'primevue/Button';
 import ConfirmDialog from 'primevue/confirmdialog';
 import Menu from 'primevue/Menu';
 import { PrimeIcons } from 'primevue/api';
-import { ref } from 'vue';
 import { routes } from '@/shared/utils/navigation';
 import { useConfirm } from 'primevue/useconfirm';
 
@@ -60,11 +60,22 @@ const getAccounts = () => {
     return {
       icon,
       id: it.id,
-      label: it.name,
-      command: () => { emit('itd:switch', it); }
+      label: `${it.name} - ${it.id}`,
+      command: () => { emit('account:switch', it); }
     };
   });
 };
+// const getAccounts = computed(() => {
+//   return props.user.accounts.map(it => {
+//     const icon = it.id === props.activeAccount?.id ? PrimeIcons.CHECK_CIRCLE : '';
+//     return {
+//       icon,
+//       id: it.id,
+//       label: `${it.name} - ${it.id}`,
+//       command: () => { emit('account:switch', it); }
+//     };
+//   });
+// });
 
 const items = ref([{
   label: props.user.fullName,
