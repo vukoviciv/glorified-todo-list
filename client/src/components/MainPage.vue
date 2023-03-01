@@ -1,64 +1,41 @@
 <template>
   <main class="main-container p-5 m-auto">
-    <TasksMain
-      @toggle:task="toggleDone"
-      @task:edit="updateItemsList($event)"
-      @task:delete="taskDelete($event)"
-      @update:order="updateOrder"
-      @task:created="taskCreated()"
-      :items="items"
-      :is-fetching="isFetching" />
-    <AccountsDialog
-      v-if="showDialog"
-      @account:switch="$emit('account:switch', $event)"
-      :user="user" />
+    <CreateTaskDialog />
+    <TabMenu
+      :model="menuItems"
+      aria-label="Main navigation"
+      class="flex-grow-1 justify-space-around" />
+    <RouterView />
   </main>
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
-import AccountsDialog from './AccountsDialog.vue';
-import { orderBy } from '@/config/task';
-import taskApi from '@/src/api/tasks';
-import TasksMain from './Task/index.vue';
+import CreateTaskDialog from './Task/TaskDialog/CreateTaskDialog.vue';
+import { onMounted } from 'vue';
+import TabMenu from 'primevue/tabmenu';
 
-const props = defineProps({
-  user: { type: Object, required: true },
-  activeAccount: { type: Object, default: () => ({}) },
-  tasks: { type: Array, default: () => ([]) },
-  isFetching: { type: Boolean, required: true }
+const menuItems = [
+  { label: 'Today', to: '/today' },
+  { label: 'Week', to: '/week' }
+];
+
+onMounted(() => {
+  // a11y fix - Ensures elements with an ARIA role that require child roles contain them
+  const unusedEl = document.querySelector('.p-tabmenu-ink-bar');
+  unusedEl.remove();
 });
-const emit = defineEmits(['account:switch', 'fetch']);
-const items = ref(props.tasks);
-const showDialog = computed(() => !props.activeAccount);
-
-const updateItemsList = task => {
-  items.value = items.value.map(item => (item.id === task.id ? task : item));
-};
-const toggleDone = async payload => {
-  const { id } = payload.task;
-  const task = await taskApi
-    .toggleDone(id)
-    .then(task => task);
-  updateItemsList(task);
-};
-const taskDelete = task => {
-  items.value = items.value.filter(item => item.id !== task.id);
-};
-const updateOrder = ({ value }) => {
-  const item = orderBy.list[value];
-  const params = {
-    orderBy: item.value
-  };
-  emit('fetch', params);
-};
-const taskCreated = () => {
-  emit('fetch');
-};
 </script>
 <style lang="scss" scoped>
 .main-container {
   max-width: 82rem;
   font-family: 'Roboto', sans-serif;
+}
+::v-deep .p-tabmenu .p-tabmenu-nav .p-tabmenuitem { // TODO: ::v-deep usage as a combinator has been deprecated. Use :deep(<inner-selector>) instead.
+  .p-menuitem-link {
+    border: none;
+  }
+  &.p-highlight {
+    border-bottom: 5px solid var(--primary-500);
+  }
 }
 </style>

@@ -16,15 +16,14 @@
 <script setup>
 import { inject, ref } from 'vue';
 import Button from 'primevue/Button';
-import { localStorageAccount } from '../../service/localStorage';
 import { PrimeIcons } from 'primevue/api';
 import { snackbarConfig } from '../../../../config/snackbar';
-import taskApi from '@/src/api/tasks';
 import TaskDialog from './common/TaskDialog.vue';
+import { useStore } from 'vuex';
 
-const emit = defineEmits(['task:created']);
 const showDialog = ref(false);
 let snackbar = inject('snackbar');
+const store = useStore();
 
 const showSnackbar = (text, type) => {
   const config = {
@@ -37,14 +36,8 @@ const showSnackbar = (text, type) => {
 const close = () => { showDialog.value = false; };
 const open = () => { showDialog.value = true; };
 const createTask = task => {
-  const payload = {
-    task,
-    accountId: localStorageAccount?.item.id
-  };
-  return taskApi
-    .create(payload)
+  store.dispatch('createTask', task)
     .then(() => {
-      emit('task:created');
       showSnackbar('Task created!', 'success');
     }).catch(error => {
       const text = error.response.data;

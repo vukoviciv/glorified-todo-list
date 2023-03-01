@@ -9,10 +9,12 @@ import { createApp } from 'vue';
 import PrimeVue from 'primevue/config';
 import router from './router';
 import Snackbar from '../shared/plugins/Snackbar';
+import store from './store';
 
 const app = createApp(App);
 app
   .use(Snackbar)
+  .use(store)
   .use(PrimeVue)
   .use(ConfirmationService)
   .use(router)

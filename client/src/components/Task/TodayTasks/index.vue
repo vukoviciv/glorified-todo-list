@@ -1,30 +1,24 @@
 <template>
-  <div>
+  <TasksSkeleton v-if="isFetching" />
+  <div v-else>
     <TaskFilters
       @update:options="updateOptions"
-      @update:order="$emit('update:order', $event)"
       v-bind="options" />
-    <TasksSkeleton v-if="isFetching" />
     <TaskList
-      v-else
-      @toggle:task="$emit('toggle:task', $event)"
-      @task:edit="$emit('task:edit', $event)"
-      @task:delete="$emit('task:delete', $event)"
       :items="inProgressTasks"
       :options="options"
       aria-label="Pending tasks for today" />
-    <Divider align="center">
+    <Divider v-if="doneTasks.length" align="center">
       <span id="done-badge" class="p-tag">Done</span>
     </Divider>
-    <TasksSkeleton v-if="isFetching" />
     <TaskList
-      v-else
-      @toggle:task="$emit('toggle:task', $event)"
-      @task:edit="$emit('task:edit', $event)"
-      @task:delete="$emit('task:delete', $event)"
       :items="doneTasks"
       :options="options"
       aria-labelledby="done-badge" />
+    <div v-if="!hasTasks" class="text-center">
+      No tasks available for this account.
+      <br>Click on 'Create new task' to create your first task!
+    </div>
   </div>
 </template>
 
@@ -34,19 +28,19 @@ import Divider from 'primevue/Divider';
 import TaskFilters from './TaskFilters.vue';
 import TaskList from './TaskList.vue';
 import TasksSkeleton from './TasksSkeleton.vue';
+import { useStore } from 'vuex';
 
-const props = defineProps({
-  items: { type: Array, required: true },
-  isFetching: { type: Boolean, required: true }
-});
+const store = useStore();
 
 const options = ref({
   showDescription: true,
   showCreatedAt: false
 });
 
-const doneTasks = computed(() => props.items.filter(it => it.done));
-const inProgressTasks = computed(() => props.items.filter(it => !it.done));
+const isFetching = computed(() => store.state.isFetching);
+const doneTasks = computed(() => store.getters.getDoneTasks);
+const inProgressTasks = computed(() => store.getters.getPendingTasks);
+const hasTasks = computed(() => store.state.tasks.length);
 
 const updateOptions = payload => {
   Object.assign(options.value, payload);

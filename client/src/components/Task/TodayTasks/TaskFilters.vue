@@ -2,7 +2,7 @@
   <div class="task-filters mt-2 mb-4 flex flex-wrap">
     <Dropdown
       v-model="selectedOrderBy"
-      @change="$emit('update:order', $event)"
+      @change="updateOrder($event)"
       :options="orderByValues"
       option-label="label"
       option-value="key"
@@ -31,6 +31,7 @@ import Checkbox from 'primevue/checkbox';
 import Dropdown from 'primevue/dropdown';
 import { orderBy } from '@/config/task';
 import { ref } from 'vue';
+import { useStore } from 'vuex';
 
 const props = defineProps({
   showDescription: { type: Boolean, required: true },
@@ -40,6 +41,10 @@ const props = defineProps({
 const selectedOrderBy = ref();
 const description = ref(props.showDescription);
 const createdAt = ref(props.showCreatedAt);
+const store = useStore();
 
 const orderByValues = orderBy.list.map((val, key) => ({ key, label: val.label }));
+const updateOrder = ({ value }) => {
+  store.dispatch('updateOrder', value);
+};
 </script>

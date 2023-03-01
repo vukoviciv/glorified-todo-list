@@ -10,7 +10,7 @@
         :class="taskWrapperClass">
         <Checkbox
           v-model="isDone"
-          @input="$emit('toggle:task', { task: item })"
+          @input="toggleDone()"
           :input-id="item.id.toString()"
           :input-props="inputProps"
           binary />
@@ -29,12 +29,8 @@
           </p>
         </div>
       </div>
-      <EditTaskDialog
-        @task:edit="$emit('task:edit', $event)"
-        :task="item" />
-      <DeleteDialog
-        @task:delete="$emit('task:delete', $event)"
-        :task="item" />
+      <EditTaskDialog :task="item" />
+      <DeleteDialog :task="item" />
     </div>
     <p v-if="showCreatedAt" class="ml-5 pl-1 pt-1">
       <i>Created: {{ processDate(item.createdAt) }}</i>
@@ -50,6 +46,7 @@ import EditTaskDialog from '../TaskDialog/EditTaskDialog.vue';
 import { PrimeIcons } from 'primevue/api';
 import { priority } from '@/config/task';
 import TdIcon from '@/src/components/common/TdIcon.vue';
+import { useStore } from 'vuex';
 
 const { HIGH, MEDIUM, LOW } = priority.values;
 
@@ -79,6 +76,8 @@ const props = defineProps({
 
 const isDone = ref(props.item.done);
 const inputProps = { 'aria-describedby': 'task-description' };
+const store = useStore();
+
 const config = computed(() => priorityConfig[props.item.priority]);
 const taskWrapperClass = computed(() => {
   return !props.item.done ? config.value.className : 'grey';
@@ -89,7 +88,9 @@ const displayDescription = computed(() => {
 const displayDeadline = computed(() => {
   return props.item.deadlineDate && props.item.deadlineTime;
 });
-
+const toggleDone = () => {
+  store.dispatch('toggleDone', props.item.id);
+};
 const processDate = dateTime => {
   const date = new Date(dateTime);
 

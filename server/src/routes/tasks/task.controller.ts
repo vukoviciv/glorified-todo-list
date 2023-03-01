@@ -4,11 +4,11 @@ import { DI } from '../../database/index';
 import { processOrderBy } from './utils';
 
 async function list({ query }: Request, res: Response) {
-  const { accountId } = query;
+  const { accountId, orderBy } = query;
   if (!accountId) throw new Error('NO ACCOUNT ID');
   const options = { orderBy: {} };
   const id = parseInt(accountId as string);
-  if (query.orderBy) {
+  if (orderBy) {
     options.orderBy = processOrderBy(query.orderBy as string);
   }
   const tasks = await DI.em.find(Task, { account: { id } }, options);
@@ -33,7 +33,7 @@ async function update({ body }: Request, res: Response) {
 
   task.name = body?.name;
   task.description = body?.description;
-  task.deadline = body?.deadline;
+  task.deadline = body?.deadline || task.deadline; // TODO: fix FE empty deadline
   task.priority = body?.priority;
   await DI.em.persistAndFlush(task);
 
