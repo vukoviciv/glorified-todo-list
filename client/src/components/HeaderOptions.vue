@@ -2,7 +2,7 @@
   <div>
     <div class="flex justify-content-end">
       <div class="user-info hidden md:flex align-items-center ">
-        <span>{{ user?.fullName }}</span>
+        <span>{{ user.fullName }}</span>
         <span class="ml-3 p-tag account-tag">{{ activeAccount.name }}</span>
       </div>
       <div class="ml-3">
@@ -14,14 +14,14 @@
           aria-haspopup="true"
           aria-label="Account menu"
           aria-controls="overlay-menu" />
+        <Menu
+          v-if="user.accounts"
+          ref="menu"
+          id="overlay-menu"
+          :model="items"
+          :popup="true" />
       </div>
     </div>
-    <Menu
-      v-if="user.accounts"
-      ref="menu"
-      id="overlay-menu"
-      :model="items"
-      :popup="true" />
     <ConfirmDialog>
       <template #message="slotProps">
         <span :class="slotProps.message.icon"></span>
@@ -42,9 +42,9 @@ import Menu from 'primevue/Menu';
 import { PrimeIcons } from 'primevue/api';
 import { routes } from '@/shared/utils/navigation';
 import { useConfirm } from 'primevue/useconfirm';
+import { useStore } from 'vuex';
 
 const props = defineProps({
-  activeAccount: { type: Object, default: () => ({}) },
   user: { type: Object, required: true }
 });
 const emit = defineEmits(['account:switch']);
@@ -52,11 +52,37 @@ const emit = defineEmits(['account:switch']);
 const confirm = useConfirm();
 const activatorEl = ref(null);
 const menu = ref();
+const store = useStore();
+
+const activeAccount = computed(() => store.getters.getActiveAccount);
+const items = computed(() => {
+  return [{
+    label: props.user.fullName,
+    items: [{
+      label: 'Profile',
+      icon: PrimeIcons.USER
+    }, {
+      label: 'Logout',
+      icon: PrimeIcons.SIGN_OUT,
+      command: () => { logout(); }
+    }]
+  }, {
+    label: 'Accounts',
+    items: [{
+      label: 'Create account',
+      command: () => { createAccount(); }
+    },
+    ...getAccounts()]
+  }];
+});
 
 const createAccount = () => document.location.replace(routes.createAccount);
+const toggle = event => menu.value.toggle(event);
+const focusActivator = () => activatorEl.value.$el.focus();
 const getAccounts = () => {
-  return props.user.accounts.map(it => {
-    const icon = it.id === props.activeAccount?.id ? PrimeIcons.CHECK_CIRCLE : '';
+  return store.getters.getAccounts.map(it => {
+    const isActive = it.id === activeAccount.value?.id;
+    const icon = isActive ? PrimeIcons.CHECK_CIRCLE : '';
     return {
       icon,
       id: it.id,
@@ -65,39 +91,6 @@ const getAccounts = () => {
     };
   });
 };
-// const getAccounts = computed(() => {
-//   return props.user.accounts.map(it => {
-//     const icon = it.id === props.activeAccount?.id ? PrimeIcons.CHECK_CIRCLE : '';
-//     return {
-//       icon,
-//       id: it.id,
-//       label: `${it.name} - ${it.id}`,
-//       command: () => { emit('account:switch', it); }
-//     };
-//   });
-// });
-
-const items = ref([{
-  label: props.user.fullName,
-  items: [{
-    label: 'Profile',
-    icon: PrimeIcons.USER
-  }, {
-    label: 'Logout',
-    icon: PrimeIcons.SIGN_OUT,
-    command: () => { logout(); }
-  }]
-}, {
-  label: 'Accounts',
-  items: [{
-    label: 'Create account',
-    command: () => { createAccount(); }
-  },
-  ...getAccounts()]
-}]);
-
-const toggle = event => menu.value.toggle(event);
-const focusActivator = () => activatorEl.value.$el.focus();
 const logout = () => {
   confirm.require({
     message: 'Are you sure you want to logout?',

@@ -23,6 +23,9 @@ export default createStore({
     },
     getActiveAccount: state => {
       return state.activeAccount;
+    },
+    getAccounts: state => {
+      return state.user.accounts;
     }
   },
   actions: {

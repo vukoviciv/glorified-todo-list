@@ -10,7 +10,6 @@
       <HeaderOptions
         v-if="user"
         @account:switch="updateAccount($event)"
-        :active-account="activeAccount"
         :user="user" />
     </template>
   </MainHeader>
@@ -33,26 +32,16 @@ const registerPath = routes.updatePassword;
 const store = useStore();
 
 const isFetching = computed(() => store.state.isFetching);
-const user = computed(() => {
-  return store.state.user;
-});
+const user = computed(() => store.state.user);
 const hasTempPassword = computed(() => user.value?.hasTempPassword);
-const activeAccount = computed(() => {
-  return store.getters.getActiveAccount;
-});
 const updateAccount = account => {
-  setActiveAccount(account);
-};
-const setActiveAccount = account => {
   localStorageAccount.setItem(account);
   store.dispatch('updateActiveAccount', account);
 };
 
 onMounted(() => {
   store.dispatch('fetchUser')
-    .then(() => {
-      store.dispatch('fetchTasks');
-    });
+    .then(() => store.dispatch('fetchTasks'));
 });
 </script>
 
