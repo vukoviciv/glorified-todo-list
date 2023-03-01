@@ -1,8 +1,7 @@
 <template>
   <main class="main-container p-5 m-auto">
     <TasksMain
-      @update:order="updateOrder"
-      @task:created="taskCreated()" />
+      @update:order="updateOrder" />
     <AccountsDialog
       v-if="showDialog"
       @account:switch="$emit('account:switch', $event)" />
@@ -27,9 +26,6 @@ const updateOrder = ({ value }) => {
     orderBy: item.value
   };
   emit('fetch', params);
-};
-const taskCreated = () => {
-  emit('fetch');
 };
 </script>
 <style lang="scss" scoped>

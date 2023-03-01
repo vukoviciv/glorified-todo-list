@@ -1,6 +1,6 @@
 <template>
   <div class="tasks-main">
-    <CreateTaskDialog @task:created="$emit('task:created', $event)" />
+    <CreateTaskDialog />
     <TabMenu
       :model="menuItems"
       aria-label="Main navigation"

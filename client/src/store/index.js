@@ -39,6 +39,12 @@ export default createStore({
           state.isFetching = false;
         });
     },
+    createTask: async ({ commit, dispatch, state }, task) => {
+      const accountId = state.activeAccount.id;
+      const payload = { task, accountId };
+      return tasksApi.create(payload)
+        .then(() => dispatch('fetchTasks'));
+    },
     updateTask: async ({ commit, state }, task) => {
       return tasksApi.update(task)
         .then(task => {
