@@ -90,7 +90,6 @@
 
 <script setup>
 // TODO: check label for priority
-// TODO: focus back on activator after the dialog is closed
 import { computed, ref } from 'vue';
 import Button from 'primevue/Button';
 import Calendar from 'primevue/calendar';

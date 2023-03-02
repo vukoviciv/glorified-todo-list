@@ -4,10 +4,12 @@
     @action:emit="createTask"
     action-type="create"
     :show-dialog="showDialog"
+    :activator-id="activatorId"
     :initial-task="task">
     <template #activator>
       <Button
         @click="open"
+        :id="activatorId"
         label="Create new task"
         :icon="PrimeIcons.PLUS" />
     </template>
@@ -18,7 +20,7 @@
 import Button from 'primevue/Button';
 import { PrimeIcons } from 'primevue/api';
 import { ref } from 'vue';
-import TaskDialog from './common/TaskDialog.vue';
+import TaskDialog from './common/TaskDialogForm.vue';
 import { useSnackbar } from '../../composables/snackbar';
 import { useStore } from 'vuex';
 
@@ -27,6 +29,7 @@ const showDialog = ref(false);
 const store = useStore();
 const task = ref({});
 const { showSnackbar } = useSnackbar();
+const activatorId = 'create-task-activator';
 
 const close = () => { showDialog.value = false; };
 const open = () => {
