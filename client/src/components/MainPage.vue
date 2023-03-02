@@ -30,7 +30,7 @@ onMounted(() => {
   max-width: 82rem;
   font-family: 'Roboto', sans-serif;
 }
-::v-deep .p-tabmenu .p-tabmenu-nav .p-tabmenuitem { // TODO: ::v-deep usage as a combinator has been deprecated. Use :deep(<inner-selector>) instead.
+:deep(.p-tabmenu .p-tabmenu-nav .p-tabmenuitem) {
   .p-menuitem-link {
     border: none;
   }
