@@ -25,13 +25,14 @@ import { useStore } from 'vuex';
 const DEFAULT_ERROR_MSG = 'Something went wrong';
 const showDialog = ref(false);
 const store = useStore();
-const task = ref({ name: '' });
+const task = ref({});
 const { showSnackbar } = useSnackbar();
 
-const close = () => {
-  showDialog.value = false;
+const close = () => { showDialog.value = false; };
+const open = () => {
+  showDialog.value = true;
+  task.value = {};
 };
-const open = () => { showDialog.value = true; };
 const createTask = task => {
   store.dispatch('createTask', task)
     .then(() => {
