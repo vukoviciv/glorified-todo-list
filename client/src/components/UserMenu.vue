@@ -78,7 +78,7 @@ const getAccounts = () => {
     return {
       icon,
       id: it.id,
-      label: `${it.name} - ${it.id}`,
+      label: `${it.name}`,
       command: () => { updateAccount(it); }
     };
   });
