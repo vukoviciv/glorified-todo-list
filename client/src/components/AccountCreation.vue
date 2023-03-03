@@ -10,7 +10,7 @@
     title="Create Account(s)">
     <div class="px-8 mt-5">
       <p class="ml-3 mb-3">Create an account</p>
-      <small id="main-account" class="ml-3">
+      <small id="main-account-description" class="ml-3">
         This will be used as your currently selected account
       </small>
       <div class="flex">
@@ -21,14 +21,13 @@
               @update:model-value="isDirty=true"
               :id="mainAccountId"
               required="required"
-              aria-describedby="main-account"
-              autofocus />
+              aria-describedby="main-account-description" />
             <label :for="mainAccountId">Account</label>
           </div>
         </RequiredFieldWrapper>
         <div>
           <Button
-            @click="addAccount()"
+            @click="addAccountField()"
             :icon="PrimeIcons.PLUS"
             title="Add account"
             aria-label="Add account"
@@ -49,7 +48,7 @@
         </div>
         <div>
           <Button
-            @click="removeAccount()"
+            @click="removeAccountField()"
             :icon="PrimeIcons.MINUS"
             title="Add account"
             aria-label="Add account"
@@ -61,7 +60,7 @@
 </template>
 
 <script setup>
-import { computed, nextTick, ref } from 'vue';
+import { computed, nextTick, onMounted, ref } from 'vue';
 import Button from 'primevue/Button';
 import InputText from 'primevue/inputtext';
 import { PrimeIcons } from 'primevue/api';
@@ -98,6 +97,7 @@ const saveAccounts = () => {
     ]
   };
   store.dispatch('createAccounts', payload);
+
   return usersApi
     .createAccounts(payload)
     .then(() => { redirectToMain(); });
@@ -107,18 +107,21 @@ const focusNewInput = id => {
     document.querySelector(`#${id}`).focus();
   });
 };
-const focusPreviousInput = id => {
-  document.querySelector(id).focus();
+const focusInputField = elId => {
+  document.querySelector(elId).focus();
 };
-const addAccount = () => {
+const addAccountField = () => {
   const id = `account-${accountCount.value}`;
   accounts.value.push({ name: '', id });
   focusNewInput(id);
 };
-const removeAccount = () => {
+const removeAccountField = () => {
   accounts.value.pop();
   const previousAccount = accounts.value.at(accountCount.value - 1);
   const id = previousAccount ? `#${previousAccount.id}` : `#${mainAccountId}`;
-  focusPreviousInput(id);
+  focusInputField(id);
 };
+onMounted(() => {
+  focusInputField(`#${mainAccountId}`);
+});
 </script>
