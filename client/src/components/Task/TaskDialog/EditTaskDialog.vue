@@ -28,19 +28,24 @@ import { useSnackbar } from '../../composables/snackbar';
 import { useStore } from 'vuex';
 
 const DEFAULT_ERROR_MSG = 'Something went wrong';
+const getInitialTask = () => Object.assign({}, props.initialTask);
 const props = defineProps({
-  task: { type: Object, required: true }
+  initialTask: { type: Object, required: true }
 });
 const showDialog = ref(false);
+const task = ref(getInitialTask());
 const store = useStore();
 const { showSnackbar } = useSnackbar();
 
-const activatorId = computed(() => `form-activator-${props.task.id}`);
+const activatorId = computed(() => `form-activator-${task.value.id}`);
 
-const close = () => { showDialog.value = false; };
+const close = () => {
+  showDialog.value = false;
+  task.value = getInitialTask();
+};
 const open = () => { showDialog.value = true; };
-const updateTask = task => {
-  store.dispatch('updateTask', task)
+const updateTask = () => {
+  store.dispatch('updateTask', task.value)
     .then(() => {
       showSnackbar('Task edited!', types.SUCCESS);
     })
