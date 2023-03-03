@@ -16,6 +16,7 @@ async function createAccounts({ body: { accountNames, user } }: Request, res: Re
   const activeUser = await DI.em.findOne(User, { id: user.id });
   if (!activeUser) throw Error('User not found');
   for (const name of accountNames) {
+    if (!name) continue;
     const account = new Account({ user, name });
     await DI.em.persist(account);
     activeUser.accounts.add(account);

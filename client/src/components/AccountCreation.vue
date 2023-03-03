@@ -5,35 +5,32 @@
     :form="form"
     :submit-action="saveAccounts"
     :is-dirty="isDirty"
-    :submit-disabled="submitDisabled"
+    :submit-enabled="submitEnabled"
     submit-text="Continue"
     title="Create Account(s)">
     <div class="px-8 mt-5">
-      <p class="ml-3 mb-3">Create an account</p>
-      <small id="main-account-description" class="ml-3">
-        This will be used as your currently selected account
-      </small>
-      <div class="flex">
-        <RequiredFieldWrapper class="p-inputgroup">
-          <div class="p-float-label">
-            <InputText
-              v-model="form.mainAccount"
-              @update:model-value="isDirty=true"
-              :id="mainAccountId"
-              required="required"
-              aria-describedby="main-account-description" />
-            <label :for="mainAccountId">Account</label>
-          </div>
-        </RequiredFieldWrapper>
-        <div>
-          <Button
-            @click="addAccountField()"
-            :icon="PrimeIcons.PLUS"
-            title="Add account"
-            aria-label="Add account"
-            class="ml-3 p-button-rounded p-button-outlined p-button-secondary" />
-        </div>
+      <div class="flex align-items-center justify-content-between">
+        <p class="ml-3">Create an account</p>
+        <Button
+          @click="addAccountField"
+          label="Add new account"
+          :icon="PrimeIcons.PLUS"
+          class="justify-" />
       </div>
+      <small id="main-account-description" class="ml-3 mt-5 block">
+        This one will be used as your currently selected account
+      </small>
+      <RequiredFieldWrapper class="p-inputgroup">
+        <div class="p-float-label">
+          <InputText
+            v-model="form.mainAccount"
+            @update:model-value="isDirty=true"
+            :id="mainAccountId"
+            required="required"
+            aria-describedby="main-account-description" />
+          <label :for="mainAccountId">Account</label>
+        </div>
+      </RequiredFieldWrapper>
       <div
         v-for="(account, index) in accounts"
         :key="index"
@@ -71,17 +68,21 @@ import TodoForm from '../../shared/components/TodoForm.vue';
 import usersApi from '@/src/api/users';
 import { useStore } from 'vuex';
 
-const form = ref({ mainAccount: '' });
+const form = ref({
+  mainAccount: { name: '' },
+  accounts: []
+});
 const mainAccountId = 'main-account';
-const accounts = ref([]);
 const validationRules = {
-  mainAccount: { required }
+  mainAccount: { name: required }
 };
 const isDirty = ref(false);
 const store = useStore();
 
-const submitDisabled = computed(() => {
-  return form.value.mainAccount.length < 1;
+const submitEnabled = computed(() => {
+  const filledInput = form.value.accounts.find(it => it.name);
+  if (filledInput) return true;
+  return form.value.mainAccount.length;
 });
 const accountCount = computed(() => accounts.value.length);
 const redirectToMain = () => {
