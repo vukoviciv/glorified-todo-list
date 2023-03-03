@@ -30,7 +30,8 @@ export default createStore({
     }
   },
   actions: {
-    initialFetch: async ({ dispatch }) => {
+    initialFetch: async ({ commit, dispatch }) => {
+      commit('setActiveAccount', localStorageAccount.item);
       await dispatch('fetchUser');
       await dispatch('fetchTasks');
     },
@@ -44,9 +45,10 @@ export default createStore({
           state.isFetching = false;
         });
     },
-    createTask: async ({ commit, dispatch, state }, task) => {
+    createTask: async ({ dispatch, state }, task) => {
       const accountId = state.activeAccount.id;
       const payload = { task, accountId };
+
       return tasksApi.create(payload)
         .then(() => dispatch('fetchTasks'));
     },
@@ -71,29 +73,43 @@ export default createStore({
           commit('setTasks', updatedTasks);
         });
     },
-    fetchUser: async ({ commit, state }) => {
+    fetchUser: async ({ commit, dispatch, getters, state }) => {
       state.isFetching = true;
-      const savedAccount = localStorageAccount?.item;
+      const savedAccount = getters.getActiveAccount;
 
       return userApi.getMe()
         .then(user => {
           commit('setUser', user);
-          const activeAccount = savedAccount || user.accounts[0];
-          commit('setActiveAccount', activeAccount);
           state.isFetching = false;
+          if (savedAccount) return;
+          const activeAccount = user.accounts[0];
+          dispatch('saveActiveAccount', activeAccount);
         });
     },
-    updateActiveAccount: async ({ commit, dispatch, state }, account) => {
-      state.isFetching = true;
-      localStorageAccount.setItem(account);
+    updateActiveAccount: async ({ dispatch }, account) => {
       dispatch('fetchTasks', { accountId: account.id })
         .then(() => {
-          commit('setActiveAccount', account);
+          dispatch('saveActiveAccount', account);
         });
     },
-    updateOrder: async ({ commit, dispatch }, orderValue) => {
+    updateOrder: async ({ dispatch }, orderValue) => {
       const item = orderBy.list[orderValue];
       dispatch('fetchTasks', { orderBy: item.value });
+    },
+    createAccounts: async ({ commit, dispatch }, payload) => {
+      const { accountNames, mainAccountName } = payload;
+
+      return userApi.createAccounts({ accountNames })
+        .then(({ user }) => {
+          const accounts = user.accounts;
+          const activeAccount = accounts.find(it => it.name === mainAccountName);
+          dispatch('updateActiveAccount', activeAccount);
+          commit('setUser', user);
+        });
+    },
+    saveActiveAccount: async ({ commit }, account) => {
+      localStorageAccount.setItem(account);
+      commit('setActiveAccount', account);
     }
   },
   mutations: {

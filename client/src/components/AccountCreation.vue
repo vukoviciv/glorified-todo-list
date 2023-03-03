@@ -70,6 +70,7 @@ import RequiredFieldWrapper from '../../auth/src/components/common/RequiredField
 import { routes } from '@/shared/utils/navigation';
 import TodoForm from '../../shared/components/TodoForm.vue';
 import usersApi from '@/src/api/users';
+import { useStore } from 'vuex';
 
 const form = ref({ mainAccount: '' });
 const mainAccountId = 'main-account';
@@ -78,31 +79,28 @@ const validationRules = {
   mainAccount: { required }
 };
 const isDirty = ref(false);
+const store = useStore();
 
 const submitDisabled = computed(() => {
   return form.value.mainAccount.length < 1;
 });
 const accountCount = computed(() => accounts.value.length);
-const updateAccount = accounts => {
-  const activeAccount = accounts.find(it => it.name === form.value.mainAccount);
-};
 const redirectToMain = () => {
   document.location.replace(routes.home);
 };
 const saveAccounts = () => {
-  const activeAccountName = form.value.mainAccount;
+  const mainAccountName = form.value.mainAccount;
   const payload = {
-    accounts: [
-      { name: activeAccountName },
-      ...accounts.value
+    mainAccountName,
+    accountNames: [
+      mainAccountName,
+      ...accounts.value.map(it => it.name)
     ]
   };
+  store.dispatch('createAccounts', payload);
   return usersApi
     .createAccounts(payload)
-    .then(({ user }) => {
-      updateAccount(user.accounts);
-      redirectToMain();
-    });
+    .then(() => { redirectToMain(); });
 };
 const focusNewInput = id => {
   nextTick(() => {
