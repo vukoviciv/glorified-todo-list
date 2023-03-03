@@ -21,6 +21,7 @@ import Button from 'primevue/Button';
 import { PrimeIcons } from 'primevue/api';
 import { ref } from 'vue';
 import TaskDialog from './common/TaskDialogForm.vue';
+import { types } from '@/config/snackbar.js';
 import { useSnackbar } from '../../composables/snackbar';
 import { useStore } from 'vuex';
 
@@ -39,10 +40,10 @@ const open = () => {
 const createTask = task => {
   store.dispatch('createTask', task)
     .then(() => {
-      showSnackbar('Task created!', 'success');
+      showSnackbar('Task created!', types.SUCCESS);
     }).catch(error => {
       const text = error.response.data || DEFAULT_ERROR_MSG;
-      showSnackbar(text, 'error');
+      showSnackbar(text, types.ERROR);
     }).finally(() => close());
 };
 </script>

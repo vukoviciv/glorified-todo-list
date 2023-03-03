@@ -22,6 +22,7 @@ import Button from 'primevue/Button';
 import ConfirmDialog from 'primevue/confirmdialog';
 import { PrimeIcons } from 'primevue/api';
 import { ref } from 'vue';
+import { types } from '@/config/snackbar.js';
 import { useConfirm } from 'primevue/useconfirm';
 import { useSnackbar } from '../../composables/snackbar';
 import { useStore } from 'vuex';
@@ -48,10 +49,10 @@ const showDialog = () => {
     accept: () => {
       store.dispatch('deleteTask', props.task.id)
         .then(() => {
-          showSnackbar('Task deleted!', 'success');
+          showSnackbar('Task deleted!', types.SUCCESS);
         }).catch(error => {
           const text = error.response.data;
-          showSnackbar(text, 'error');
+          showSnackbar(text, types.ERROR);
         });
     }
   });

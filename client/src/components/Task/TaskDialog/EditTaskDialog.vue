@@ -23,6 +23,7 @@ import { computed, ref } from 'vue';
 import Button from 'primevue/Button';
 import { PrimeIcons } from 'primevue/api';
 import TaskDialog from './common/TaskDialogForm.vue';
+import { types } from '@/config/snackbar';
 import { useSnackbar } from '../../composables/snackbar';
 import { useStore } from 'vuex';
 
@@ -41,11 +42,11 @@ const open = () => { showDialog.value = true; };
 const updateTask = task => {
   store.dispatch('updateTask', task)
     .then(() => {
-      showSnackbar('Task edited!', 'success');
+      showSnackbar('Task edited!', types.SUCCESS);
     })
     .catch(error => {
       const text = error.response.data || DEFAULT_ERROR_MSG;
-      showSnackbar(text, 'error');
+      showSnackbar(text, types.ERROR);
     }).finally(() => close());
 };
 </script>

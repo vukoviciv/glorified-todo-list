@@ -65,9 +65,11 @@ import { required } from '@vuelidate/validators';
 import RequiredFieldWrapper from '../../auth/src/components/common/RequiredFieldWrapper.vue';
 import { routes } from '@/shared/utils/navigation';
 import TodoForm from '../../shared/components/TodoForm.vue';
-import usersApi from '@/src/api/users';
+import { types } from '../../config/snackbar';
+import { useSnackbar } from './composables/snackbar';
 import { useStore } from 'vuex';
 
+const DEFAULT_ERROR_MSG = 'Something went wrong';
 const form = ref({
   mainAccount: { name: '' },
   accounts: []
@@ -78,10 +80,12 @@ const validationRules = {
 };
 const isDirty = ref(false);
 const store = useStore();
+const { showSnackbar } = useSnackbar();
 
 const submitEnabled = computed(() => {
   const filledInput = form.value.accounts.find(it => it.name);
   if (filledInput) return true;
+
   return form.value.mainAccount.name.length > 0;
 });
 const accountCount = computed(() => form.value.accounts.length);
@@ -97,11 +101,13 @@ const saveAccounts = () => {
       ...form.value.accounts.map(it => it.name)
     ]
   };
-  store.dispatch('createAccounts', payload);
-
-  return usersApi
-    .createAccounts(payload)
-    .then(() => { redirectToMain(); });
+  store.dispatch('createAccounts', payload)
+    .then(() => {
+      showSnackbar('Account(s) created!', types.SUCCESS);
+    }).catch(error => {
+      const text = error.response.data || DEFAULT_ERROR_MSG;
+      showSnackbar(text, types.ERROR);
+    }).finally(() => redirectToMain());
 };
 const focusNewInput = id => {
   nextTick(() => {
