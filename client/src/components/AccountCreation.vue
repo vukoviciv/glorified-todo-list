@@ -20,7 +20,7 @@
       <small id="main-account-description" class="ml-3 mt-5 block">
         This one will be used as your currently selected account
       </small>
-      <RequiredFieldWrapper class="p-inputgroup">
+      <RequiredFieldWrapper class="p-inputgroup mt-2">
         <div class="p-float-label">
           <InputText
             v-model="form.mainAccount.name"
