@@ -30,10 +30,10 @@ export default createStore({
     }
   },
   actions: {
-    initialFetch: async ({ commit, dispatch }) => {
+    initialize: async ({ commit, dispatch }) => {
       commit('setActiveAccount', localStorageAccount.item);
       await dispatch('fetchUser');
-      await dispatch('fetchTasks');
+      dispatch('fetchTasks');
     },
     fetchTasks: async ({ commit, state }, options = {}) => {
       const accountId = options?.accountId || state.activeAccount?.id;
@@ -87,10 +87,8 @@ export default createStore({
         });
     },
     updateActiveAccount: async ({ dispatch }, account) => {
-      dispatch('fetchTasks', { accountId: account.id })
-        .then(() => {
-          dispatch('saveActiveAccount', account);
-        });
+      await dispatch('fetchTasks', { accountId: account.id });
+      dispatch('saveActiveAccount', account);
     },
     updateOrder: async ({ dispatch }, orderValue) => {
       const item = orderBy.list[orderValue];

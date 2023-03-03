@@ -29,7 +29,7 @@ const user = computed(() => store.state.user);
 const hasTempPassword = computed(() => user.value?.hasTempPassword);
 
 onMounted(() => {
-  store.dispatch('initialFetch');
+  store.dispatch('initialize');
 });
 </script>
 
