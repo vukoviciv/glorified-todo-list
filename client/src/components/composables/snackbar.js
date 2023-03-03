@@ -5,9 +5,9 @@ export function useSnackbar() {
   let snackbar = inject('snackbar');
   const showSnackbar = (text, type) => {
     const config = {
-      ...snackbarConfig[type],
       text,
-      isActive: true
+      isActive: true,
+      ...snackbarConfig[type]
     };
     snackbar = Object.assign(snackbar, config);
   };

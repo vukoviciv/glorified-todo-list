@@ -28,7 +28,6 @@ import { computed, ref } from 'vue';
 import authApi from '@/auth/src/api/auth';
 import Button from 'primevue/Button';
 import ConfirmDialog from 'primevue/confirmdialog';
-import { localStorageAccount } from './service/localStorage';
 import Menu from 'primevue/Menu';
 import { PrimeIcons } from 'primevue/api';
 import { routes } from '@/shared/utils/navigation';
@@ -70,7 +69,6 @@ const createAccount = () => document.location.replace(routes.createAccount);
 const toggle = event => menu.value.toggle(event);
 const focusActivator = () => activatorEl.value.$el.focus();
 const updateAccount = account => {
-  localStorageAccount.setItem(account);
   store.dispatch('updateActiveAccount', account);
 };
 const getAccounts = () => {

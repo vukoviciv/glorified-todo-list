@@ -12,7 +12,6 @@ export default {
       defineAsyncComponent(TodoSnackbar)
     );
     const snackbar = reactive({
-      text: '',
       isActive: false,
       time: DEFAULT_ACTIVE_TIME,
       ...snackbarConfig.info

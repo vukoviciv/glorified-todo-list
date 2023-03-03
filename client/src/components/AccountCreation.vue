@@ -64,7 +64,6 @@
 import { computed, nextTick, ref } from 'vue';
 import Button from 'primevue/Button';
 import InputText from 'primevue/inputtext';
-import { localStorageAccount } from './service/localStorage';
 import { PrimeIcons } from 'primevue/api';
 import { required } from '@vuelidate/validators';
 import RequiredFieldWrapper from '../../auth/src/components/common/RequiredFieldWrapper.vue';
@@ -86,7 +85,6 @@ const submitDisabled = computed(() => {
 const accountCount = computed(() => accounts.value.length);
 const updateAccount = accounts => {
   const activeAccount = accounts.find(it => it.name === form.value.mainAccount);
-  localStorageAccount.setItem(activeAccount);
 };
 const redirectToMain = () => {
   document.location.replace(routes.home);

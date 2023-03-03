@@ -85,6 +85,7 @@ export default createStore({
     },
     updateActiveAccount: async ({ commit, dispatch, state }, account) => {
       state.isFetching = true;
+      localStorageAccount.setItem(account);
       dispatch('fetchTasks', { accountId: account.id })
         .then(() => {
           commit('setActiveAccount', account);
