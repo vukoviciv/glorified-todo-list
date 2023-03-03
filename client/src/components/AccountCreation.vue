@@ -23,7 +23,7 @@
       <RequiredFieldWrapper class="p-inputgroup">
         <div class="p-float-label">
           <InputText
-            v-model="form.mainAccount"
+            v-model="form.mainAccount.name"
             @update:model-value="isDirty=true"
             :id="mainAccountId"
             required="required"
@@ -32,7 +32,7 @@
         </div>
       </RequiredFieldWrapper>
       <div
-        v-for="(account, index) in accounts"
+        v-for="(account, index) in form.accounts"
         :key="index"
         class="flex mt-3">
         <div class="p-float-label w-full ml-3">
@@ -74,7 +74,7 @@ const form = ref({
 });
 const mainAccountId = 'main-account';
 const validationRules = {
-  mainAccount: { name: required }
+  mainAccount: { name: { required } }
 };
 const isDirty = ref(false);
 const store = useStore();
@@ -82,19 +82,19 @@ const store = useStore();
 const submitEnabled = computed(() => {
   const filledInput = form.value.accounts.find(it => it.name);
   if (filledInput) return true;
-  return form.value.mainAccount.length;
+  return form.value.mainAccount.name.length > 0;
 });
-const accountCount = computed(() => accounts.value.length);
+const accountCount = computed(() => form.value.accounts.length);
 const redirectToMain = () => {
   document.location.replace(routes.home);
 };
 const saveAccounts = () => {
-  const mainAccountName = form.value.mainAccount;
+  const mainAccountName = form.value.mainAccount.name;
   const payload = {
     mainAccountName,
     accountNames: [
       mainAccountName,
-      ...accounts.value.map(it => it.name)
+      ...form.value.accounts.map(it => it.name)
     ]
   };
   store.dispatch('createAccounts', payload);
@@ -113,12 +113,12 @@ const focusInputField = elId => {
 };
 const addAccountField = () => {
   const id = `account-${accountCount.value}`;
-  accounts.value.push({ name: '', id });
+  form.value.accounts.push({ name: '', id });
   focusNewInput(id);
 };
 const removeAccountField = () => {
-  accounts.value.pop();
-  const previousAccount = accounts.value.at(accountCount.value - 1);
+  form.value.accounts.pop();
+  const previousAccount = form.value.accounts.at(accountCount.value - 1);
   const id = previousAccount ? `#${previousAccount.id}` : `#${mainAccountId}`;
   focusInputField(id);
 };
