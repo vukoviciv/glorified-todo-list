@@ -40,7 +40,7 @@ const open = () => {
 const createTask = task => {
   store.dispatch('createTask', task)
     .then(() => {
-      showSnackbar('Task created!', types.SUCCESS);
+      showSnackbar(`Task ${task.name} created!`, types.SUCCESS);
     }).catch(error => {
       const text = error.response.data || DEFAULT_ERROR_MSG;
       showSnackbar(text, types.ERROR);

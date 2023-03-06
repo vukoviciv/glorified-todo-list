@@ -49,7 +49,7 @@ const showDialog = () => {
     accept: () => {
       store.dispatch('deleteTask', props.task.id)
         .then(() => {
-          showSnackbar('Task deleted!', types.SUCCESS);
+          showSnackbar(`Task ${props.task.name} deleted!`, types.SUCCESS);
         }).catch(error => {
           const text = error.response.data;
           showSnackbar(text, types.ERROR);

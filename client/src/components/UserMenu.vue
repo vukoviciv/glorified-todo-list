@@ -6,9 +6,8 @@
     class="p-button-rounded p-button-secondary"
     aria-haspopup="true"
     aria-label="Account menu"
-    aria-controls="overlay-menu" />
+    :aria-controls="ariaControls" />
   <Menu
-    v-if="user.accounts"
     ref="menu"
     id="overlay-menu"
     :model="items"
@@ -40,6 +39,7 @@ const props = defineProps({
 const confirm = useConfirm();
 
 const activatorEl = ref(null);
+const ariaControls = ref(null);
 const menu = ref();
 const store = useStore();
 
@@ -64,9 +64,12 @@ const items = computed(() => {
     ...getAccounts()]
   }];
 });
-
 const createAccount = () => document.location.replace(routes.createAccount);
-const toggle = event => menu.value.toggle(event);
+const toggle = event => {
+  // a11y issue fix: aria-controls points at non-existing DOM element (it has to correspond to a valid value)
+  ariaControls.value = event ? 'menu-overlay' : null;
+  menu.value.toggle(event);
+};
 const focusActivator = () => activatorEl.value.$el.focus();
 const updateAccount = account => {
   store.dispatch('updateActiveAccount', account);

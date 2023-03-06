@@ -71,6 +71,7 @@ export default createStore({
         .then(task => {
           const updatedTasks = getUpdatedList(state.tasks, task);
           commit('setTasks', updatedTasks);
+          return task;
         });
     },
     fetchUser: async ({ commit, dispatch, getters, state }) => {

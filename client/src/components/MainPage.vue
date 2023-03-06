@@ -1,10 +1,12 @@
 <template>
   <main class="main-container p-5 m-auto">
     <CreateTaskDialog />
-    <TabMenu
-      :model="menuItems"
-      aria-label="Main navigation"
-      class="flex-grow-1 justify-space-around" />
+    <nav>
+      <TabMenu
+        :model="menuItems"
+        aria-label="Main navigation"
+        class="flex-grow-1 justify-space-around" />
+    </nav>
     <RouterView />
   </main>
 </template>

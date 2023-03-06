@@ -19,7 +19,7 @@
             <label :for="item.id">{{ item.name }}</label>
             <p
               v-if="displayDescription"
-              :id="`task-description-${item.id}`"
+              :id="descriptionId"
               class="mt-2">
               {{ item.description }}
             </p>
@@ -46,8 +46,11 @@ import EditTaskDialog from '../TaskDialog/EditTaskDialog.vue';
 import { PrimeIcons } from 'primevue/api';
 import { priority } from '@/config/task';
 import TdIcon from '@/src/components/common/TdIcon.vue';
+import { types } from '@/config/snackbar.js';
+import { useSnackbar } from '../../composables/snackbar';
 import { useStore } from 'vuex';
 
+const DEFAULT_ERROR_MSG = 'Something went wrong';
 const { HIGH, MEDIUM, LOW } = priority.values;
 
 const priorityConfig = {
@@ -75,8 +78,10 @@ const props = defineProps({
 });
 
 const isDone = ref(props.item.done);
-const inputProps = { 'aria-describedby': 'task-description' };
+const descriptionId = `task-description-${props.item.id}`;
+const inputProps = { 'aria-describedby': descriptionId };
 const store = useStore();
+const { showSnackbar } = useSnackbar();
 
 const config = computed(() => priorityConfig[props.item.priority]);
 const taskWrapperClass = computed(() => {
@@ -89,7 +94,14 @@ const displayDeadline = computed(() => {
   return props.item.deadlineDate && props.item.deadlineTime;
 });
 const toggleDone = () => {
-  store.dispatch('toggleDone', props.item.id);
+  store.dispatch('toggleDone', props.item.id)
+    .then(task => {
+      const taskStatus = task.done ? 'done' : 'pending';
+      showSnackbar(`Task ${props.item.name} moved to ${taskStatus} list`, types.SUCCESS);
+    }).catch(error => {
+      const text = error.response.data || DEFAULT_ERROR_MSG;
+      showSnackbar(text, types.ERROR);
+    });
 };
 const processDate = dateTime => {
   const date = new Date(dateTime);

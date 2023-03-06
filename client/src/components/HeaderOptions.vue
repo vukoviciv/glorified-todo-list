@@ -1,13 +1,14 @@
 <template>
-  <div>
-    <div class="flex justify-content-end">
-      <div class="user-info hidden md:flex align-items-center ">
-        <span>{{ user.fullName }}</span>
+  <div class="flex justify-content-end">
+    <div class="user-info hidden md:flex align-items-center ">
+      <span>{{ user.fullName }}</span>
+      <div>
+        <span class="p-sr-only">Active account:</span>
         <span class="ml-3 p-tag account-tag">{{ activeAccount.name }}</span>
       </div>
-      <div class="ml-3">
-        <UserMenu :user="user" />
-      </div>
+    </div>
+    <div class="ml-3">
+      <UserMenu :user="user" />
     </div>
   </div>
 </template>

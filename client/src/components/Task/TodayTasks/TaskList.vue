@@ -1,9 +1,7 @@
 <template>
   <ul>
     <li v-for="item in items" :key="item.id" class="list-item">
-      <Transition duration="500" name="nested">
-        <TaskItem :item="item" v-bind="options" />
-      </Transition>
+      <TaskItem :item="item" v-bind="options" />
     </li>
   </ul>
 </template>

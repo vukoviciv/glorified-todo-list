@@ -47,7 +47,7 @@ const open = () => { showDialog.value = true; };
 const updateTask = () => {
   store.dispatch('updateTask', task.value)
     .then(() => {
-      showSnackbar('Task edited!', types.SUCCESS);
+      showSnackbar(`Task ${task.value.name} edited!`, types.SUCCESS);
     })
     .catch(error => {
       const text = error.response.data || DEFAULT_ERROR_MSG;
