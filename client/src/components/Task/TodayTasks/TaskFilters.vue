@@ -1,5 +1,5 @@
 <template>
-  <div class="task-filters mt-2 mb-4 flex flex-wrap">
+  <div class="task-filters my-4 ml-5 flex flex-wrap">
     <Dropdown
       v-model="selectedOrderBy"
       @change="updateOrder($event)"

@@ -1,9 +1,11 @@
 <template>
-  <div class="grid m-2">
+  <div class="grid">
     <MainNavigation class="col-2" />
     <main class="main-container col-10 grid">
-      <RouterView class="col-10" />
-      <CreateTaskDialog class="col-2" />
+      <div class="col-10">
+        <RouterView />
+      </div>
+      <CreateTaskDialog class="col-2 mt-4" />
     </main>
   </div>
 </template>

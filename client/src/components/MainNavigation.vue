@@ -1,5 +1,5 @@
 <template>
-  <nav aria-labelledby="main-menu" class="mt-2">
+  <nav aria-labelledby="main-menu">
     <h2 id="main-menu" class="p-sr-only">Main navigation</h2>
     <ul class="unordered-list">
       <li class="list-item text-center">
@@ -45,13 +45,10 @@ $menu-color: var(--primary-700);
       }
     }
 
-    &:hover {
+    &:hover a {
       background-color: white;
-
-      a {
-        border-left: 5px solid $menu-color;
-        color: $menu-color;
-      }
+      border-left: 5px solid $menu-color;
+      color: $menu-color;
     }
   }
 }
