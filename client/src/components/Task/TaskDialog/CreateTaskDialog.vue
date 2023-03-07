@@ -10,8 +10,9 @@
       <Button
         @click="open"
         :id="activatorId"
+        :icon="PrimeIcons.PLUS"
         label="Create new task"
-        :icon="PrimeIcons.PLUS" />
+        class="w-full p-button-outlined" />
     </template>
   </TaskDialog>
 </template>

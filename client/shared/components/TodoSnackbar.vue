@@ -52,7 +52,7 @@ watch(() => snackbar.isActive, val => {
 }
 .snackbar-wrapper {
   position: fixed;
-  width: 25rem;
+  max-width: 25rem;
   right: 1.5rem;
   bottom: 1.5rem;
   opacity: 0.9;

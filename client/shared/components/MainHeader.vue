@@ -1,13 +1,11 @@
 <template>
   <header class="main-header">
-    <div class="card-container flex align-items-center justify-content-between">
-      <p class="col-4 md:col-4">{{ today }}</p>
-      <h1 class="col-7 md:col-4 text-center">
-        <slot name="heading">
-          My Glorified TODO list
-        </slot>
+    <div class="card-container grid flex align-items-center justify-content-between">
+      <p class="md:col-4 col-12">{{ today }}</p>
+      <h1 class="md:col-4 col-12 text-center">
+        <slot name="heading">My Glorified TODO list</slot>
       </h1>
-      <div class="col-1 md:col-4 text-right">
+      <div class="md:col-4 col-12 text-right">
         <slot name="options"></slot>
       </div>
     </div>

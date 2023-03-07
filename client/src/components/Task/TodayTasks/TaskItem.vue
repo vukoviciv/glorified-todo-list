@@ -1,41 +1,41 @@
 <template>
-  <div class="relative">
-    <div class="task-item flex align-items-center">
-      <TdIcon
-        :icon="config.icon"
-        :class="`mr-3 ${config.className}`"
-        :text="config.text" />
-      <div
-        class="flex flex-grow-1 p-3"
-        :class="taskWrapperClass">
-        <Checkbox
-          v-model="isDone"
-          @input="toggleDone()"
-          :input-id="item.id.toString()"
-          :input-props="inputProps"
-          binary />
-        <div class="ml-3">
-          <div>
-            <label :for="item.id">{{ item.name }}</label>
-            <p
-              v-if="displayDescription"
-              :id="descriptionId"
-              class="mt-2">
-              {{ item.description }}
-            </p>
-          </div>
-          <p v-if="displayDeadline" class="ml-auto mt-2 flex">
-            <b>Deadline</b>: {{ item.deadlineDate }} {{ item.deadlineTime }}
+  <div class="task-item flex align-items-center mx-2">
+    <TdIcon
+      :icon="config.icon"
+      :class="`mr-3 ${config.className}`"
+      :text="config.text" />
+    <div
+      class="flex flex-grow-1 p-3"
+      :class="taskWrapperClass">
+      <Checkbox
+        v-model="isDone"
+        @input="toggleDone()"
+        :input-id="item.id.toString()"
+        :input-props="inputProps"
+        binary />
+      <div class="ml-3">
+        <div>
+          <label :for="item.id">{{ item.name }}</label>
+          <p
+            v-if="displayDescription"
+            :id="descriptionId"
+            class="mt-2">
+            {{ item.description }}
           </p>
         </div>
+        <p v-if="displayDeadline" class="ml-auto mt-2 md:flex">
+          <b>Deadline</b>: {{ item.deadlineDate }} {{ item.deadlineTime }}
+        </p>
       </div>
-      <EditTaskDialog :initial-task="item" />
-      <DeleteDialog :task="item" />
     </div>
-    <p v-if="showCreatedAt" class="ml-5 pl-1 pt-1">
-      <i>Created: {{ processDate(item.createdAt) }}</i>
-    </p>
+    <div class="md:flex">
+      <EditTaskDialog :initial-task="item" />
+      <DeleteDialog :task="item" class="mt-2 md:mt-0" />
+    </div>
   </div>
+  <p v-if="showCreatedAt" class="ml-5 pl-1 pt-1">
+    <i>Created: {{ processDate(item.createdAt) }}</i>
+  </p>
 </template>
 
 <script setup>

@@ -1,13 +1,16 @@
 <template>
   <div class="task-filters my-4 ml-5 flex flex-wrap">
-    <Dropdown
-      v-model="selectedOrderBy"
-      @change="updateOrder($event)"
-      :options="orderByValues"
-      option-label="label"
-      option-value="key"
-      placeholder="Order by" />
-    <div class="field-checkbox ml-8">
+    <div class="lg:col-4 col-12">
+      Sort by:
+      <Dropdown
+        v-model="selectedOrderBy"
+        @change="updateOrder($event)"
+        :options="orderByValues"
+        option-label="label"
+        option-value="key"
+        placeholder="Order by" />
+    </div>
+    <div class="field-checkbox lg:col-4 md:col-6 col-12">
       <Checkbox
         v-model="description"
         @input="$emit('update:options', { showDescription: $event })"
@@ -15,7 +18,7 @@
         binary />
       <label for="show-description">Show <b>description</b></label>
     </div>
-    <div class="field-checkbox ml-8">
+    <div class="field-checkbox lg:col-4 md:col-6 col-12">
       <Checkbox
         v-model="createdAt"
         @input="$emit('update:options', { showCreatedAt: $event })"

@@ -1,6 +1,6 @@
 <template>
   <div class="flex justify-content-end">
-    <div class="user-info hidden md:flex align-items-center ">
+    <div class="user-info flex align-items-center ">
       <span>{{ user.fullName }}</span>
       <div>
         <span class="p-sr-only">Active account:</span>

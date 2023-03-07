@@ -11,7 +11,7 @@
     </template>
   </MainHeader>
   <MainPage />
-  <todo-snackbar />
+  <TodoSnackbar />
 </template>
 
 <script setup>
@@ -20,6 +20,7 @@ import HeaderOptions from './components/HeaderOptions.vue';
 import MainHeader from '../shared/components/MainHeader.vue';
 import MainPage from './components/MainPage.vue';
 import { routes } from '@/shared/utils/navigation';
+import TodoSnackbar from '../shared/components/TodoSnackbar.vue';
 import { useStore } from 'vuex';
 
 const registerPath = routes.updatePassword;
