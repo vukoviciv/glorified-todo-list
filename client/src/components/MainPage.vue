@@ -1,31 +1,26 @@
 <template>
-  <main class="main-container p-5 m-auto">
-    <CreateTaskDialog />
-    <nav>
-      <TabMenu
+  <div class="grid m-2">
+    <nav class="col-2">
+      <Menu
         :model="menuItems"
         aria-label="Main navigation"
         class="flex-grow-1 justify-space-around" />
     </nav>
-    <RouterView />
-  </main>
+    <main class="main-container col-10 grid">
+      <RouterView class="col-10" />
+      <CreateTaskDialog class="col-2" />
+    </main>
+  </div>
 </template>
 
 <script setup>
 import CreateTaskDialog from './Task/TaskDialog/CreateTaskDialog.vue';
-import { onMounted } from 'vue';
-import TabMenu from 'primevue/tabmenu';
+import Menu from 'primevue/Menu';
 
 const menuItems = [
   { label: 'Today', to: '/today' },
   { label: 'Week', to: '/week' }
 ];
-
-onMounted(() => {
-  // a11y fix - Ensures elements with an ARIA role that require child roles contain them
-  const unusedEl = document.querySelector('.p-tabmenu-ink-bar');
-  unusedEl.remove();
-});
 </script>
 <style lang="scss" scoped>
 .main-container {
