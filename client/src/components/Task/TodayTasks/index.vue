@@ -1,9 +1,9 @@
 <template>
+  <TaskFilters
+    @update:options="updateOptions"
+    v-bind="options" />
   <TasksSkeleton v-if="isFetching" />
   <div v-else>
-    <TaskFilters
-      @update:options="updateOptions"
-      v-bind="options" />
     <TaskList
       :items="inProgressTasks"
       :options="options"

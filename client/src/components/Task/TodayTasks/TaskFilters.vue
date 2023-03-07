@@ -45,6 +45,7 @@ const store = useStore();
 
 const orderByValues = orderBy.list.map((val, key) => ({ key, label: val.label }));
 const updateOrder = ({ value }) => {
+  selectedOrderBy.value = value;
   store.dispatch('updateOrder', value);
 };
 </script>
