@@ -12,10 +12,12 @@
   </MainHeader>
   <MainPage />
   <TodoSnackbar />
+  <BackToTop el-id="main-page" />
 </template>
 
 <script setup>
 import { computed, onMounted } from 'vue';
+import BackToTop from '../shared/components/BackToTop.vue';
 import HeaderOptions from './components/HeaderOptions.vue';
 import MainHeader from '../shared/components/MainHeader.vue';
 import MainPage from './components/MainPage.vue';

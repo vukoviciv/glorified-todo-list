@@ -1,5 +1,6 @@
 <template>
   <div class="grid main-container m-auto">
+    <span id="main-page"></span>
     <div class="col-12 p-0 lg:col-2">
       <MainNavigation class="sm:p-0" />
       <CreateTaskDialog class="w-full mt-2" />
