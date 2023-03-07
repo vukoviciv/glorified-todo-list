@@ -1,6 +1,12 @@
 <template>
   <RouterLink custom :to="to" v-slot="{ href, isActive }">
-    <a :href="href" :aria-current="isActive">{{ label }}</a>
+    <a
+      v-bind="$attrs"
+      :href="href"
+      :aria-current="isActive"
+      :class="{ active : isActive}">
+      {{ label }}
+    </a>
   </RouterLink>
 </template>
 
@@ -9,4 +15,9 @@ defineProps({
   to: { type: Object, required: true },
   label: { type: String, required: true }
 });
+</script>
+<script>
+export default {
+  inheritAttrs: false
+};
 </script>
