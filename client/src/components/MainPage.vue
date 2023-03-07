@@ -1,11 +1,6 @@
 <template>
   <div class="grid m-2">
-    <nav class="col-2">
-      <Menu
-        :model="menuItems"
-        aria-label="Main navigation"
-        class="flex-grow-1 justify-space-around" />
-    </nav>
+    <MainNavigation class="col-2" />
     <main class="main-container col-10 grid">
       <RouterView class="col-10" />
       <CreateTaskDialog class="col-2" />
@@ -15,13 +10,9 @@
 
 <script setup>
 import CreateTaskDialog from './Task/TaskDialog/CreateTaskDialog.vue';
-import Menu from 'primevue/Menu';
-
-const menuItems = [
-  { label: 'Today', to: '/today' },
-  { label: 'Week', to: '/week' }
-];
+import MainNavigation from './MainNavigation.vue';
 </script>
+
 <style lang="scss" scoped>
 .main-container {
   max-width: 82rem;
