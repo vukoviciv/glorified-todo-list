@@ -1,13 +1,12 @@
 <template>
   <ul>
-    <li v-for="item in items" :key="item.id" class="list-item">
+    <li v-for="item in items" :key="item.id" class="my-2">
       <TaskItem :item="item" v-bind="options" />
     </li>
   </ul>
 </template>
 
 <script setup>
-// TODO: test a11y for removal and addition of items in lists
 import TaskItem from './TaskItem.vue';
 
 defineProps({

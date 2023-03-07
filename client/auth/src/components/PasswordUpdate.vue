@@ -7,7 +7,7 @@
     :is-dirty="isDirty"
     title="Password update"
     submit-text="Update Password"
-    class="login-wrapper"
+    class="login-wrapper pt-8 md:col-6 m-auto"
     with-divider>
     <div class="px-8 mt-5">
       <p class="ml-3">All fields marked with * are required</p>

@@ -7,7 +7,8 @@
     :is-dirty="isDirty"
     :submit-enabled="submitEnabled"
     submit-text="Continue"
-    title="Create Account(s)">
+    title="Create Account(s)"
+    class="pt-8 md:col-10 m-auto">
     <div class="px-8 mt-5">
       <div class="flex align-items-center justify-content-between">
         <p class="ml-3">Create an account</p>

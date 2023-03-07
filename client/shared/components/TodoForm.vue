@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen">
-    <form @submit.prevent class="pt-8">
-      <Card class="m-auto md:col-6">
+    <form @submit.prevent v-bind="$attrs">
+      <Card class="m-auto">
         <template v-if="title" #title>
           <h2 class="text-center">{{ title }}</h2>
         </template>
@@ -101,4 +101,9 @@ const submit = async () => {
 watch(() => props.isDirty, val => {
   if (val) resetValidation();
 });
+</script>
+<script>
+export default {
+  inheritAttrs: false
+};
 </script>
