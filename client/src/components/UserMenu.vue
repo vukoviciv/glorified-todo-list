@@ -24,7 +24,6 @@
 
 <script setup>
 import { computed, ref } from 'vue';
-import authApi from '@/auth/src/api/auth';
 import Button from 'primevue/Button';
 import ConfirmDialog from 'primevue/confirmdialog';
 import Menu from 'primevue/Menu';

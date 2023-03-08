@@ -38,6 +38,7 @@ export default createStore({
     },
     fetchTasks: async ({ commit, state }, options = {}) => {
       const accountId = options?.accountId || state.activeAccount?.id;
+      if (!accountId) return;
       state.isFetching = true;
 
       return tasksApi.fetch({ accountId, ...options })

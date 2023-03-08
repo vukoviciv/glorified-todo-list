@@ -4,7 +4,7 @@
       <span>{{ user.fullName }}</span>
       <div>
         <span class="p-sr-only">Active account:</span>
-        <span class="ml-3 p-tag account-tag">{{ activeAccount.name }}</span>
+        <span class="ml-3 p-tag account-tag">{{ activeAccount?.name || 'N/A' }}</span>
       </div>
     </div>
     <div class="ml-3">

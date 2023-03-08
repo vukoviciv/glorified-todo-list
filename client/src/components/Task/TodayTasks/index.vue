@@ -15,7 +15,11 @@
       :items="doneTasks"
       :options="options"
       aria-labelledby="done-badge" />
-    <div v-if="!hasTasks" class="text-center">
+    <div v-if="!hasActiveAccount" class="text-center">
+      You don't have active accounts!
+      <br><RouterLink :to="{ name: 'create-account' }">Create your first account here</RouterLink>
+    </div>
+    <div v-else-if="!hasTasks" class="text-center">
       No tasks available for this account.
       <br>Click on 'Create new task' to create your first task!
     </div>
@@ -41,6 +45,7 @@ const isFetching = computed(() => store.state.isFetching);
 const doneTasks = computed(() => store.getters.getDoneTasks);
 const inProgressTasks = computed(() => store.getters.getPendingTasks);
 const hasTasks = computed(() => store.state.tasks.length);
+const hasActiveAccount = computed(() => store.getters.getActiveAccount);
 
 const updateOptions = payload => {
   Object.assign(options.value, payload);
