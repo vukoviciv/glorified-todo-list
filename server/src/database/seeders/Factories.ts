@@ -29,7 +29,7 @@ export class UserFactory extends Factory<User> {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       email: faker.internet.email().toLocaleLowerCase(),
-      hasTempPassword: true,
+      hasTempPassword: false,
       password: '1234'
     };
   }

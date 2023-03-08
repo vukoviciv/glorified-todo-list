@@ -24,8 +24,7 @@ const scrollToElement = () => {
   document.querySelector(`#${props.elId}`).scrollIntoView();
 };
 const checkVisibility = scrollY => {
-  if (scrollY > props.treshold) visible.value = true;
-  else visible.value = false;
+  visible.value = scrollY > props.treshold;
 };
 const scrollListener = () => {
   checkVisibility(DomHandler.getWindowScrollTop());

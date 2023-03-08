@@ -37,8 +37,7 @@ async function register({ body }: Request, res: Response) {
   const existingUser = await DI.em.findOne(User, { email });
   if (existingUser) return res.status(409).send('User with the given email already exists');
 
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const user = new User({ firstName, lastName, email, hashedPassword });
+  const user = new User({ firstName, lastName, email, password });
   await DI.em.persistAndFlush(user);
 
   return res.json(user);
@@ -49,8 +48,7 @@ async function updatePassword({ body }: Request, res: Response) {
   const user = await DI.em.findOne(User, { email });
   if (!user) return res.status(404).send('Email does not exist');
   if (!user.hasTempPassword) res.status(401).send('User with a given email has already set the password!'); // this crashes the app
-  const hashedPassword = await bcrypt.hash(password, 10);
-  user.password = hashedPassword;
+  user.password = password;
   user.hasTempPassword = false;
   await DI.em.persistAndFlush(user);
 

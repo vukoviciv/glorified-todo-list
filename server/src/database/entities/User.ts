@@ -1,12 +1,13 @@
-import { Collection, Entity, OneToMany, Property } from '@mikro-orm/core';
+import { BeforeCreate, Collection, Entity, OneToMany, Property } from '@mikro-orm/core';
 import { Account } from '.';
 import { BaseEntity } from './BaseEntity';
+import bcrypt from 'bcrypt';
 
 type Props = {
   firstName: string,
   lastName: string,
   email: string,
-  hashedPassword: string
+  password: string
 }
 
 @Entity()
@@ -34,12 +35,17 @@ export class User extends BaseEntity {
     return `${this.firstName} ${this.lastName}`;
   }
 
-  constructor({ firstName, lastName, email, hashedPassword }: Props) {
+  @BeforeCreate()
+  async beforeCreate() {
+    this.password = await bcrypt.hash(this.password, 10);
+  }
+
+  constructor({ firstName, lastName, email, password }: Props) {
     super();
 
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
-    this.password = hashedPassword;
+    this.password = password;
   }
 }
