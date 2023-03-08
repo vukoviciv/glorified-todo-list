@@ -1,3 +1,4 @@
+import authApi from '@/auth/src/api/auth';
 import { createStore } from 'vuex';
 import { localStorageAccount } from '../components/service/localStorage';
 import { orderBy } from '@/config/task';
@@ -106,9 +107,14 @@ export default createStore({
           commit('setUser', user);
         });
     },
-    saveActiveAccount: async ({ commit }, account) => {
+    saveActiveAccount: ({ commit }, account) => {
+      if (!account) return;
       localStorageAccount.setItem(account);
       commit('setActiveAccount', account);
+    },
+    logout: () => {
+      localStorageAccount.clear();
+      return authApi.logout();
     }
   },
   mutations: {

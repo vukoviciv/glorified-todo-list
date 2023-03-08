@@ -8,7 +8,10 @@ const localStorage = name => {
       return JSON.parse(item);
     },
     setItem(item) {
-      setItem(this.name, item);
+      window.localStorage.setItem(this.name, JSON.stringify(item));
+    },
+    clear() {
+      window.localStorage.removeItem(this.name);
     }
   };
 };
@@ -19,8 +22,4 @@ export { localStorageAccount };
 
 function getItem(name) {
   return window.localStorage.getItem(name);
-}
-
-function setItem(name, item) {
-  window.localStorage.setItem(name, JSON.stringify(item));
 }

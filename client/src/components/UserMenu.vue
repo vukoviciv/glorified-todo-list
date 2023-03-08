@@ -92,8 +92,10 @@ const logout = () => {
     header: 'Logout',
     acceptLabel: 'Logout',
     accept: () => {
-      authApi.logout();
-      document.location.replace(routes.logout);
+      store.dispatch('logout')
+        .then(() => {
+          document.location.replace(routes.logout);
+        });
     },
     rejectLabel: 'Cancel',
     onHide: () => {
