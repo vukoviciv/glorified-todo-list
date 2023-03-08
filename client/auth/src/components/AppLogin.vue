@@ -26,7 +26,9 @@
       </RequiredFieldWrapper>
       <RequiredFieldWrapper class="mt-5 flex">
         <PasswordInput
-          @updated="passwordUpdate($event)"
+          v-model="form.password"
+          @update:model-value="isDirty=true"
+          id="password"
           autocomplete="current-password"
           aria-describedby="required-field-description" />
       </RequiredFieldWrapper>
@@ -71,11 +73,6 @@ const validationRules = {
 const isDirty = ref(false);
 
 const redirectToHome = () => (document.location.replace(routes.home));
-const passwordUpdate = ({ password }) => {
-  form.value.password = password;
-  isDirty.value = true;
-};
-
 const login = () => {
   return authApi
     .login(form.value)
