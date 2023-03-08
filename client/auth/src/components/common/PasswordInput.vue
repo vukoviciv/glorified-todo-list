@@ -2,13 +2,10 @@
   <div class="p-inputgroup">
     <div class="p-float-label">
       <InputText
-        v-model="password"
         v-bind="$attrs"
-        @update:model-value="$emit('updated', { password })"
-        id="password"
         :type="passwordFieldType"
         required="required" />
-      <label for="password">Password</label>
+      <label for="password">{{ label }}</label>
     </div>
     <Button
       @click="handlePassIconClick()"
@@ -34,7 +31,10 @@ const PASS_TYPES = {
     label: 'Hide password'
   }
 };
-const password = ref('');
+defineProps({
+  label: { type: String, default: 'Password' }
+});
+
 const passwordFieldType = ref('password');
 
 const isPassHidden = computed(() => {
@@ -48,5 +48,10 @@ const passwordLabel = computed(() => {
 });
 const handlePassIconClick = () => {
   passwordFieldType.value = isPassHidden.value ? PASS_TYPES.TEXT.value : PASS_TYPES.PASSWORD.value;
+};
+</script>
+<script>
+export default {
+  inheritAttrs: false
 };
 </script>

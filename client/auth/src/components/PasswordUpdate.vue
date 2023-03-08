@@ -27,8 +27,18 @@
       </RequiredFieldWrapper>
       <RequiredFieldWrapper class="mt-5 p-inputgroup">
         <PasswordInput
-          @updated="passwordUpdate($event)"
+          v-model="form.password"
+          @update:model-value="isDirty=true"
+          id="password"
           autocomplete="new-password" />
+      </RequiredFieldWrapper>
+      <RequiredFieldWrapper class="mt-5 p-inputgroup">
+        <PasswordInput
+          v-model="form.confirmPassword"
+          @update:model-value="isDirty=true"
+          id="custom-password"
+          autocomplete="new-password"
+          label="Confirm password" />
       </RequiredFieldWrapper>
     </div>
     <template #additional-actions>
@@ -44,31 +54,32 @@
 </template>
 
 <script setup>
-// TODO: add confirm password, min length etc
-import { email, required } from '@vuelidate/validators';
+import { computed, ref } from 'vue';
+import { email, minLength, required, sameAs } from '@vuelidate/validators';
 import authApi from '@/auth/src/api/auth';
 import InputText from 'primevue/inputtext';
 import PasswordInput from './common/PasswordInput.vue';
-import { ref } from 'vue';
 import RequiredFieldWrapper from './common/RequiredFieldWrapper.vue';
 import { routes } from '@/shared/utils/navigation';
 import TodoForm from '../../../shared/components/TodoForm.vue';
 
 const form = ref({
   email: '',
-  password: ''
+  password: '',
+  confirmPassword: ''
 });
 const validationRules = {
-  password: { required },
-  email: { required, email }
+  password: { required, minLength: minLength(6) },
+  email: { required, email },
+  confirmPassword: {
+    required,
+    minLength: minLength(6),
+    sameAsPassword: sameAs(computed(() => form.value.password))
+  }
 };
 const isDirty = ref(false);
 
 const redirectToLogin = () => (document.location.replace(routes.login));
-const passwordUpdate = ({ password }) => {
-  form.value.password = password;
-  isDirty.value = true;
-};
 const update = () => {
   return authApi
     .updatePassword(form.value)

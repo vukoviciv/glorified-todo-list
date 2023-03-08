@@ -39,6 +39,7 @@
 </template>
 
 <script setup>
+// TODO: error messages are clumsy (badly worded, documentation requires handling case by case)
 import { computed, ref, watch } from 'vue';
 import Button from 'primevue/Button';
 import Card from 'primevue/card';
@@ -62,15 +63,18 @@ const emit = defineEmits(['submit', 'reset:dirty']);
 const v$ = useVuelidate(props.validationRules, props.form);
 const customErrorMsg = ref(null);
 
-const errorMessages = computed(() => {
-  const validationErrors = v$.value.$errors.map(err => {
-    return `${err.$property} ${err.$message.toLocaleLowerCase()}.`;
+const getValidationErrors = () => {
+  return v$.value.$errors.map(err => {
+    return `${err.$property} - ${err.$message.toLocaleLowerCase()}.`;
   });
+};
+const errorMessages = computed(() => {
+  const errors = getValidationErrors();
   if (customErrorMsg.value) {
-    validationErrors.push(customErrorMsg.value);
+    errors.push(customErrorMsg.value);
   }
 
-  return validationErrors;
+  return errors;
 });
 const hasErrors = computed(() => errorMessages.value.length > 0);
 
@@ -107,3 +111,9 @@ export default {
   inheritAttrs: false
 };
 </script>
+
+<style lang="scss" scoped>
+.error-msg {
+    color: var(--red-500);
+  }
+</style>

@@ -48,8 +48,20 @@
     <div class="px-8 mt-5">
       <RequiredFieldWrapper class="mt-5 flex">
         <PasswordInput
-          @updated="passwordUpdate($event)"
+          v-model="form.password"
+          @update:model-value="isDirty=true"
+          id="password"
           autocomplete="new-password" />
+      </RequiredFieldWrapper>
+    </div>
+    <div class="px-8 mt-5">
+      <RequiredFieldWrapper class="mt-5 flex">
+        <PasswordInput
+          v-model="form.confirmPassword"
+          @update:model-value="isDirty=true"
+          id="custom-password"
+          autocomplete="new-password"
+          label="Confirm password" />
       </RequiredFieldWrapper>
     </div>
     <template #additional-actions>
@@ -65,12 +77,11 @@
 </template>
 
 <script setup>
-// TODO: add confirm password, min length etc
-import { email as emailValidator, required } from '@vuelidate/validators';
+import { computed, ref } from 'vue';
+import { email as emailValidator, minLength, required, sameAs } from '@vuelidate/validators';
 import authApi from '@/auth/src/api/auth';
 import InputText from 'primevue/inputtext';
 import PasswordInput from './common/PasswordInput.vue';
-import { ref } from 'vue';
 import RequiredFieldWrapper from './common/RequiredFieldWrapper.vue';
 import { routes } from '@/shared/utils/navigation';
 import TodoForm from '../../../shared/components/TodoForm.vue';
@@ -79,20 +90,21 @@ const form = ref({
   firstName: '',
   lastName: '',
   email: '',
-  password: ''
+  password: '',
+  confirmPassword: ''
 });
 const validationRules = {
   email: { required, emailValidator },
-  password: { required }
+  password: { required, minLength: minLength(6) },
+  confirmPassword: {
+    required,
+    minLength: minLength(6),
+    sameAsPassword: sameAs(computed(() => form.value.password))
+  }
 };
 const isDirty = ref(false);
 
 const redirectToAccountCreation = () => (document.location.replace(routes.createAccount));
-const passwordUpdate = ({ password }) => {
-  form.value.password = password;
-  isDirty.value = true;
-};
-
 const register = () => {
   return authApi
     .register(form.value)
@@ -104,9 +116,5 @@ const register = () => {
 .login-wrapper {
   background: url(../assets/auth_background.jpg);
   background-size: cover;
-
-  .error-msg {
-    color: var(--red-500);
-  }
 }
 </style>
