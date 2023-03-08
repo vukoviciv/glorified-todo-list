@@ -61,12 +61,10 @@
                 class="flex flex-grow-1 mt-2" />
             </div>
             <div class="mt-4 col-6">
-              <label for="deadline" class="mr-3">Deadline</label>
-              <Calendar
-                v-model="task.deadline"
-                input-id="deadline"
-                class="flex flex-grow-1 mt-2"
-                show-time />
+              <label for="deadline">Deadline</label>
+              <div class="mt-2">
+                <input v-model="validDate" id="deadline" type="datetime-local">
+              </div>
             </div>
           </div>
         </div>
@@ -89,10 +87,8 @@
 </template>
 
 <script setup>
-// TODO: check label for priority
 import { computed, ref } from 'vue';
 import Button from 'primevue/Button';
-import Calendar from 'primevue/calendar';
 import Dialog from 'primevue/Dialog';
 import Dropdown from 'primevue/dropdown';
 import InputText from 'primevue/inputtext';
@@ -111,6 +107,16 @@ const props = defineProps({
 const emit = defineEmits(['close', 'action:emit']);
 const nameEl = ref(null);
 const priorities = priority.list.map(({ label, value }) => ({ name: label, value }));
+const parseDate = deadline => {
+  if (!deadline) return;
+  const date = new Date(deadline);
+  date.setMilliseconds(0);
+  date.setSeconds(0);
+  const ISOdate = date.toISOString();
+
+  return ISOdate.slice(0, ISOdate.length - 1);
+};
+const validDate = ref(parseDate(props.initialTask.deadline));
 const task = computed(() => props.initialTask);
 
 const validationRules = {
@@ -127,7 +133,7 @@ const submit = async () => {
   const isFormCorrect = await v$.value.$validate();
   focusFirstInteractiveField();
   if (!isFormCorrect) return;
-
+  task.value.deadline = validDate;
   emit('action:emit', task.value);
   v$.value.$reset();
 };

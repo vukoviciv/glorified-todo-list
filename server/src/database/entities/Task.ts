@@ -34,7 +34,7 @@ export class Task extends BaseEntity {
   @Property()
     done?: boolean = false;
 
-  @Property({ hidden: true, nullable: true })
+  @Property({ nullable: true })
     deadline?: Date;
 
   @Enum()
