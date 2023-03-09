@@ -42,7 +42,7 @@ const ariaControls = ref(null);
 const menu = ref();
 const store = useStore();
 
-const activeAccount = computed(() => store.getters.getActiveAccount);
+const activeAccount = computed(() => store.state.activeAccount);
 const items = computed(() => {
   return [{
     label: props.user.fullName,

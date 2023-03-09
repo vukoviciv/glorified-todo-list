@@ -11,9 +11,9 @@ const getUpdatedList = (items, task) => {
 
 export default createStore({
   state: {
+    isFetching: false,
     tasks: [],
     user: null,
-    isFetching: false,
     activeAccount: null
   },
   getters: {
@@ -23,18 +23,28 @@ export default createStore({
     getPendingTasks: state => {
       return state.tasks.filter(task => !task.done);
     },
-    getActiveAccount: state => {
-      return state.activeAccount;
-    },
     getAccounts: state => {
       return state.user.accounts;
     }
   },
   actions: {
     initialize: async ({ commit, dispatch }) => {
-      commit('setActiveAccount', localStorageAccount.item);
+      const existingAccount = localStorageAccount.item;
+      if (existingAccount) commit('setActiveAccount', existingAccount);
       await dispatch('fetchUser');
       dispatch('fetchTasks');
+    },
+    fetchUser: ({ commit, dispatch, state }) => {
+      state.isFetching = true;
+
+      return userApi.getMe()
+      .then(user => {
+        commit('setUser', user);
+        state.isFetching = false;
+        if (state.activeAccount) return;
+        if (!user.accounts.length) return;
+        dispatch('saveActiveAccount', user.accounts[0]);
+      });
     },
     fetchTasks: async ({ commit, state }, options = {}) => {
       const accountId = options?.accountId || state.activeAccount?.id;
@@ -68,7 +78,7 @@ export default createStore({
           commit('setTasks', updatedTasks);
         });
     },
-    toggleDone: async ({ commit, state }, id) => {
+    toggleDone: ({ commit, state }, id) => {
       return tasksApi.toggleDone(id)
         .then(task => {
           const updatedTasks = getUpdatedList(state.tasks, task);
@@ -76,28 +86,15 @@ export default createStore({
           return task;
         });
     },
-    fetchUser: async ({ commit, dispatch, getters, state }) => {
-      state.isFetching = true;
-      const savedAccount = getters.getActiveAccount;
-
-      return userApi.getMe()
-        .then(user => {
-          commit('setUser', user);
-          state.isFetching = false;
-          if (savedAccount) return;
-          const activeAccount = user.accounts[0];
-          dispatch('saveActiveAccount', activeAccount);
-        });
-    },
     updateActiveAccount: async ({ dispatch }, account) => {
       await dispatch('fetchTasks', { accountId: account.id });
       dispatch('saveActiveAccount', account);
     },
-    updateOrder: async ({ dispatch }, orderValue) => {
+    updateOrder: ({ dispatch }, orderValue) => {
       const item = orderBy.list[orderValue];
       dispatch('fetchTasks', { orderBy: item.value });
     },
-    createAccounts: async ({ commit, dispatch }, payload) => {
+    createAccounts: ({ commit, dispatch }, payload) => {
       const { accountNames, mainAccountName } = payload;
 
       return userApi.createAccounts({ accountNames })
@@ -115,6 +112,7 @@ export default createStore({
     },
     logout: () => {
       localStorageAccount.clear();
+
       return authApi.logout();
     }
   },

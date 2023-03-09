@@ -116,8 +116,8 @@ const parseDate = deadline => {
 
   return ISOdate.slice(0, ISOdate.length - 1);
 };
-const validDate = ref(parseDate(props.initialTask.deadline));
 const task = computed(() => props.initialTask);
+const validDate = computed(() => parseDate(task.value.deadline));
 
 const validationRules = {
   name: { required }

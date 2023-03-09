@@ -102,7 +102,7 @@ const saveAccounts = () => {
       ...form.value.accounts.map(it => it.name)
     ]
   };
-  store.dispatch('createAccounts', payload)
+  return store.dispatch('createAccounts', payload)
     .then(() => {
       showSnackbar('Account(s) created!', types.SUCCESS);
     }).catch(error => {

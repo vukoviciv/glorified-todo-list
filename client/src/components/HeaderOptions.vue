@@ -23,7 +23,7 @@ defineProps({
 });
 const store = useStore();
 
-const activeAccount = computed(() => store.getters.getActiveAccount);
+const activeAccount = computed(() => store.state.activeAccount);
 </script>
 
 <style lang="scss" scoped>

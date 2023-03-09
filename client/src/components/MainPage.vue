@@ -3,7 +3,7 @@
     <span id="main-page"></span>
     <div class="col-12 p-0 lg:col-2">
       <MainNavigation class="sm:p-0" />
-      <CreateTaskDialog class="w-full mt-2" />
+      <CreateTaskDialog v-if="hasActiveAccount" class="w-full mt-2" />
     </div>
     <main class="lg:col-10 m-auto">
       <div>
@@ -14,8 +14,13 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
 import CreateTaskDialog from './Task/TaskDialog/CreateTaskDialog.vue';
 import MainNavigation from './MainNavigation.vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
+const hasActiveAccount = computed(() => store.state.activeAccount);
 </script>
 
 <style lang="scss" scoped>
