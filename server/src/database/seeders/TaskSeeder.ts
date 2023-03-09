@@ -1,7 +1,7 @@
 import { Account, User } from '../entities';
 import type { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
-import { TaskFactory } from './factories';
+import { TaskFactory } from './Factories';
 
 export class TaskSeeder extends Seeder {
   #taskCount = 20;

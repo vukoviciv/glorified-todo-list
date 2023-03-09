@@ -1,6 +1,6 @@
 import type { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
-import { UserFactory } from './factories';
+import { UserFactory } from './Factories';
 
 export class UserSeeder extends Seeder {
   #userCount = 5;
