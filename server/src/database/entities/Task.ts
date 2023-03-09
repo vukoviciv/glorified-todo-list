@@ -1,4 +1,5 @@
 import { Entity, Enum, Filter, ManyToOne, Property } from '@mikro-orm/core';
+import { startOfTomorrow, startOfYesterday } from 'date-fns';
 import { Account } from '.';
 import { BaseEntity } from './BaseEntity';
 import { ValuesType } from 'utility-types';
@@ -24,11 +25,9 @@ type Props = {
 @Filter({
   name: 'todaysTask',
   cond: () => {
-    const today = new Date();
-    const yesterday = new Date(today.setDate(today.getDate() - 1));
-    const tomorrow = new Date(today.setDate(today.getDate() + 1));
-
-    return { deadline: { $lt: tomorrow, $gt: yesterday } }; // TODO: this logic is not correct
+    const tomorrow = startOfTomorrow();
+    const yesterday = startOfYesterday();
+    return { deadline: { $lt: tomorrow, $gt: yesterday } };
   }
 })
 export class Task extends BaseEntity {

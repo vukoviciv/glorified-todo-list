@@ -91,6 +91,7 @@ import { computed, ref } from 'vue';
 import Button from 'primevue/Button';
 import Dialog from 'primevue/Dialog';
 import Dropdown from 'primevue/dropdown';
+import { format } from 'date-fns';
 import InputText from 'primevue/inputtext';
 import { PrimeIcons } from 'primevue/api';
 import { priority } from '@/config/task';
@@ -110,12 +111,9 @@ const nameEl = ref(null);
 const priorities = priority.list.map(({ label, value }) => ({ name: label, value }));
 const parseDate = deadline => {
   if (!deadline) return;
-  const date = new Date(deadline);
-  date.setMilliseconds(0);
-  date.setSeconds(0);
-  const ISOdate = date.toISOString();
-
-  return ISOdate.slice(0, ISOdate.length - 1);
+  const date = format(new Date(deadline), 'yyyy-LL-dd');
+  const time = format(new Date(deadline), 'hh:mm');
+  return `${date}T${time}`;
 };
 const task = computed(() => props.initialTask);
 const validDate = ref(parseDate(task.value.deadline));
