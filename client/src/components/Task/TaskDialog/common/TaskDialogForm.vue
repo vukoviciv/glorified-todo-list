@@ -106,6 +106,7 @@ const props = defineProps({
 });
 const emit = defineEmits(['close', 'action:emit']);
 const nameEl = ref(null);
+
 const priorities = priority.list.map(({ label, value }) => ({ name: label, value }));
 const parseDate = deadline => {
   if (!deadline) return;
@@ -117,15 +118,19 @@ const parseDate = deadline => {
   return ISOdate.slice(0, ISOdate.length - 1);
 };
 const task = computed(() => props.initialTask);
-const validDate = computed(() => parseDate(task.value.deadline));
+const validDate = ref(parseDate(task.value.deadline));
 
 const validationRules = {
   name: { required }
 };
 const v$ = useVuelidate(validationRules, task);
 
-const close = () => {
+const reset = () => {
   v$.value.$reset();
+  validDate.value = parseDate(task.value.deadline);
+};
+const close = () => {
+  reset();
   emit('close');
   focusActivator();
 };
@@ -135,7 +140,7 @@ const submit = async () => {
   if (!isFormCorrect) return;
   task.value.deadline = validDate;
   emit('action:emit', task.value);
-  v$.value.$reset();
+  reset();
 };
 const focusFirstInteractiveField = () => (nameEl.value.$el.focus());
 const focusActivator = () => (document.querySelector(`#${props.activatorId}`).focus());
