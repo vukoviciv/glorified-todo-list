@@ -1,5 +1,5 @@
 import { Account, User } from '../entities';
-import { AccountFactory, TaskFactory, UserFactory } from './factories';
+import { AccountFactory, TaskFactory, UserFactory } from './Factories';
 import type { EntityManager } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
 
