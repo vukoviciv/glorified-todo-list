@@ -45,7 +45,7 @@ const isFetching = computed(() => store.state.isFetching);
 const doneTasks = computed(() => store.getters.getDoneTasks);
 const inProgressTasks = computed(() => store.getters.getPendingTasks);
 const hasTasks = computed(() => store.state.tasks.length);
-const hasActiveAccount = computed(() => store.state.hasActiveAccount);
+const hasActiveAccount = computed(() => store.state.activeAccount);
 
 const updateOptions = payload => {
   Object.assign(options.value, payload);
