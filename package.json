@@ -1,6 +1,5 @@
 {
   "name": "glorified-todo-list",
-  "type": "module",
   "private": true,
   "version": "0.0.0",
   "scripts": {
@@ -14,7 +13,7 @@
     "db:seed:users": "npx mikro-orm seeder:run --class=UserSeeder",
     "db:seed:tasks": "npx mikro-orm seeder:run --class=TaskSeeder",
     "build": "vite build client",
-    "start": "node server/dist/index.js",
+    "start": "node -r dotenv/config dist/server/index.js",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -79,7 +78,7 @@
     "useTsNode": true,
     "configPaths": [
       "server/config/mikro-orm.config.ts",
-      "server/dist/mikro-orm.config.js"
+      "dist/server/config/mikro-orm.config.js"
     ]
   }
 }
