@@ -1,4 +1,4 @@
-import { buildNext, buildReq, buildRes } from './test-utils/generate';
+import { buildNext, buildReq, buildRes } from '../../../test-utils/generate';
 import { errorMiddleware } from './error-handler';
 
 test('calls next if headerSent is true', () => {
