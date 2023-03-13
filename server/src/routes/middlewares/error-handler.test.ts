@@ -1,10 +1,9 @@
-import { buildRes } from './test-utils/generate';
+import { buildNext, buildReq, buildRes } from './test-utils/generate';
 import { errorMiddleware } from './error-handler';
-import { Request } from 'express';
 
 test('calls next if headerSent is true', () => {
-  const req = {} as Request;
-  const next = jest.fn();
+  const req = buildReq();
+  const next = buildNext();
   const error = new Error('trrrr');
   const res = buildRes({ headersSent: true });
 
@@ -17,8 +16,8 @@ test('calls next if headerSent is true', () => {
 
 test('responds with 500 and the error object', () => {
   const message = 'Some message';
-  const req = {} as Request;
-  const next = jest.fn();
+  const req = buildReq();
+  const next = buildNext();
   const error = new Error(message);
   const res = buildRes();
 
