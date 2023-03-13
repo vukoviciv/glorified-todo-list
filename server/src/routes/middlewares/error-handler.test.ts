@@ -1,19 +1,6 @@
-import { Request, Response } from 'express';
-import { errorMiddleware } from '../error-handler';
-
-type Overrides = {
-  headersSent?: true
-}
-
-const buildRes = (overrides: Overrides = {}) => {
-  const res = {
-    status: jest.fn(() => res),
-    json: jest.fn(() => res),
-    ...overrides
-  } as unknown as Response;
-
-  return res;
-};
+import { buildRes } from './test-utils/generate';
+import { errorMiddleware } from './error-handler';
+import { Request } from 'express';
 
 test('calls next if headerSent is true', () => {
   const req = {} as Request;

@@ -1,4 +1,4 @@
-import { isPasswordAllowed, sum } from '../firstTry';
+import { isPasswordAllowed, sum } from './firstTry';
 import cases from 'jest-in-case';
 
 test('adds 1 + 2 to equal 3', () => {
