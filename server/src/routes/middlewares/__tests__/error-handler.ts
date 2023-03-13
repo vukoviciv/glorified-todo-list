@@ -1,15 +1,25 @@
 import { Request, Response } from 'express';
 import { errorMiddleware } from '../error-handler';
 
+type Overrides = {
+  headersSent?: true
+}
+
+const buildRes = (overrides: Overrides = {}) => {
+  const res = {
+    status: jest.fn(() => res),
+    json: jest.fn(() => res),
+    ...overrides
+  } as unknown as Response;
+
+  return res;
+};
+
 test('calls next if headerSent is true', () => {
   const req = {} as Request;
   const next = jest.fn();
   const error = new Error('trrrr');
-  const res = {
-    status: jest.fn(() => res),
-    json: jest.fn(() => res),
-    headersSent: true
-  } as unknown as Response;
+  const res = buildRes({ headersSent: true });
 
   errorMiddleware(error, req, res, next);
   expect(next).toHaveBeenCalledWith(error);
@@ -23,10 +33,7 @@ test('responds with 500 and the error object', () => {
   const req = {} as Request;
   const next = jest.fn();
   const error = new Error(message);
-  const res = {
-    status: jest.fn(() => res),
-    json: jest.fn(() => res)
-  } as unknown as Response;
+  const res = buildRes();
 
   errorMiddleware(error, req, res, next);
   expect(next).not.toHaveBeenCalled();
