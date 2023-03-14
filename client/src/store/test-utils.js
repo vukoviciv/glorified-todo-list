@@ -9,6 +9,28 @@ export const buildTasks = (number, overrides = {}) => {
   return tasks;
 };
 
+export const buildUser = (accountsCount = 2) => {
+  const accounts = buildAccounts(accountsCount);
+
+  return {
+    accounts,
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    email: faker.internet.email().toLocaleLowerCase(),
+    hasTempPassword: false,
+    password: '123456'
+  };
+};
+
+function buildAccounts(accountCount) {
+  const accounts = [];
+  for (let i = 0; i < accountCount; i++) {
+    accounts.push(faker.random.word());
+  }
+
+  return accounts;
+}
+
 function getRandomPriority() {
   const taskPriority = {
     HIGH: 1,

@@ -7,5 +7,5 @@ export const getPendingTasks = state => {
 };
 
 export const getAccounts = state => {
-  return state.user.accounts;
+  return state.user?.accounts;
 };

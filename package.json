@@ -18,7 +18,7 @@
     "validate": "npm run lint && npm run test",
     "preview": "vite preview",
     "test": "jest",
-    "test:vite": "vitest client",
+    "test:vite": "vitest client --reporter=verbose",
     "test:watch": "npm run test -- --watchAll"
   },
   "dependencies": {
