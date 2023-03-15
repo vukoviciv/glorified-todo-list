@@ -1,12 +1,9 @@
 import authApi from '@/auth/src/api/auth';
+import { getUpdatedList } from './utils';
 import { localStorageAccount } from '../components/service/localStorage';
 import { orderBy } from '@/config/task';
 import tasksApi from '../api/tasks';
 import userApi from '../api/users';
-
-const getUpdatedList = (items, task) => {
-  return items.map(item => (item.id === task.id ? task : item));
-};
 
 export const initialize = async ({ commit, dispatch }) => {
   const existingAccount = localStorageAccount.item;

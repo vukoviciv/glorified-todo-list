@@ -31,6 +31,18 @@ export function buildAccounts(accountCount) {
   return accounts;
 }
 
+export function buildTask(overrides = {}) {
+  return {
+    id: faker.datatype.number(100),
+    name: faker.music.songName(),
+    description: faker.commerce.productDescription(),
+    done: faker.datatype.boolean(),
+    deadline: faker.date.future(),
+    priority: getRandomPriority(),
+    ...overrides
+  };
+}
+
 function getRandomPriority() {
   const taskPriority = {
     HIGH: 1,
@@ -41,15 +53,4 @@ function getRandomPriority() {
   const randomIndex = Math.floor(Math.random() * priorities.length);
 
   return priorities[randomIndex];
-}
-
-function buildTask(overrides = {}) {
-  return {
-    name: faker.music.songName(),
-    description: faker.commerce.productDescription(),
-    done: faker.datatype.boolean(),
-    deadline: faker.date.future(),
-    priority: getRandomPriority(),
-    ...overrides
-  };
 }
