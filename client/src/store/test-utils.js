@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-export const buildTasks = (number, overrides = {}) => {
+export const buildTasks = (number = 10, overrides = {}) => {
   const tasks = [];
   for (let i = 0; i < number; i++) {
     tasks.push(buildTask(overrides));
@@ -22,7 +22,7 @@ export const buildUserWithAccounts = (accountsCount = 2) => {
   };
 };
 
-function buildAccounts(accountCount) {
+export function buildAccounts(accountCount) {
   const accounts = [];
   for (let i = 0; i < accountCount; i++) {
     accounts.push(faker.random.word());
