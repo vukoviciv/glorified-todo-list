@@ -9,7 +9,7 @@ export const buildTasks = (number, overrides = {}) => {
   return tasks;
 };
 
-export const buildUser = (accountsCount = 2) => {
+export const buildUserWithAccounts = (accountsCount = 2) => {
   const accounts = buildAccounts(accountsCount);
 
   return {
