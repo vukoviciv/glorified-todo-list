@@ -6,7 +6,6 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { buildTask, buildTasks } from './test-utils';
 import { faker } from '@faker-js/faker';
 import { getUpdatedList } from './utils';
-import sinon from 'sinon';
 import tasksApi from '../api/tasks';
 import { updateTask } from './actions';
 
