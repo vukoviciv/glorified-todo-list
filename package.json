@@ -17,7 +17,7 @@
     "start": "node -r dotenv/config dist/server/index.js",
     "validate": "npm run lint && npm run test",
     "preview": "vite preview",
-    "test": "jest",
+    "test": "jest server",
     "test:vite": "vitest client --reporter=verbose --config client/vitest.config.js",
     "test:watch": "npm run test -- --watchAll"
   },

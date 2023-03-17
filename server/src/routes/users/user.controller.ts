@@ -1,10 +1,9 @@
-import { Account, User } from '../../database/entities';
 import { Request, Response } from 'express';
 import { DIinterface } from '../../database/index';
 
 export const createUserCtrl = (DI: DIinterface) => ({
   list: async (_req: Request, res: Response) => {
-    const users = await DI.em.find(User, {});
+    const users = await DI.em.find(DI.UserEntity, {});
 
     return res.json(users);
   },
@@ -14,15 +13,16 @@ export const createUserCtrl = (DI: DIinterface) => ({
   },
 
   createAccounts: async ({ body: { accountNames, user } }: Request, res: Response) => {
-    const activeUser = await DI.em.findOne(User, { id: user.id });
+    const activeUser = await DI.em.findOne(DI.UserEntity, { id: user.id });
     if (!activeUser) throw Error('User not found');
     for (const name of accountNames) {
       if (!name) continue;
-      const account = new Account({ user, name });
+      const account = new DI.AccountEntity({ user, name });
       await DI.em.persist(account);
       activeUser.accounts.add(account);
     }
     await DI.em.flush();
+
     return res.status(200).json({ user });
   }
 });
