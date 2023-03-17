@@ -1,6 +1,6 @@
 import { Account, User } from '../../database/entities';
+import { DI, DIinterface } from '../../database/index';
 import { Request, Response } from 'express';
-import { DI } from '../../database/index';
 
 async function list(_req: Request, res: Response) {
   const users = await DI.em.find(User, {});
@@ -25,8 +25,15 @@ async function createAccounts({ body: { accountNames, user } }: Request, res: Re
   return res.status(200).json({ user });
 }
 
+const makeListCtrl = (DI: DIinterface) => async (_req: Request, res: Response) => {
+  const users = await DI.em.find(User, {});
+
+  return res.json(users);
+};
+
 export {
   list,
   getMe,
-  createAccounts
+  createAccounts,
+  makeListCtrl
 };

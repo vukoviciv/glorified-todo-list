@@ -3,7 +3,7 @@ import runServer from './src/app';
 
 database
   .init()
-  .then(() => runServer())
+  .then(db => runServer(db))
   .catch(err => {
     console.log(err, '🚨  Starting server failed');
     process.exit(1);
