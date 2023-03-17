@@ -1,8 +1,6 @@
-import express, { Express } from 'express';
+import express, { Express, Router } from 'express';
 import cookieParser from 'cookie-parser';
-import { DIinterface } from './database';
 import { envs } from '../config/index';
-import { makeRouter } from './routes/router';
 import { requestContextMiddleware } from './routes/middlewares';
 
 const { apiPath, protocol, ip, port } = envs.server;
@@ -16,8 +14,7 @@ const middlewares = [
 
 const app: Express = express();
 
-export default function runServer(db: DIinterface) {
-  const router = makeRouter(db);
+export default function runServer(router: Router) {
   app
     .use(middlewares)
     .use(apiPath, router)

@@ -5,11 +5,12 @@ import { makeCreateTasksRouter } from './tasks/index';
 import { makeCreateUserRouter } from './users/index';
 import { Router } from 'express';
 
-export const makeRouter = (db: DIinterface) => {
+export const initRouter = (db: DIinterface) => {
   const router = Router();
 
   router.use(auth.path, auth.router);
   router.use(authorize);
+
   const createTasksRouter = makeCreateTasksRouter(db);
   const tasksRouter = createTasksRouter(router);
   router.use(tasksRouter.path, tasksRouter.router);
