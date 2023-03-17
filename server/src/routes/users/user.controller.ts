@@ -2,7 +2,7 @@ import { Account, User } from '../../database/entities';
 import { Request, Response } from 'express';
 import { DIinterface } from '../../database/index';
 
-export const makeCreateCtrl = (DI: DIinterface) => ({
+export const createUserCtrl = (DI: DIinterface) => ({
   list: async (_req: Request, res: Response) => {
     const users = await DI.em.find(User, {});
 

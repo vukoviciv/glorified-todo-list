@@ -5,7 +5,7 @@ export interface DIinterface {
   em: EntityManager
 }
 
-export const DI = {} as DIinterface;
+export const DI = {} as DIinterface; // will not be exported later on
 
 async function init() {
   DI.orm = await MikroORM.init();

@@ -1,14 +1,16 @@
-import auth from './auth/index';
 import { authorize } from './middlewares/auth';
 import { DIinterface } from '../database';
-import { makeCreateTasksRouter } from './tasks/index';
-import { makeCreateUserRouter } from './users/index';
+import { makeCreateAuthRouter } from './auth';
+import { makeCreateTasksRouter } from './tasks';
+import { makeCreateUserRouter } from './users';
 import { Router } from 'express';
 
-export const initRouter = (db: DIinterface) => {
+export default function initRouter(db: DIinterface) {
   const router = Router();
 
-  router.use(auth.path, auth.router);
+  const createAuthRouter = makeCreateAuthRouter(db);
+  const authRouter = createAuthRouter(router);
+  router.use(authRouter.path, authRouter.router);
   router.use(authorize);
 
   const createTasksRouter = makeCreateTasksRouter(db);
@@ -20,4 +22,4 @@ export const initRouter = (db: DIinterface) => {
   router.use(userRouter.path, userRouter.router);
 
   return router;
-};
+}

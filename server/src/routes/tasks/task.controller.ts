@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { DIinterface } from '../../database/index';
 import { processOrderBy } from './utils';
 
-export const makeCreateCtrl = (DI: DIinterface) => ({
+export const createTaskCtrl = (DI: DIinterface) => ({
   list: async ({ query }: Request, res: Response) => {
     const { accountId, orderBy } = query;
     if (!accountId) throw new Error('NO ACCOUNT ID');

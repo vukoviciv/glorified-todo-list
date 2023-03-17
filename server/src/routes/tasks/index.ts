@@ -1,10 +1,10 @@
+import { createTaskCtrl } from './task.controller';
 import { DIinterface } from '../../database';
-import { makeCreateCtrl } from './task.controller';
 import { parseParamId } from '../middlewares';
 import { Router } from 'express';
 
 export const makeCreateTasksRouter = (db: DIinterface) => (router: Router) => {
-  const ctrl = makeCreateCtrl(db);
+  const ctrl = createTaskCtrl(db);
 
   router
     .get('/', ctrl.list)

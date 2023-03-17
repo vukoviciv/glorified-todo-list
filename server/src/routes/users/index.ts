@@ -1,9 +1,9 @@
+import { createUserCtrl } from './user.controller';
 import { DIinterface } from '../../database';
-import { makeCreateCtrl } from './user.controller';
 import { Router } from 'express';
 
 export const makeCreateUserRouter = (db: DIinterface) => (router: Router) => {
-  const ctrl = makeCreateCtrl(db);
+  const ctrl = createUserCtrl(db);
 
   router
     .get('/', ctrl.list)
