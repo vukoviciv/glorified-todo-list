@@ -1,5 +1,5 @@
 import database from './src/database/index';
-import initRouter from './src/routes/router';
+import initRouter from './src/routes';
 import runServer from './src/app';
 
 database.init()

@@ -2,8 +2,9 @@ import { createAuthCtrl } from './auth.controller';
 import { DIinterface } from '../../database';
 import { Router } from 'express';
 
-export const makeCreateAuthRouter = (db: DIinterface) => (router: Router) => {
+export const createAuthRouter = (db: DIinterface, router: Router) => {
   const ctrl = createAuthCtrl(db);
+
   router
     .post('/login', ctrl.login)
     .post('/register', ctrl.register)

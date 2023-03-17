@@ -2,7 +2,7 @@ import { createUserCtrl } from './user.controller';
 import { DIinterface } from '../../database';
 import { Router } from 'express';
 
-export const makeCreateUserRouter = (db: DIinterface) => (router: Router) => {
+export const createUserRouter = (db: DIinterface, router: Router) => {
   const ctrl = createUserCtrl(db);
 
   router

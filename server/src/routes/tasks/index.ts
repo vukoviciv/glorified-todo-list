@@ -3,7 +3,7 @@ import { DIinterface } from '../../database';
 import { parseParamId } from '../middlewares';
 import { Router } from 'express';
 
-export const makeCreateTasksRouter = (db: DIinterface) => (router: Router) => {
+export const createTasksRouter = (db: DIinterface, router: Router) => {
   const ctrl = createTaskCtrl(db);
 
   router
