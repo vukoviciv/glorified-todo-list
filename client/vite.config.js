@@ -13,6 +13,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, __dirname, '');
   const config = readConfig(env);
   const { apiPath, baseUrl } = config;
+
   return {
     plugins: [vue()],
     resolve: {

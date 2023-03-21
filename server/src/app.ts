@@ -1,8 +1,7 @@
-import express, { Express } from 'express';
+import express, { Express, Router } from 'express';
 import cookieParser from 'cookie-parser';
 import { envs } from '../config/index';
-import { requestContextMiddleware } from './routes/middlewares/index';
-import router from './routes/router';
+import { requestContextMiddleware } from './routes/middlewares';
 
 const { apiPath, protocol, ip, port } = envs.server;
 
@@ -15,7 +14,7 @@ const middlewares = [
 
 const app: Express = express();
 
-export default function runServer() {
+export default function runServer(router: Router) {
   app
     .use(middlewares)
     .use(apiPath, router)

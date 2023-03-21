@@ -23,7 +23,7 @@ const routes = [{
   name: 'register',
   component: AppRegister
 }, {
-  path: '/update-password',
+  path: '/password',
   name: 'update-password',
   component: PasswordUpdate
 }, {

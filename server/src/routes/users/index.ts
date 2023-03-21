@@ -1,14 +1,17 @@
-import * as ctrl from './user.controller';
+import { createUserCtrl } from './user.controller';
+import { DIinterface } from '../../database';
 import { Router } from 'express';
 
-const router = Router();
+export const createUserRouter = (db: DIinterface, router: Router) => {
+  const ctrl = createUserCtrl(db);
 
-router
-  .get('/', ctrl.list)
-  .get('/me', ctrl.getMe)
-  .post('/me/accounts', ctrl.createAccounts);
-
-export default {
-  path: '/users',
   router
+    .get('/', ctrl.list)
+    .get('/me', ctrl.getMe)
+    .post('/me/accounts', ctrl.createAccounts);
+
+  return {
+    path: '/users',
+    router
+  };
 };

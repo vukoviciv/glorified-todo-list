@@ -6,7 +6,7 @@ const locations = {
   LOGIN: 'login',
   LOGOUT: 'logout',
   REGISTER: 'register',
-  UPDATE_PASSWORD: 'update-password',
+  UPDATE_PASSWORD: 'password',
   CREATE_ACCOUNT: 'create-account'
 };
 
