@@ -1,10 +1,6 @@
 import { Request, Response } from 'express';
 
-type ResOverrides = {
-  headersSent?: true
-}
-
-const buildRes = (overrides: ResOverrides = {}): Response => {
+const buildRes = (overrides = {}): Response => {
   const res = {
     status: jest.fn(() => res),
     json: jest.fn(() => res),
@@ -15,7 +11,7 @@ const buildRes = (overrides: ResOverrides = {}): Response => {
 };
 
 const buildReq = () => {
-  return {} as Request;
+  return { body: {} } as Request;
 };
 
 const buildNext = () => {
