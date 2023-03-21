@@ -11,7 +11,7 @@ let activeAccount;
 describe('mutations', () => {
   beforeAll(() => {
     user = buildUserWithAccounts();
-    activeAccount = buildAccounts(1);
+    activeAccount = buildAccounts(1)[0];
     tasks = buildTasks();
     state = { user, tasks, activeAccount };
   });

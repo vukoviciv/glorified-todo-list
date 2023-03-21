@@ -25,7 +25,7 @@ export const buildUserWithAccounts = (accountsCount = 2) => {
 export function buildAccounts(accountCount) {
   const accounts = [];
   for (let i = 0; i < accountCount; i++) {
-    accounts.push(faker.random.word());
+    accounts.push({ name: faker.random.word() });
   }
 
   return accounts;
