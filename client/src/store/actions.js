@@ -16,13 +16,13 @@ export const fetchUser = ({ commit, dispatch, state }) => {
   state.isFetching = true;
 
   return userApi.getMe()
-  .then(user => {
-    commit('setUser', user);
-    state.isFetching = false;
-    if (state.activeAccount) return;
-    if (!user.accounts.length) return;
-    dispatch('saveActiveAccount', user.accounts[0]);
-  });
+    .then(user => {
+      commit('setUser', user);
+      state.isFetching = false;
+      if (state.activeAccount) return;
+      if (!user.accounts.length) return;
+      dispatch('saveActiveAccount', user.accounts[0]);
+    });
 };
 
 export const fetchTasks = async ({ commit, state }, options = {}) => {
@@ -66,6 +66,7 @@ export const toggleDone = ({ commit, state }, id) => {
     .then(task => {
       const updatedTasks = getUpdatedList(state.tasks, task);
       commit('setTasks', updatedTasks);
+
       return task;
     });
 };
