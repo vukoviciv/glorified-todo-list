@@ -9,7 +9,7 @@ export const createAuthRouter = (db: DIinterface, router: Router) => {
     .post('/login', ctrl.login)
     .post('/register', ctrl.register)
     .post('/logout', ctrl.logout)
-    .patch('/update-password', ctrl.updatePassword); // rename route to password - patch implies update!
+    .patch('/password', ctrl.updatePassword);
 
   return {
     path: '/auth',

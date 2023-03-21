@@ -5,7 +5,7 @@ const url = {
   login: '/login',
   logout: '/logout',
   register: '/register',
-  updatePassword: '/update-password'
+  updatePassword: '/password'
 };
 
 function login(data) {
