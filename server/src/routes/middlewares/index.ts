@@ -3,7 +3,7 @@ import { createRequestContextMw } from './requestContext';
 import { DIinterface } from '../../database';
 import express from 'express';
 
-export default function initMiddlewares(DI: DIinterface) {
+export default function createMiddlewares(DI: DIinterface) {
   const { requestContextMiddleware } = createRequestContextMw(DI);
 
   return [

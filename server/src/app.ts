@@ -9,10 +9,10 @@ const { apiPath, protocol, ip, port } = envs.server;
 
 const address = `${protocol}://${ip}:${port}`;
 
-const app: Express = express();
-
 export default function runServer(middlewares: Middleware, router: Router) {
-  app
+  const app: Express = express();
+
+  return app
     .use(middlewares)
     .use(apiPath, router)
     .listen(port, () => console.log(`Listening on ${address}`));
