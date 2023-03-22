@@ -10,9 +10,6 @@ dbInit()
   })
   .then(({ db, router }) => {
     const appMiddlewares = createMiddlewares(db);
-    return { router, appMiddlewares };
-  })
-  .then(({ appMiddlewares, router }) => {
     runServer(appMiddlewares, router);
   })
   .catch(err => {
