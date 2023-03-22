@@ -1,20 +1,22 @@
 import express, { Express, Router } from 'express';
 import cookieParser from 'cookie-parser';
+import { createRequestContextMw } from './routes/middlewares';
+import { DIinterface } from './database';
 import { envs } from '../config/index';
-import { requestContextMiddleware } from './routes/middlewares';
 
 const { apiPath, protocol, ip, port } = envs.server;
 
 const address = `${protocol}://${ip}:${port}`;
-const middlewares = [
-  cookieParser(),
-  express.json(),
-  requestContextMiddleware
-];
 
 const app: Express = express();
 
-export default function runServer(router: Router) {
+export default function runServer(DI: DIinterface, router: Router) {
+  const { requestContextMiddleware } = createRequestContextMw(DI);
+  const middlewares = [
+    cookieParser(),
+    express.json(),
+    requestContextMiddleware
+  ];
   app
     .use(middlewares)
     .use(apiPath, router)
