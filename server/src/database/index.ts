@@ -9,9 +9,8 @@ export interface DIinterface {
   UserEntity: typeof User
 }
 
-export const DI = {} as DIinterface; // TODO: remove export
-
 export async function dbInit() {
+  const DI = {} as DIinterface;
   DI.orm = await MikroORM.init();
   DI.em = DI.orm.em;
 
