@@ -1,4 +1,4 @@
-import { Account, Task, taskPriority, User } from '../entities/index';
+import { Account, Task, taskPriority, User } from '../entities';
 import { Factory, Faker } from '@mikro-orm/seeder';
 
 export class TaskFactory extends Factory<Task> {

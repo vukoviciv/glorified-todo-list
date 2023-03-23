@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { buildReq, buildRes } from '../../../test-utils/generate';
+import { buildReq, buildRes, buildUser } from '../../../test-utils/generate';
 import { Account } from '../../database/entities';
 import { createUserCtrl } from './user.controller';
-import { faker } from '@faker-js/faker';
 
 jest.mock('../../database/entities');
 
@@ -12,7 +11,6 @@ describe('user controller', () => {
   const loggedUser = buildUser();
 
   let res = buildRes();
-  const req = buildReq();
   const user1 = buildUser();
   const user2 = buildUser();
   const users = [user1, user2];
@@ -32,13 +30,15 @@ describe('user controller', () => {
   });
 
   it('calls list user', async () => {
+    const req = buildReq();
     await controller.list(req, res);
 
     expect(res.json).toHaveBeenCalledWith(users);
   });
 
   it('calls getMe returning logged in user', async () => {
-    req.body.user = loggedUser;
+    const body = { user: loggedUser };
+    const req = buildReq(body);
 
     await controller.getMe(req, res);
     expect(res.json).toHaveBeenCalledWith(req.body.user);
@@ -51,26 +51,14 @@ describe('user controller', () => {
     const overrides = {
       json: jest.fn(() => ({ user: resultUser }))
     };
-    res = buildRes(overrides);
-    req.body = {
+    const body = {
       accountNames: mockedAccounts,
       user: loggedUser
     };
+    const req = buildReq(body);
+    res = buildRes(overrides);
     await controller.createAccounts(req, res);
     expect(res.json).toHaveBeenCalledWith({ user: loggedUser });
     expect(res.json).toHaveReturnedWith({ user: resultUser });
   });
 });
-
-function buildUser(existingAccounts = ['one', 'two']) {
-  return {
-    firstName: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    email: faker.internet.email().toLocaleLowerCase(),
-    hasTempPassword: false,
-    password: '123456',
-    accounts: {
-      add: () => jest.fn().mockResolvedValue(existingAccounts)
-    }
-  };
-}

@@ -15,14 +15,14 @@ export const createTaskCtrl = (DI: DIinterface) => ({
     if (orderBy) {
       options.orderBy = processOrderBy(query.orderBy as string);
     }
-    const tasks = await DI.em.find(Task, { account: { id } }, options);
+    const tasks = await DI.em.find(DI.TaskEntity, { account: { id } }, options);
 
     return res.json(tasks);
   },
 
   create: async ({ body }: Request, res: Response) => {
     const { task: taskData, accountId } = body;
-    const account = await DI.em.findOne(Account, { id: accountId });
+    const account = await DI.em.findOne(DI.AccountEntity, { id: accountId });
     if (!account) throw new Error('NO ACCOUNT');
     const task = new Task({ ...taskData, account });
     await DI.em.persistAndFlush(task);
