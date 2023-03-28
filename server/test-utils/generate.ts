@@ -34,12 +34,16 @@ const buildUser = (existingAccounts = ['one', 'two']) => {
 };
 
 const buildTask = (overrides = {}) => {
+  const deadline = faker.date.future();
+
   return {
+    deadline,
     name: faker.music.songName(),
     description: faker.commerce.productDescription(),
     done: faker.datatype.boolean(),
-    deadline: faker.date.future(),
     priority: getRandomPriority(),
+    getDeadlineTime,
+    getDeadlineDate,
     ...overrides
   };
 };
@@ -64,4 +68,18 @@ function getRandomPriority() {
   const priorities = Object.values(taskPriority);
   const randomIndex = Math.floor(Math.random() * priorities.length);
   return priorities[randomIndex];
+}
+
+function getDeadlineDate(_deadline: Date) {
+  const deadline = new Date(_deadline);
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' } as const;
+  const date = deadline.toLocaleDateString(undefined, options);
+  return date;
+}
+
+function getDeadlineTime(_deadline: Date) {
+  const deadline = new Date(_deadline);
+  const options = { hour: '2-digit', minute: '2-digit' } as const;
+  const time = deadline.toLocaleTimeString([], options);
+  return time;
 }

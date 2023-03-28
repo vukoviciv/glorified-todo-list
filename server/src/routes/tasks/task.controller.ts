@@ -24,7 +24,7 @@ export const createTaskCtrl = (DI: DIinterface) => ({
     const { task: taskData, accountId } = body;
     const account = await DI.em.findOne(DI.AccountEntity, { id: accountId });
     if (!account) throw new Error('NO ACCOUNT');
-    const task = new Task({ ...taskData, account });
+    const task = new DI.TaskEntity({ ...taskData, account });
     await DI.em.persistAndFlush(task);
 
     return res.json(task);

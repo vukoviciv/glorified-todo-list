@@ -46,7 +46,11 @@ describe('user controller', () => {
 
   it('creates accounts for logged user', async () => {
     const mockedAccounts = ['four', 'five', 'six'];
-    const resultUser = Object.assign({}, loggedUser, { accounts: mockedAccounts.concat(['one', 'two']) });
+    const resultUser = Object.assign(
+      {},
+      loggedUser,
+      { accounts: mockedAccounts.concat(['one', 'two']) }
+    );
 
     const overrides = {
       json: jest.fn(() => ({ user: resultUser }))

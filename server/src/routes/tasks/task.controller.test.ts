@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { buildAccount, buildReq, buildRes, buildTask, buildUser } from '../../../test-utils/generate';
+import { buildAccount, buildReq, buildRes, buildTask } from '../../../test-utils/generate';
 import { Request, Response } from 'express';
 import { createTaskCtrl } from './task.controller';
 import { DIinterface } from '../../database';
@@ -9,11 +9,10 @@ import { Task } from '../../database/entities';
 
 jest.mock('../../database/entities');
 
-describe('user controller', () => {
+describe('task controller', () => {
   let DI: DIinterface;
   let controller: { list: any; create: any; update?: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; deleteTask?: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; toggleDone?: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; };
-  const loggedUser = buildUser();
-  const res = buildRes();
+  let res = buildRes();
   const account = buildAccount();
   const task1 = buildTask();
   const task2 = buildTask();
@@ -47,10 +46,14 @@ describe('user controller', () => {
       accountId: 1
     };
     const req = buildReq(body);
+    const resOverrides = {
+      json: jest.fn(() => (newTask))
+    };
+    res = buildRes(resOverrides);
     await controller.create(req, res);
 
     expect(DI.em.findOne).toHaveBeenCalled();
     expect(DI.em.findOne).toHaveReturnedWith(account);
-    expect(res.json).toHaveBeenCalledWith(newTask);
+    expect(res.json).toHaveReturnedWith(newTask);
   });
 });
