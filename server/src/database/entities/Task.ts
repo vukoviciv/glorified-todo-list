@@ -1,6 +1,6 @@
 import { endOfToday, startOfToday } from 'date-fns';
 import { Entity, Enum, Filter, ManyToOne, Property } from '@mikro-orm/core';
-import { getDeadlineDate, getDeadlineTime } from '../utils/deadline';
+import { getDeadlineDate, getDeadlineTime } from '../utils/deadlineFormat';
 import { Account } from '.';
 import { BaseEntity } from './BaseEntity';
 import { ValuesType } from 'utility-types';

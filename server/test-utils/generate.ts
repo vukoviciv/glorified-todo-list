@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Account, Task, taskPriority, User } from '../src/database/entities';
-import { getDeadlineDate, getDeadlineTime } from '../src/database/utils/deadline';
+import { getDeadlineDate, getDeadlineTime } from '../src/database/utils/deadlineFormat';
 import { Request, Response } from 'express';
 import { faker } from '@faker-js/faker';
 
