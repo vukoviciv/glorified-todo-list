@@ -38,6 +38,7 @@ const buildTask = (overrides = {}) => {
 
   return {
     deadline,
+    id: faker.random.alphaNumeric(),
     name: faker.music.songName(),
     description: faker.commerce.productDescription(),
     done: faker.datatype.boolean(),

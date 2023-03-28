@@ -1,4 +1,3 @@
-import { Account, Task } from '../../database/entities';
 import { Request, Response } from 'express';
 import { DIinterface } from '../../database/index';
 import { processOrderBy } from './utils';
@@ -32,7 +31,7 @@ export const createTaskCtrl = (DI: DIinterface) => ({
 
   update: async ({ body }: Request, res: Response) => {
     const { parsedId: id } = body;
-    const task = await DI.em.findOne(Task, id);
+    const task = await DI.em.findOne(DI.TaskEntity, id);
     if (!task) throw new Error(`Task with ID: ${id} does not exist!`);
 
     task.name = body?.name;
@@ -46,7 +45,7 @@ export const createTaskCtrl = (DI: DIinterface) => ({
 
   deleteTask: async ({ body }: Request, res: Response) => {
     const { parsedId: id } = body;
-    const task = DI.em.getReference(Task, parseInt(id));
+    const task = DI.em.getReference(DI.TaskEntity, parseInt(id));
     await DI.em.remove(task).flush();
 
     return res.json(task);
@@ -54,7 +53,7 @@ export const createTaskCtrl = (DI: DIinterface) => ({
 
   toggleDone: async ({ body }: Request, res: Response) => {
     const { parsedId: id } = body;
-    const task = await DI.em.findOne(Task, { id: parseInt(id) });
+    const task = await DI.em.findOne(DI.TaskEntity, { id: parseInt(id) });
     if (!task) throw new Error(`Task with ID: ${id} does not exist!`);
 
     task.done = !task.done;

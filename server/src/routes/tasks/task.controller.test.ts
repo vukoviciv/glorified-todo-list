@@ -9,7 +9,7 @@ import { Task } from '../../database/entities';
 
 jest.mock('../../database/entities');
 
-describe('task controller', () => {
+describe('task list and create', () => {
   let DI: DIinterface;
   let controller: { list: any; create: any; update?: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; deleteTask?: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; toggleDone?: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; };
   let res = buildRes();
@@ -47,13 +47,119 @@ describe('task controller', () => {
     };
     const req = buildReq(body);
     const resOverrides = {
-      json: jest.fn(() => (newTask))
+      json: jest.fn(() => ({ task: newTask }))
     };
     res = buildRes(resOverrides);
     await controller.create(req, res);
 
     expect(DI.em.findOne).toHaveBeenCalled();
     expect(DI.em.findOne).toHaveReturnedWith(account);
-    expect(res.json).toHaveReturnedWith(newTask);
+
+    expect(res.json).toHaveReturnedWith({ task: newTask });
+  });
+});
+
+describe('update', () => {
+  let DI: DIinterface;
+  let res = buildRes();
+  const task = buildTask();
+  let controller: { update: any; toggleDone: any; list?: ({ query }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; create?: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; deleteTask?: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; };
+
+  beforeAll(async () => {
+    const dbInit = jest.fn().mockImplementation(() => Promise.resolve({
+      em: {
+        findOne: jest.fn(() => task),
+        persistAndFlush: jest.fn()
+      },
+      TaskEntity: Task
+    }));
+    DI = await dbInit();
+    controller = createTaskCtrl(DI);
+  });
+
+  it('updates the task', async () => {
+    const resultProps = {
+      description: 'Updated description',
+      priority: 2
+    };
+    const resultTask = Object.assign(
+      {},
+      task,
+      resultProps
+    );
+    const body = {
+      task: task.id,
+      ...resultProps
+    };
+    const req = buildReq(body);
+    const resOverrides = {
+      json: jest.fn(() => ({ task: resultTask }))
+    };
+    res = buildRes(resOverrides);
+    await controller.update(req, res);
+
+    expect(DI.em.findOne).toHaveBeenCalled();
+    expect(DI.em.findOne).toHaveReturnedWith(task);
+
+    expect(res.json).toHaveReturnedWith({ task: resultTask });
+  });
+
+  it('toggles the task', async () => {
+    const resultDone = !task.done;
+    const resultTask = Object.assign(
+      {},
+      task,
+      { done: resultDone }
+    );
+    const body = { task: task.id };
+    const req = buildReq(body);
+    const resOverrides = {
+      json: jest.fn(() => ({ task: resultTask }))
+    };
+    res = buildRes(resOverrides);
+    await controller.toggleDone(req, res);
+
+    expect(DI.em.findOne).toHaveBeenCalled();
+    expect(DI.em.findOne).toHaveReturnedWith(task);
+
+    expect(res.json).toHaveReturnedWith({ task: resultTask });
+  });
+});
+
+describe('deleting task', () => {
+  const task = buildTask();
+  let res = buildRes();
+  let DI: DIinterface;
+  let controller: { create: any; list?: ({ query }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; update?: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; deleteTask: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; toggleDone?: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; };
+
+  beforeAll(async () => {
+    const dbInit = jest.fn().mockImplementation(() => Promise.resolve({
+      em: {
+        getReference: jest.fn(() => task),
+        remove: jest.fn(() => ({
+          flush: jest.fn()
+        }))
+      },
+      TaskEntity: Task
+    }));
+    DI = await dbInit();
+    controller = createTaskCtrl(DI);
+  });
+
+  it('deletes the task', async () => {
+    const body = { id: task.id };
+    const req = buildReq(body);
+    const resOverrides = {
+      json: jest.fn(() => ({ task }))
+    };
+    res = buildRes(resOverrides);
+    await controller.deleteTask(req, res);
+
+    expect(DI.em.getReference).toHaveBeenCalled();
+    expect(DI.em.getReference).toHaveReturnedWith(task);
+
+    expect(DI.em.remove).toHaveBeenCalled();
+
+    expect(res.json).toHaveReturnedWith({ task });
   });
 });
