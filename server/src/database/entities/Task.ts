@@ -1,5 +1,6 @@
 import { endOfToday, startOfToday } from 'date-fns';
 import { Entity, Enum, Filter, ManyToOne, Property } from '@mikro-orm/core';
+import { getDeadlineDate, getDeadlineTime } from '../utils/deadline';
 import { Account } from '.';
 import { BaseEntity } from './BaseEntity';
 import { ValuesType } from 'utility-types';
@@ -51,20 +52,12 @@ export class Task extends BaseEntity {
 
   @Property({ name: 'deadlineDate' })
   getDeadlineDate() {
-    if (!this.deadline) return undefined;
-    const deadline = new Date(this.deadline);
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' } as const;
-    const date = deadline.toLocaleDateString(undefined, options);
-    return date;
+    return getDeadlineDate(this.deadline);
   }
 
   @Property({ name: 'deadlineTime' })
   getDeadlineTime() {
-    if (!this.deadline) return undefined;
-    const deadline = new Date(this.deadline);
-    const options = { hour: '2-digit', minute: '2-digit' } as const;
-    const time = deadline.toLocaleTimeString([], options);
-    return time;
+    return getDeadlineTime(this.deadline);
   }
 
   constructor({ name, account, ...props }: Props) {

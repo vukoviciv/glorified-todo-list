@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Account, Task, taskPriority, User } from '../src/database/entities';
+import { getDeadlineDate, getDeadlineTime } from '../src/database/utils/deadline';
 import { Request, Response } from 'express';
 import { faker } from '@faker-js/faker';
 
@@ -91,20 +92,4 @@ function getRandomPriority() {
   const randomIndex = Math.floor(Math.random() * priorities.length);
 
   return priorities[randomIndex];
-}
-
-function getDeadlineDate(_deadline: Date) {
-  const deadline = new Date(_deadline);
-  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' } as const;
-  const date = deadline.toLocaleDateString(undefined, options);
-
-  return date;
-}
-
-function getDeadlineTime(_deadline: Date) {
-  const deadline = new Date(_deadline);
-  const options = { hour: '2-digit', minute: '2-digit' } as const;
-  const time = deadline.toLocaleTimeString([], options);
-
-  return time;
 }

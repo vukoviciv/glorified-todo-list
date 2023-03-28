@@ -32,8 +32,8 @@ describe('user controller', () => {
   it('calls getMe returning logged in user', async () => {
     const body = { user: loggedUser };
     const req = buildReq(body);
-
     await controller.getMe(req, res);
+
     expect(res.json).toHaveBeenCalledWith(req.body.user);
   });
 
@@ -55,6 +55,7 @@ describe('user controller', () => {
     const req = buildReq(body);
     res = buildRes(overrides);
     await controller.createAccounts(req, res);
+
     expect(res.json).toHaveBeenCalledWith({ user: loggedUser });
     expect(res.json).toHaveReturnedWith({ user: resultUser });
   });
