@@ -1,14 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { buildAccount, buildDbInit, buildReq, buildRes, buildTask } from '../../../test-utils/generate';
-import { Request, Response } from 'express';
 import { createTaskCtrl } from './task.controller';
 import { DIinterface } from '../../database';
-import { ParamsDictionary } from 'express-serve-static-core';
-import { ParsedQs } from 'qs';
 
 describe('task list and create', () => {
   let DI: DIinterface;
-  let controller: { list: any; create: any; update?: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; deleteTask?: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; toggleDone?: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; };
+  let controller: { list: any; create: any; };
   let res = buildRes();
   const account = buildAccount();
   const task1 = buildTask();
@@ -54,9 +51,8 @@ describe('task list and create', () => {
 
 describe('update', () => {
   let DI: DIinterface;
-  let res = buildRes();
   const task = buildTask();
-  let controller: { update: any; toggleDone: any; list?: ({ query }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; create?: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; deleteTask?: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; };
+  let controller: { update: any; toggleDone: any };
 
   beforeAll(async () => {
     const emOverrides = {
@@ -72,11 +68,7 @@ describe('update', () => {
       description: 'Updated description',
       priority: 2
     };
-    const resultTask = Object.assign(
-      {},
-      task,
-      resultProps
-    );
+    const resultTask = Object.assign({}, task, resultProps);
     const body = {
       task: task.id,
       ...resultProps
@@ -85,7 +77,7 @@ describe('update', () => {
     const resOverrides = {
       json: jest.fn(() => ({ task: resultTask }))
     };
-    res = buildRes(resOverrides);
+    const res = buildRes(resOverrides);
     await controller.update(req, res);
 
     expect(DI.em.findOne).toHaveBeenCalled();
@@ -106,7 +98,7 @@ describe('update', () => {
     const resOverrides = {
       json: jest.fn(() => ({ task: resultTask }))
     };
-    res = buildRes(resOverrides);
+    const res = buildRes(resOverrides);
     await controller.toggleDone(req, res);
 
     expect(DI.em.findOne).toHaveBeenCalled();
@@ -118,9 +110,8 @@ describe('update', () => {
 
 describe('deleting task', () => {
   const task = buildTask();
-  let res = buildRes();
   let DI: DIinterface;
-  let controller: { create: any; list?: ({ query }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; update?: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; deleteTask: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; toggleDone?: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; };
+  let controller: { deleteTask: any; };
 
   beforeAll(async () => {
     const emOverrides = {
@@ -137,7 +128,7 @@ describe('deleting task', () => {
     const resOverrides = {
       json: jest.fn(() => ({ task }))
     };
-    res = buildRes(resOverrides);
+    const res = buildRes(resOverrides);
     await controller.deleteTask(req, res);
 
     expect(DI.em.getReference).toHaveBeenCalled();

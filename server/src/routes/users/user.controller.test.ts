@@ -1,9 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { buildReq, buildRes, buildUser } from '../../../test-utils/generate';
-import { Account } from '../../database/entities';
+import { buildDbInit, buildReq, buildRes, buildUser } from '../../../test-utils/generate';
 import { createUserCtrl } from './user.controller';
-
-jest.mock('../../database/entities');
 
 describe('user controller', () => {
   let DI;
@@ -16,15 +13,11 @@ describe('user controller', () => {
   const users = [user1, user2];
 
   beforeAll(async () => {
-    const dbInit = jest.fn().mockImplementation(() => Promise.resolve({
-      em: {
-        find: () => users,
-        findOne: () => loggedUser,
-        persist: jest.fn(),
-        flush: jest.fn()
-      },
-      AccountEntity: Account
-    }));
+    const emOverrides = {
+      find: () => users,
+      findOne: () => loggedUser
+    };
+    const dbInit = buildDbInit(emOverrides);
     DI = await dbInit();
     controller = createUserCtrl(DI);
   });

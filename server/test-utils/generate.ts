@@ -64,6 +64,7 @@ const buildDbInit = (emOverrides: any = {}) => {
     em: {
       find: jest.fn(),
       findOne: jest.fn(),
+      persist: jest.fn(),
       persistAndFlush: jest.fn(),
       flush: jest.fn(),
       remove: jest.fn(() => ({ flush: jest.fn() })),
@@ -88,6 +89,7 @@ export {
 function getRandomPriority() {
   const priorities = Object.values(taskPriority);
   const randomIndex = Math.floor(Math.random() * priorities.length);
+
   return priorities[randomIndex];
 }
 
@@ -95,6 +97,7 @@ function getDeadlineDate(_deadline: Date) {
   const deadline = new Date(_deadline);
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' } as const;
   const date = deadline.toLocaleDateString(undefined, options);
+
   return date;
 }
 
@@ -102,5 +105,6 @@ function getDeadlineTime(_deadline: Date) {
   const deadline = new Date(_deadline);
   const options = { hour: '2-digit', minute: '2-digit' } as const;
   const time = deadline.toLocaleTimeString([], options);
+
   return time;
 }
