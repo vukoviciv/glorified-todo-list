@@ -3,7 +3,6 @@ import { auth } from '../../../config/index';
 import bcrypt from 'bcrypt';
 import { DIinterface } from '../../database/index';
 import jwt from 'jsonwebtoken';
-import { User } from '../../database/entities/index';
 
 const COOKIE_NAME = auth.cookie.name;
 const JWT_KEY = auth.jwt.key;
@@ -12,7 +11,7 @@ export const createAuthCtrl = (DI: DIinterface) => ({
   login: async ({ body }: Request, res: Response) => {
     if (!body.email) return res.status(404).send('Email does not exist.');
 
-    const user = await DI.em.findOne(User, { email: body.email });
+    const user = await DI.em.findOne(DI.UserEntity, { email: body.email });
     if (!user) return res.status(403).send('Invalid password or email');
 
     const result = await bcrypt.compare(body.password, user.password);
@@ -34,12 +33,12 @@ export const createAuthCtrl = (DI: DIinterface) => ({
 
   register: async ({ body }: Request, res: Response) => {
     const { firstName, lastName, email, password } = body;
-    const existingUser = await DI.em.findOne(User, { email });
+    const existingUser = await DI.em.findOne(DI.UserEntity, { email });
     if (existingUser) {
       return res.status(409).send('User with the given email already exists');
     }
 
-    const user = new User({ firstName, lastName, email, password });
+    const user = new DI.UserEntity({ firstName, lastName, email, password });
     await DI.em.persistAndFlush(user);
 
     return res.json(user);
@@ -47,7 +46,7 @@ export const createAuthCtrl = (DI: DIinterface) => ({
 
   updatePassword: async ({ body }: Request, res: Response) => {
     const { password, email } = body;
-    const user = await DI.em.findOne(User, { email });
+    const user = await DI.em.findOne(DI.UserEntity, { email });
     if (!user) {
       return res.status(404).send('Email does not exist');
     }
