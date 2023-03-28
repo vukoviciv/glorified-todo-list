@@ -1,13 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { buildAccount, buildReq, buildRes, buildTask } from '../../../test-utils/generate';
+import { buildAccount, buildDbInit, buildReq, buildRes, buildTask } from '../../../test-utils/generate';
 import { Request, Response } from 'express';
 import { createTaskCtrl } from './task.controller';
 import { DIinterface } from '../../database';
 import { ParamsDictionary } from 'express-serve-static-core';
 import { ParsedQs } from 'qs';
-import { Task } from '../../database/entities';
-
-jest.mock('../../database/entities');
 
 describe('task list and create', () => {
   let DI: DIinterface;
@@ -19,15 +16,11 @@ describe('task list and create', () => {
   const tasks = [task1, task2];
 
   beforeAll(async () => {
-    const dbInit = jest.fn().mockImplementation(() => Promise.resolve({
-      em: {
-        find: () => tasks,
-        findOne: jest.fn(() => account),
-        persistAndFlush: jest.fn(),
-        flush: jest.fn()
-      },
-      TaskEntity: Task
-    }));
+    const emOverrides = {
+      find: () => tasks,
+      findOne: jest.fn(() => account)
+    };
+    const dbInit = buildDbInit(emOverrides);
     DI = await dbInit();
     controller = createTaskCtrl(DI);
   });
@@ -66,13 +59,10 @@ describe('update', () => {
   let controller: { update: any; toggleDone: any; list?: ({ query }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; create?: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; deleteTask?: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; };
 
   beforeAll(async () => {
-    const dbInit = jest.fn().mockImplementation(() => Promise.resolve({
-      em: {
-        findOne: jest.fn(() => task),
-        persistAndFlush: jest.fn()
-      },
-      TaskEntity: Task
-    }));
+    const emOverrides = {
+      findOne: jest.fn(() => task)
+    };
+    const dbInit = buildDbInit(emOverrides);
     DI = await dbInit();
     controller = createTaskCtrl(DI);
   });
@@ -133,15 +123,10 @@ describe('deleting task', () => {
   let controller: { create: any; list?: ({ query }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; update?: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; deleteTask: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; toggleDone?: ({ body }: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<Response<any, Record<string, any>>>; };
 
   beforeAll(async () => {
-    const dbInit = jest.fn().mockImplementation(() => Promise.resolve({
-      em: {
-        getReference: jest.fn(() => task),
-        remove: jest.fn(() => ({
-          flush: jest.fn()
-        }))
-      },
-      TaskEntity: Task
-    }));
+    const emOverrides = {
+      getReference: jest.fn(() => task)
+    };
+    const dbInit = buildDbInit(emOverrides);
     DI = await dbInit();
     controller = createTaskCtrl(DI);
   });

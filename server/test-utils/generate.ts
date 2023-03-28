@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Account, Task, taskPriority, User } from '../src/database/entities';
 import { Request, Response } from 'express';
 import { faker } from '@faker-js/faker';
-import { taskPriority } from '../src/database/entities';
+
+jest.mock('../src/database/entities');
 
 const buildRes = (overrides = {}): Response => {
   const res = {
@@ -56,8 +59,25 @@ const buildAccount = () => {
   };
 };
 
+const buildDbInit = (emOverrides: any = {}) => {
+  return jest.fn().mockImplementation(() => Promise.resolve({
+    em: {
+      find: jest.fn(),
+      findOne: jest.fn(),
+      persistAndFlush: jest.fn(),
+      flush: jest.fn(),
+      remove: jest.fn(() => ({ flush: jest.fn() })),
+      ...emOverrides
+    },
+    AccountEntity: Account,
+    TaskEntity: Task,
+    UserEntity: User
+  }));
+};
+
 export {
   buildAccount,
+  buildDbInit,
   buildNext,
   buildReq,
   buildRes,
