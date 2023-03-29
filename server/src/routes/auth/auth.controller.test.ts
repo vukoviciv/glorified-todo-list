@@ -45,4 +45,21 @@ describe('auth controller', () => {
     expect(spiedCompare).toHaveReturned();
     expect(res.json).toHaveReturnedWith(user);
   });
+
+  it('fails to login without an email', async () => {
+    const body = {
+      email: null,
+      password: '123456'
+    };
+    const req = buildReq(body);
+    const res = buildRes({ send: jest.fn(() => res) });
+
+    const statusSpy = jest.spyOn(res, 'status');
+    const sendSpy = jest.spyOn(res, 'send');
+
+    await controller.login(req, res);
+
+    expect(statusSpy).toBeCalledWith(404);
+    expect(sendSpy).toBeCalledWith('Email does not exist.');
+  });
 });
