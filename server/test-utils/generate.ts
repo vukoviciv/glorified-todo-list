@@ -26,6 +26,7 @@ const buildNext = () => {
 
 const buildUser = (existingAccounts = ['one', 'two']) => {
   return {
+    id: faker.random.alphaNumeric(),
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     email: faker.internet.email().toLocaleLowerCase(),

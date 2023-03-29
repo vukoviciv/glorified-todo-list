@@ -27,16 +27,22 @@ describe('auth controller', () => {
     };
     const req = buildReq(body);
     const resOverrides = {
-      status: jest.fn(() => ({ send: jest.fn() }))
+      cookie: jest.fn().mockReturnThis(),
+      json: jest.fn(() => user)
     };
     const res = buildRes(resOverrides);
-    const spiedCompare = jest.spyOn(bcrypt, 'compare');
-    const spiedJwt = jest.spyOn(jwt, 'sign');
+    const spiedJwt = jest
+      .spyOn(jwt, 'sign')
+      .mockImplementation(() => Promise.resolve('jwt_mock_data-1234!'));
+    const spiedCompare = jest
+      .spyOn(bcrypt, 'compare')
+      .mockImplementation(() => Promise.resolve(true));
     await controller.login(req, res);
 
     expect(DI.em.findOne).toHaveBeenCalled();
     expect(DI.em.findOne).toHaveReturnedWith(user);
-    expect(spiedCompare).toHaveBeenCalledWith(body.password, user.password);
-    expect(spiedJwt).toHaveBeenCalled(); // this is not being called?
+    expect(spiedJwt).toHaveBeenCalled();
+    expect(spiedCompare).toHaveReturned();
+    expect(res.json).toHaveReturnedWith(user);
   });
 });
