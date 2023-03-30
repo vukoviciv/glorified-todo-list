@@ -24,7 +24,7 @@ const buildNext = () => {
   return jest.fn();
 };
 
-const buildUser = (existingAccounts = ['one', 'two']) => {
+const buildUser = (existingAccounts = ['one', 'two'], properties = {}) => {
   return {
     id: faker.random.alphaNumeric(),
     firstName: faker.name.firstName(),
@@ -34,7 +34,8 @@ const buildUser = (existingAccounts = ['one', 'two']) => {
     password: '123456',
     accounts: {
       add: () => jest.fn().mockResolvedValue(existingAccounts)
-    }
+    },
+    ...properties
   };
 };
 

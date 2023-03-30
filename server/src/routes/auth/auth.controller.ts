@@ -37,7 +37,6 @@ export const createAuthCtrl = (DI: DIinterface) => ({
     if (existingUser) {
       return res.status(409).send('User with the given email already exists');
     }
-
     const user = new DI.UserEntity({ firstName, lastName, email, password });
     await DI.em.persistAndFlush(user);
 
