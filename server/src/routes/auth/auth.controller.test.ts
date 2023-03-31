@@ -40,11 +40,11 @@ describe('auth controller > login', () => {
 
     await controller.login(req, res);
 
-    expect(DI.em.findOne).toHaveBeenCalledTimes(1);
-    expect(DI.em.findOne).toHaveReturnedWith(user);
-    expect(compareSpy).toHaveBeenCalledTimes(1);
-    expect(jwtSpy).toHaveBeenCalledTimes(1);
-    expect(res.json).toHaveReturnedWith(user);
+    expect(DI.em.findOne).toBeCalledTimes(1);
+    expect(DI.em.findOne).toReturnWith(user);
+    expect(compareSpy).toBeCalledTimes(1);
+    expect(jwtSpy).toBeCalledTimes(1);
+    expect(res.json).toBeCalledWith(user);
   });
 
   it('fails to login without an email', async () => {
@@ -127,8 +127,9 @@ describe('auth controller > register', () => {
     DI.UserEntity = jest.fn().mockReturnValue(user);
 
     await controller.register(req, res);
-    expect(DI.em.persistAndFlush).toHaveBeenCalledTimes(1);
-    expect(res.json).toHaveReturnedWith(user);
+    expect(DI.em.persistAndFlush).toBeCalledTimes(1);
+    expect(res.json).toBeCalledTimes(1);
+    expect(res.json).toBeCalledWith(user);
   });
 
   it('fails for existing email', async () => {
